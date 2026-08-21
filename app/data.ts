@@ -94,12 +94,15 @@ export const demoReport: DailyReport = {
   difficulty_feedback:null,
 };
 
-export const archiveReports = [
-  { date:"2026-08-21", title:demoReport.big_story.title_zh, fields:["Technology","AI","Energy"], status:"In progress" },
-  { date:"2026-08-20", title:"央行沟通如何改变市场预期", fields:["Economy","Finance"], status:"Completed" },
-  { date:"2026-08-19", title:"深海探测正在打开新的科学窗口", fields:["Science","Technology"], status:"Completed" },
-  { date:"2026-08-18", title:"关键矿产供应链为何变得重要", fields:["Politics","Economy"], status:"Saved" },
-];
+export const reports: DailyReport[] = [demoReport];
+export const latestReport = reports[0];
+export const getReportByDate = (date: string) => reports.find(report => report.date === date);
+export const archiveReports = reports.map(report => ({
+  date: report.date,
+  title: report.big_story.title_zh,
+  fields: report.big_story.category.split(" · "),
+  status: report.completion ? "Completed" : "Available",
+}));
 
 export const deepReadArchive = [
   { date:"2026-08-21", category:"Technology", title:"AI’s next breakthrough may depend on everything around the chip", zh:"AI 的下一次突破，或许取决于芯片之外的一切", minutes:14, status:"Reading", tone:"sage" },

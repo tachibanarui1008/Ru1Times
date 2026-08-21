@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { demoReport, type Language } from "../data";
+import { latestReport, type DailyReport, type Language } from "../data";
 import { SectionIntro, SiteChrome } from "./SiteChrome";
 
 const languageLabels: Array<[Language,string]> = [["all","四语对照"],["zh","中文"],["en","English"],["ja","日本語"],["ko","한국어"]];
@@ -11,8 +11,9 @@ const vocab: Record<string,{zh:string; phonetic:string; collocation:string; cont
   depreciation:{zh:"折旧",phonetic:"/dɪˌpriːʃiˈeɪʃən/",collocation:"annual depreciation",context:"资产成本分多年计入费用的会计过程。"},
 };
 
-export function Today() {
-  const report = demoReport;
+export function Today({ archiveMode = false, reportData }: { archiveMode?: boolean; reportData?: DailyReport }) {
+  const report = reportData ?? latestReport;
+  const displayDate = new Intl.DateTimeFormat("en-GB", { weekday:"long", day:"numeric", month:"long" }).format(new Date(`${report.date}T00:00:00`));
   const [langByBrief, setLangByBrief] = useState<Record<number,Language>>({1:"all",2:"all",3:"all",4:"all"});
   const [openWord, setOpenWord] = useState<number|null>(null);
   const [savedWords, setSavedWords] = useState<number[]>([]);
@@ -49,19 +50,19 @@ export function Today() {
     });
   }
 
-  return <SiteChrome active="Today">
+  return <SiteChrome active={archiveMode ? "Archive" : "Today"}>
     <div className="reading-progress" style={{width:`${progress}%`}} />
     <main>
-      <section className="hero" id="top">
-        <div className="eyebrow"><span>Demo Content</span> Friday, 21 August · Edition 001</div>
-        <h1>One world.<br />Four languages.</h1>
-        <p>每天四十分钟，用四种语言理解同一个世界。</p>
+      {archiveMode && <div className="archive-reader-bar"><a href="/archive">← Back to Archive</a><span>Archived edition · {report.date}</span></div>}
+      <section className="hero text-hero" id="top">
+        <div className="eyebrow"><span>{report.demo ? "Demo Content" : "Today’s Edition"}</span> {displayDate} · Edition {String(report.edition_number).padStart(3,"0")}</div>
+        <h1>Polyglot<br/>Morning Brief</h1>
+        <p>四语全球晨报 · 每天四十分钟，用四种语言理解同一个世界。</p>
         <div className="edition-meta"><span><strong>40</strong> min</span><span><strong>8</strong> Hot Words</span><span><strong>3</strong> Expressions</span><span><strong>4</strong> Briefings</span><span><strong>1</strong> Deep Read</span><span><strong>5</strong> Challenges</span></div>
       </section>
 
       <section className="big-story" id="morning-brief">
         <div className="story-copy"><p className="kicker">TODAY’S BIG STORY · {report.big_story.category}</p><h2>{report.big_story.title_en}</h2><h3>{report.big_story.title_zh}</h3><p className="summary">{report.big_story.summary}</p><a className="primary-action" href="#hot-words">Start Morning Brief <span>↓</span></a><small>{report.big_story.minutes} min deep read · Illustrative editorial synthesis</small></div>
-        <div className="story-art" aria-hidden="true"><div className="grid-lines"/><div className="orb"/><span>AI · ENERGY · INFRASTRUCTURE</span></div>
       </section>
 
       <section className="content-section" id="hot-words">
@@ -103,7 +104,7 @@ export function Today() {
 
       <section className="content-section challenge-section"><SectionIntro eyebrow="07" title="Today’s Challenge" subtitle="今日挑战" meta="约 3 min"/><div className="challenge-list">{report.challenge.map(q=><article key={q.id}><span>{String(q.id).padStart(2,"0")} · {q.kind}</span><h3>{q.question}</h3><div>{q.options.map((option,i)=><button className={answers[q.id]===i ? (i===q.answer?"correct":"wrong") : ""} disabled={answers[q.id]!==undefined} onClick={()=>setAnswers({...answers,[q.id]:i})} key={option}>{option}</button>)}</div>{answers[q.id]!==undefined&&<p className="answer-note"><strong>{answers[q.id]===q.answer?"Correct":"Not quite"}</strong>{q.explanation}</p>}</article>)}</div><p className="score-line">Answered {Object.keys(answers).length} / 5 · Correct {score}</p></section>
 
-      <section className={`complete-card ${completed?"is-complete":""}`}><p>HOW WAS TODAY’S BRIEF?</p><h2>{completed?"Morning brief complete.":"Make it yours, one morning at a time."}</h2><div>{["Easy","Just Right","Challenging"].map(level=><button className={feedback===level?"active":""} onClick={()=>setFeedback(level)} key={level}>{level}</button>)}</div><button className="complete-button" onClick={()=>setCompleted(!completed)}>{completed?"Completed ✓":"Complete Today’s Brief"}</button><small>{completed?"Saved to your learning history.":"Your progress stays on this device for this demo."}</small></section>
+      {!archiveMode && <section className={`complete-card ${completed?"is-complete":""}`}><p>HOW WAS TODAY’S BRIEF?</p><h2>{completed?"Morning brief complete.":"Make it yours, one morning at a time."}</h2><div>{["Easy","Just Right","Challenging"].map(level=><button className={feedback===level?"active":""} onClick={()=>setFeedback(level)} key={level}>{level}</button>)}</div><button className="complete-button" onClick={()=>setCompleted(!completed)}>{completed?"Completed ✓":"Complete Today’s Brief"}</button><small>{completed?"Saved to your learning history.":"Your progress stays on this device for this demo."}</small></section>}
     </main>
     <div className="mobile-progress"><span style={{width:`${progress}%`}}/><b>{progress}% read</b><a href="#top">↑</a></div>
   </SiteChrome>;

@@ -3,8 +3,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 
 const links = [
-  ["Today", "/"], ["Archive", "/archive"], ["Words", "/words"],
-  ["Expressions", "/expressions"], ["Deep Reads", "/deep-reads"], ["Progress", "/progress"],
+  ["Today", "/"], ["Archive", "/archive"], ["Progress", "/progress"],
 ] as const;
 
 export function SiteChrome({ active, children }: { active: string; children: ReactNode }) {
