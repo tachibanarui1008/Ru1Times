@@ -1,4 +1,5 @@
 export type Language = "zh" | "en" | "ja" | "ko" | "all";
+export type LearnerSegment = { text: string; romanization: string; zh: string };
 
 export type DailyReport = {
   date: string;
@@ -6,9 +7,9 @@ export type DailyReport = {
   demo: boolean;
   estimated_minutes: number;
   big_story: { category: string; title_zh: string; title_en: string; summary: string; minutes: number };
-  hot_words: Array<{ en: string; zh: string; ja: string; ko: string; why_today: string; example: string; topic: string }>;
-  expressions: Array<{ language: "English" | "日本語" | "한국어"; flag: string; phrase: string; meaning: string; nuance: string; scene: string; dialogue: string; register: string; frequency: string; note: string }>;
-  briefings: Array<{ id: number; category: string; title_zh: string; title_en: string; source: string; minutes: number; zh: string; en: string; ja: string; ko: string }>;
+  hot_words: Array<{ en: string; zh: string; ja: string; ja_romaji: string; ko: string; ko_romaja: string; why_today: string; example: string; topic: string }>;
+  expressions: Array<{ language: "English" | "日本語" | "한국어"; flag: string; phrase: string; romanization?: string; meaning: string; nuance: string; scene: string; dialogue: string; register: string; frequency: string; note: string }>;
+  briefings: Array<{ id: number; category: string; title_zh: string; title_en: string; source: string; minutes: number; zh: string; en: string; ja: string; ko: string; ja_segments: LearnerSegment[]; ko_segments: LearnerSegment[] }>;
   deep_read: { category: string; title_en: string; title_zh: string; minutes: number; standfirst: string; paragraphs: Array<{ en: string; zh: string }> };
   context: Array<{ title: string; text: string }>;
   history_lens: { then: string; now: string; title: string; text: string; similarities: string; differences: string } | null;
@@ -30,41 +31,65 @@ export const demoReport: DailyReport = {
     minutes: 14,
   },
   hot_words: [
-    { en:"Semiconductor", zh:"半导体", ja:"半導体（はんどうたい）", ko:"반도체", why_today:"AI 算力竞争的物理基础，也是贸易与产业政策的长期关键词。", example:"Advanced semiconductors remain central to the expansion of AI infrastructure.", topic:"Technology" },
-    { en:"Grid", zh:"电网", ja:"電力網（でんりょくもう）", ko:"전력망", why_today:"数据中心的用电需求让电网容量成为科技发展约束。", example:"Utilities are upgrading the grid to serve power-hungry data centers.", topic:"Energy" },
-    { en:"Bottleneck", zh:"瓶颈；限制环节", ja:"ボトルネック", ko:"병목 현상", why_today:"理解供应链、能源与生产能力限制时非常常用。", example:"Power availability may become a bigger bottleneck than chip supply.", topic:"Economy" },
-    { en:"Resilience", zh:"韧性；抗冲击能力", ja:"強靱性（きょうじんせい）", ko:"회복 탄력성", why_today:"政策制定者越来越重视关键供应链的抗风险能力。", example:"Governments are investing in supply-chain resilience.", topic:"Policy" },
-    { en:"Inference", zh:"推理；模型运行", ja:"推論（すいろん）", ko:"추론", why_today:"AI 从训练走向大规模应用时，推理成本尤其重要。", example:"Efficient inference can make AI services cheaper to operate.", topic:"AI" },
-    { en:"Capacity", zh:"产能；容量", ja:"能力（のうりょく）・容量（ようりょう）", ko:"용량", why_today:"可描述工厂、电网和数据中心能够承载的上限。", example:"New generation capacity will take years to connect to the grid.", topic:"Energy" },
-    { en:"Subsidy", zh:"补贴", ja:"補助金（ほじょきん）", ko:"보조금", why_today:"芯片与清洁能源产业政策中反复出现。", example:"The subsidy is designed to attract long-term manufacturing investment.", topic:"Policy" },
-    { en:"Trade-off", zh:"权衡；取舍", ja:"トレードオフ", ko:"상충 관계", why_today:"复杂政策通常不是单一最优解，而是多目标取舍。", example:"There is a trade-off between rapid construction and local oversight.", topic:"Knowledge" },
+    { en:"Semiconductor", zh:"半导体", ja:"半導体（はんどうたい）", ja_romaji:"handōtai", ko:"반도체", ko_romaja:"bandoche", why_today:"AI 算力竞争的物理基础，也是贸易与产业政策的长期关键词。", example:"Advanced semiconductors remain central to the expansion of AI infrastructure.", topic:"Technology" },
+    { en:"Grid", zh:"电网", ja:"電力網（でんりょくもう）", ja_romaji:"denryokumō", ko:"전력망", ko_romaja:"jeollyeongmang", why_today:"数据中心的用电需求让电网容量成为科技发展约束。", example:"Utilities are upgrading the grid to serve power-hungry data centers.", topic:"Energy" },
+    { en:"Bottleneck", zh:"瓶颈；限制环节", ja:"ボトルネック", ja_romaji:"botorunekku", ko:"병목 현상", ko_romaja:"byeongmok hyeonsang", why_today:"理解供应链、能源与生产能力限制时非常常用。", example:"Power availability may become a bigger bottleneck than chip supply.", topic:"Economy" },
+    { en:"Resilience", zh:"韧性；抗冲击能力", ja:"強靱性（きょうじんせい）", ja_romaji:"kyōjinsei", ko:"회복 탄력성", ko_romaja:"hoebok tallyeokseong", why_today:"政策制定者越来越重视关键供应链的抗风险能力。", example:"Governments are investing in supply-chain resilience.", topic:"Policy" },
+    { en:"Inference", zh:"推理；模型运行", ja:"推論（すいろん）", ja_romaji:"suiron", ko:"추론", ko_romaja:"churon", why_today:"AI 从训练走向大规模应用时，推理成本尤其重要。", example:"Efficient inference can make AI services cheaper to operate.", topic:"AI" },
+    { en:"Capacity", zh:"产能；容量", ja:"能力（のうりょく）・容量（ようりょう）", ja_romaji:"nōryoku / yōryō", ko:"용량", ko_romaja:"yongnyang", why_today:"可描述工厂、电网和数据中心能够承载的上限。", example:"New generation capacity will take years to connect to the grid.", topic:"Energy" },
+    { en:"Subsidy", zh:"补贴", ja:"補助金（ほじょきん）", ja_romaji:"hojokin", ko:"보조금", ko_romaja:"bojo-geum", why_today:"芯片与清洁能源产业政策中反复出现。", example:"The subsidy is designed to attract long-term manufacturing investment.", topic:"Policy" },
+    { en:"Trade-off", zh:"权衡；取舍", ja:"トレードオフ", ja_romaji:"torēdo ofu", ko:"상충 관계", ko_romaja:"sangchung gwangye", why_today:"复杂政策通常不是单一最优解，而是多目标取舍。", example:"There is a trade-off between rapid construction and local oversight.", topic:"Knowledge" },
   ],
   expressions: [
     { language:"English", flag:"EN", phrase:"That’s a stretch.", meaning:"这有点牵强。", nuance:"礼貌但清楚地指出某个推论缺少足够依据。", scene:"会议、朋友讨论、评论观点", dialogue:"A: This one chart proves the whole market has changed.\nB: That’s a stretch. We need more evidence.", register:"中性 · 非正式到半正式", frequency:"常用", note:"比 That’s wrong 更缓和，但语气仍可能显得直接。" },
-    { language:"日本語", flag:"JP", phrase:"たしかに、それはそう。", meaning:"确实，是这么回事。", nuance:"自然地承认对方说得有道理，也可用来缓和分歧。", scene:"朋友聊天、轻松的工作讨论", dialogue:"A：時間（じかん）がかかるね。\nB：たしかに、それはそう。", register:"日常 · 自然", frequency:"很常用", note:"たしかに 后稍作停顿，会更接近日常语感。" },
-    { language:"한국어", flag:"KR", phrase:"그럴 수도 있죠.", meaning:"也有可能是那样。", nuance:"表示接受一种可能性，但不一定完全同意。", scene:"讨论、委婉回应、职场沟通", dialogue:"A: 계획이 바뀔 것 같아요.\nB: 그럴 수도 있죠.", register:"礼貌 · 日常", frequency:"很常用", note:"句尾 있죠 比 있어요 多一点共同确认的感觉。" },
+    { language:"日本語", flag:"JP", phrase:"たしかに、それはそう。", romanization:"tashika ni, sore wa sō", meaning:"确实，是这么回事。", nuance:"自然地承认对方说得有道理，也可用来缓和分歧。", scene:"朋友聊天、轻松的工作讨论", dialogue:"A：時間（じかん）がかかるね。\nB：たしかに、それはそう。", register:"日常 · 自然", frequency:"很常用", note:"たしかに 后稍作停顿，会更接近日常语感。" },
+    { language:"한국어", flag:"KR", phrase:"그럴 수도 있죠.", romanization:"geureol sudo itjyo", meaning:"也有可能是那样。", nuance:"表示接受一种可能性，但不一定完全同意。", scene:"讨论、委婉回应、职场沟通", dialogue:"A: 계획이 바뀔 것 같아요.\nB: 그럴 수도 있죠.", register:"礼貌 · 日常", frequency:"很常用", note:"句尾 있죠 比 있어요 多一点共同确认的感觉。" },
   ],
   briefings: [
     { id:1, category:"Technology / AI", title_zh:"AI 扩张开始受到电力与土地条件约束", title_en:"AI expansion meets the physical limits of power and land", source:"Illustrative editorial synthesis", minutes:3,
       zh:"大型 AI 系统需要越来越多的数据中心。企业不仅要采购芯片，还要寻找稳定电力、冷却用水、网络连接和可建设土地。基础设施审批速度因此成为新变量。",
       en:"The expansion of artificial intelligence is becoming a physical infrastructure story. Companies still need advanced chips, but they must also secure reliable electricity, cooling systems, network links and suitable land. As a result, grid connections and local permitting can shape where—and how quickly—new computing capacity is built.",
       ja:"AI の拡大（かくだい）には、多くのデータセンターが必要（ひつよう）です。半導体（はんどうたい）だけではなく、電気（でんき）や水（みず）、土地（とち）も大切です。建設（けんせつ）の許可（きょか）にも時間がかかります。",
-      ko:"AI가 커지면서 데이터 센터가 더 많이 필요합니다. 반도체뿐 아니라 전기, 물, 땅도 중요합니다. 건설 허가와 전력 연결에는 시간이 걸릴 수 있습니다." },
+      ko:"AI가 커지면서 데이터 센터가 더 많이 필요합니다. 반도체뿐 아니라 전기, 물, 땅도 중요합니다. 건설 허가와 전력 연결에는 시간이 걸릴 수 있습니다.",
+      ja_segments:[
+        {text:"AI の",romanization:"ē ai no",zh:"AI 的"},{text:"拡大には",romanization:"kakudai ni wa",zh:"对于扩大"},{text:"多くの",romanization:"ōku no",zh:"许多"},{text:"データセンターが",romanization:"dēta sentā ga",zh:"数据中心（主语）"},{text:"必要です",romanization:"hitsuyō desu",zh:"是必要的"},{text:"半導体だけではなく",romanization:"handōtai dake dewa naku",zh:"不仅是半导体"},{text:"電気や水、土地も",romanization:"denki ya mizu, tochi mo",zh:"电、水和土地也"},{text:"大切です",romanization:"taisetsu desu",zh:"很重要"},{text:"建設の許可にも",romanization:"kensetsu no kyoka ni mo",zh:"建设许可也"},{text:"時間がかかります",romanization:"jikan ga kakarimasu",zh:"需要时间"}
+      ],
+      ko_segments:[
+        {text:"AI가",romanization:"eiaiga",zh:"AI（主语）"},{text:"커지면서",romanization:"keojimyeonseo",zh:"随着扩大"},{text:"데이터 센터가",romanization:"deiteo senteoga",zh:"数据中心（主语）"},{text:"더 많이",romanization:"deo mani",zh:"更多"},{text:"필요합니다",romanization:"piryohamnida",zh:"需要"},{text:"반도체뿐 아니라",romanization:"bandocheppun anira",zh:"不只是半导体"},{text:"전기, 물, 땅도",romanization:"jeongi, mul, ttangdo",zh:"电、水、土地也"},{text:"중요합니다",romanization:"jungyohamnida",zh:"很重要"},{text:"건설 허가와",romanization:"geonseol heogawa",zh:"建设许可和"},{text:"전력 연결에는",romanization:"jeollyeok yeongyeoreneun",zh:"电力连接方面"},{text:"시간이 걸릴 수 있습니다",romanization:"sigani geollil su itsseumnida",zh:"可能需要时间"}
+      ] },
     { id:2, category:"Politics / International", title_zh:"产业政策正在重新定义国家间合作", title_en:"Industrial policy is reshaping international cooperation", source:"Illustrative editorial synthesis", minutes:3,
       zh:"各国试图扩大关键技术的国内生产，同时又无法摆脱跨国供应链。补贴与出口规则既可能吸引投资，也可能让伙伴之间产生摩擦。政策的真正难点是安全与效率如何平衡。",
       en:"Governments want more domestic production of critical technologies, yet modern supply chains remain deeply international. Subsidies and export rules may attract investment at home while creating friction with partners abroad. The central policy challenge is balancing economic efficiency with national resilience.",
       ja:"多くの国（くに）は、大切な技術（ぎじゅつ）を国内（こくない）で作りたいと考えています。しかし、部品（ぶひん）は世界（せかい）の多くの国から来ます。安全（あんぜん）と効率（こうりつ）のバランスが必要です。",
-      ko:"많은 나라는 중요한 기술을 국내에서 만들고 싶어 합니다. 하지만 공급망은 여러 나라와 연결되어 있습니다. 안전과 효율 사이의 균형이 중요합니다." },
+      ko:"많은 나라는 중요한 기술을 국내에서 만들고 싶어 합니다. 하지만 공급망은 여러 나라와 연결되어 있습니다. 안전과 효율 사이의 균형이 중요합니다.",
+      ja_segments:[
+        {text:"多くの国は",romanization:"ōku no kuni wa",zh:"许多国家"},{text:"大切な技術を",romanization:"taisetsu na gijutsu o",zh:"重要技术（宾语）"},{text:"国内で",romanization:"kokunai de",zh:"在国内"},{text:"作りたいと",romanization:"tsukuritai to",zh:"想要制造"},{text:"考えています",romanization:"kangaete imasu",zh:"正在考虑"},{text:"しかし",romanization:"shikashi",zh:"但是"},{text:"部品は",romanization:"buhin wa",zh:"零部件"},{text:"世界の多くの国から",romanization:"sekai no ōku no kuni kara",zh:"来自世界许多国家"},{text:"来ます",romanization:"kimasu",zh:"来"},{text:"安全と効率の",romanization:"anzen to kōritsu no",zh:"安全与效率的"},{text:"バランスが必要です",romanization:"baransu ga hitsuyō desu",zh:"需要平衡"}
+      ],
+      ko_segments:[
+        {text:"많은 나라는",romanization:"maneun naraneun",zh:"许多国家"},{text:"중요한 기술을",romanization:"jungyohan gisureul",zh:"重要技术"},{text:"국내에서",romanization:"gungnaeeseo",zh:"在国内"},{text:"만들고 싶어 합니다",romanization:"mandeulgo sipeo hamnida",zh:"想要制造"},{text:"하지만",romanization:"hajiman",zh:"但是"},{text:"공급망은",romanization:"gonggeummangeun",zh:"供应链"},{text:"여러 나라와",romanization:"yeoreo narawa",zh:"与多个国家"},{text:"연결되어 있습니다",romanization:"yeongyeoldoeeo itsseumnida",zh:"相互连接"},{text:"안전과 효율 사이의",romanization:"anjeongwa hyoyul saiui",zh:"安全与效率之间的"},{text:"균형이 중요합니다",romanization:"gyunhyeongi jungyohamnida",zh:"平衡很重要"}
+      ] },
     { id:3, category:"Economy / Finance", title_zh:"资本支出热潮改变了投资者观察指标", title_en:"The capital-spending boom changes what investors watch", source:"Illustrative editorial synthesis", minutes:3,
       zh:"AI 相关支出从软件研发延伸至长期基础设施。投资者开始更关注资本开支、折旧、能源合同与设备利用率，而不只是用户增长。庞大投入能否转化为稳定收入，仍是核心问题。",
       en:"AI-related spending has moved beyond software research into long-lived infrastructure. Investors are paying closer attention to capital expenditure, depreciation, energy contracts and equipment utilization—not only user growth. The key question is whether heavy investment can produce durable revenue and acceptable returns.",
       ja:"AI への投資（とうし）は、ソフトウェアだけではありません。会社（かいしゃ）は建物（たてもの）や機械（きかい）、電気にもお金を使います。投資家（とうしか）は、そのお金が将来（しょうらい）の利益（りえき）になるかを見ています。",
-      ko:"AI 투자는 소프트웨어만의 이야기가 아닙니다. 기업은 건물, 장비, 전기에도 큰돈을 씁니다. 투자자는 이 지출이 앞으로 안정적인 수익을 만들 수 있는지 봅니다." },
+      ko:"AI 투자는 소프트웨어만의 이야기가 아닙니다. 기업은 건물, 장비, 전기에도 큰돈을 씁니다. 투자자는 이 지출이 앞으로 안정적인 수익을 만들 수 있는지 봅니다.",
+      ja_segments:[
+        {text:"AI への投資は",romanization:"ē ai e no tōshi wa",zh:"对 AI 的投资"},{text:"ソフトウェアだけではありません",romanization:"sofutowea dake dewa arimasen",zh:"不只是软件"},{text:"会社は",romanization:"kaisha wa",zh:"公司"},{text:"建物や機械、電気にも",romanization:"tatemono ya kikai, denki ni mo",zh:"建筑、机器和电力也"},{text:"お金を使います",romanization:"okane o tsukaimasu",zh:"花钱"},{text:"投資家は",romanization:"tōshika wa",zh:"投资者"},{text:"そのお金が",romanization:"sono okane ga",zh:"那些资金"},{text:"将来の利益になるかを",romanization:"shōrai no rieki ni naru ka o",zh:"是否成为未来利润"},{text:"見ています",romanization:"mite imasu",zh:"正在观察"}
+      ],
+      ko_segments:[
+        {text:"AI 투자는",romanization:"eiai tujaneun",zh:"AI 投资"},{text:"소프트웨어만의",romanization:"sopeuteuweeomanui",zh:"仅软件的"},{text:"이야기가 아닙니다",romanization:"iyagiga animnida",zh:"并不是这样的故事"},{text:"기업은",romanization:"gieobeun",zh:"企业"},{text:"건물, 장비, 전기에도",romanization:"geonmul, jangbi, jeongiedo",zh:"建筑、设备和电力也"},{text:"큰돈을 씁니다",romanization:"keundoneul sseumnida",zh:"花很多钱"},{text:"투자자는",romanization:"tujajaneun",zh:"投资者"},{text:"이 지출이",romanization:"i jichuri",zh:"这项支出"},{text:"앞으로",romanization:"apeuro",zh:"今后"},{text:"안정적인 수익을",romanization:"anjeongjeogin suigeul",zh:"稳定收益"},{text:"만들 수 있는지 봅니다",romanization:"mandeul su inneunji bomnida",zh:"观察能否创造"}
+      ] },
     { id:4, category:"Science / Policy", title_zh:"高效冷却成为计算科学的新前沿", title_en:"Efficient cooling becomes a new frontier in computing", source:"Illustrative editorial synthesis", minutes:3,
       zh:"高性能芯片会产生大量热量。工程师正在改进液冷、热量回收和机房布局，以降低能耗并延长设备寿命。冷却技术看似低调，却直接影响计算成本和环境足迹。",
       en:"High-performance chips generate substantial heat. Engineers are improving liquid cooling, heat reuse and data-center layouts to reduce energy consumption and extend equipment life. Cooling may appear less glamorous than model design, but it directly affects computing costs and environmental impact.",
       ja:"高性能（こうせいのう）の半導体は、たくさんの熱（ねつ）を出します。技術者（ぎじゅつしゃ）は、水を使う冷却（れいきゃく）などを研究しています。冷却はコストと環境（かんきょう）に関係します。",
-      ko:"고성능 반도체는 열을 많이 만듭니다. 기술자들은 액체 냉각과 열 재사용 방법을 연구합니다. 냉각 기술은 비용과 환경에 직접 영향을 줍니다." },
+      ko:"고성능 반도체는 열을 많이 만듭니다. 기술자들은 액체 냉각과 열 재사용 방법을 연구합니다. 냉각 기술은 비용과 환경에 직접 영향을 줍니다.",
+      ja_segments:[
+        {text:"高性能の半導体は",romanization:"kōseinō no handōtai wa",zh:"高性能半导体"},{text:"たくさんの熱を",romanization:"takusan no netsu o",zh:"大量热量"},{text:"出します",romanization:"dashimasu",zh:"产生"},{text:"技術者は",romanization:"gijutsusha wa",zh:"技术人员"},{text:"水を使う冷却などを",romanization:"mizu o tsukau reikyaku nado o",zh:"使用水的冷却等"},{text:"研究しています",romanization:"kenkyū shite imasu",zh:"正在研究"},{text:"冷却は",romanization:"reikyaku wa",zh:"冷却"},{text:"コストと環境に",romanization:"kosuto to kankyō ni",zh:"对成本和环境"},{text:"関係します",romanization:"kankei shimasu",zh:"有关系"}
+      ],
+      ko_segments:[
+        {text:"고성능 반도체는",romanization:"goseongneung bandoche-neun",zh:"高性能半导体"},{text:"열을 많이",romanization:"yeoreul mani",zh:"大量热量"},{text:"만듭니다",romanization:"mandeumnida",zh:"产生"},{text:"기술자들은",romanization:"gisuljadeureun",zh:"技术人员"},{text:"액체 냉각과",romanization:"aekche naenggakgwa",zh:"液体冷却和"},{text:"열 재사용 방법을",romanization:"yeol jaesayong bangbeobeul",zh:"热量再利用方法"},{text:"연구합니다",romanization:"yeonguhamnida",zh:"研究"},{text:"냉각 기술은",romanization:"naenggak gisureun",zh:"冷却技术"},{text:"비용과 환경에",romanization:"biyonggwa hwangyeonge",zh:"对成本与环境"},{text:"직접 영향을 줍니다",romanization:"jikjeop yeonghyangeul jumnida",zh:"直接产生影响"}
+      ] },
   ],
   deep_read: {
     category:"Technology · Economy · Energy", title_en:"AI’s next breakthrough may depend on everything around the chip", title_zh:"AI 的下一次突破，或许取决于芯片之外的一切", minutes:14,
@@ -103,10 +128,3 @@ export const archiveReports = reports.map(report => ({
   fields: report.big_story.category.split(" · "),
   status: report.completion ? "Completed" : "Available",
 }));
-
-export const deepReadArchive = [
-  { date:"2026-08-21", category:"Technology", title:"AI’s next breakthrough may depend on everything around the chip", zh:"AI 的下一次突破，或许取决于芯片之外的一切", minutes:14, status:"Reading", tone:"sage" },
-  { date:"2026-08-20", category:"Finance", title:"The hidden work of central-bank communication", zh:"央行沟通背后的隐形工作", minutes:13, status:"Completed", tone:"blue" },
-  { date:"2026-08-19", category:"Science", title:"What the deep ocean can still teach us", zh:"深海仍能教给我们什么", minutes:12, status:"Completed", tone:"navy" },
-  { date:"2026-08-18", category:"History", title:"How supply chains became a question of security", zh:"供应链如何成为安全议题", minutes:15, status:"Saved", tone:"sand" },
-];

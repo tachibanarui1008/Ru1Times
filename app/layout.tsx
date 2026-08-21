@@ -13,17 +13,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Polyglot Morning Brief · 四语全球晨报",
+  title: "小橘日报 · 四语全球晨报",
   description: "每天四十分钟，用四种语言理解同一个世界。A calm daily magazine for language learning and global knowledge.",
   openGraph: {
-    title: "Polyglot Morning Brief · 四语全球晨报",
+    title: "小橘日报 · 四语全球晨报",
     description: "One world. Four languages. One morning at a time.",
     type: "website",
-    images: [{ url: "/og.png", width: 1731, height: 909, alt: "Polyglot Morning Brief" }],
+    images: [{ url: "/og.png", width: 1731, height: 909, alt: "小橘日报" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Polyglot Morning Brief · 四语全球晨报",
+    title: "小橘日报 · 四语全球晨报",
     description: "One world. Four languages. One morning at a time.",
     images: ["/og.png"],
   },
