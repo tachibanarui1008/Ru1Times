@@ -19,10 +19,9 @@ export function ArchivePage() {
 
   const reports=archiveReports.filter(r=>`${r.title}${r.fields.join(" ")}${r.date}${r.status}`.toLowerCase().includes(query.toLowerCase()));
   return <SiteChrome active="Archive"><main className="library-main">
-    <LibraryHero kicker="PAST EDITIONS" title="Archive" text="按日期打开往期晨报，重新阅读当时的新闻、词汇、表达、深读与挑战。"/>
-    <div className="archive-search"><label><span>Search editions</span><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="搜索日期、主题或标题……"/></label><p>{reports.length} 期完整日报 · {reports.filter(r=>!r.demo).length} 期真实内容 · {reports.filter(r=>r.demo).length} 期 Demo</p></div>
-    <section className="archive-index"><div className="archive-year"><strong>2026</strong><span>August</span></div><div className="archive-list">{reports.map(r=><a href={`/archive?edition=${encodeURIComponent(r.id)}`} key={r.id}><time>{r.date.slice(5).replace("-",".")}</time><div><span>{r.fields.join(" · ")} <i className={`archive-status ${r.demo?"demo":"sourced"}`}>{r.demo?"DEMO CONTENT":"SOURCED"}</i></span><h2>{r.title}</h2><p>完整日报 · Hot Words · Expressions · 4 Briefings · Deep Read · Challenge</p></div><b>Read edition →</b></a>)}{reports.length===0&&<p className="empty-state">没有找到相符的往期晨报。</p>}</div></section>
-    <aside className="archive-note"><span>How Archive works</span><p>每日更新生成一份独立 DailyReport。Today 始终显示最新一期，旧日报会自动保留在这里，并可以完整打开，不会只剩标题摘要。</p></aside>
+    <LibraryHero kicker="PAST EDITIONS" title="Archive" text="在往日的世界里散步。新闻、语言和思考，都值得再读一次。"/>
+    <div className="archive-search"><label><span>查找往期</span><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="搜索日期、主题或标题……"/></label><p>共 {reports.length} 期</p></div>
+    <section className="archive-index"><div className="archive-year"><strong>2026</strong><span>August</span></div><div className="archive-list">{reports.map(r=><a href={`/archive?edition=${encodeURIComponent(r.id)}`} key={r.id}><time>{r.date.slice(5).replace("-",".")}</time><div><span>{r.fields.join(" · ")} {r.demo&&<i className="archive-status demo">样刊</i>}</span><h2>{r.title}</h2><p>热点词 · 地道表达 · 四语简报 · 深度阅读 · 今日挑战</p></div><b>打开阅读 →</b></a>)}{reports.length===0&&<p className="empty-state">没有找到相符的往期晨报。</p>}</div></section>
   </main></SiteChrome>;
 }
 
@@ -40,10 +39,10 @@ export function ProgressPage() {
   const recentCount=recentDays.filter(day=>completedDates.has(day.key)).length;
   const languages=[{name:"English",level:"B2 → C1",focus:["Vocabulary","Reading","Natural Expressions"]},{name:"日本語",level:"N5 → N4",focus:["Vocabulary","Basic Grammar","Reading"]},{name:"한국어",level:"Beginner",focus:["Vocabulary","Basic Grammar","Reading"]}];
   return <SiteChrome active="Progress"><main className="library-main">
-    <LibraryHero kicker="LEARNING RECORD" title="Progress" text="数据从零开始，只记录你在这台设备上的实际完成与收藏。"/>
+    <LibraryHero kicker="LEARNING RECORD" title="Progress" text="看见每一次阅读留下的积累。"/>
     <div className="progress-summary">{stats.map(([n,label])=><article key={label}><strong>{n}</strong><span>{label}</span></article>)}</div>
-    <section className="rhythm-card text-rhythm"><div><span>最近 7 天</span><h2>阅读节奏</h2><p>你在过去七天中完成了 {recentCount} 次晨读。只有点击“完成今日晨报”才会计入。</p></div><div className="rhythm-bars">{recentDays.map(day=>{const done=completedDates.has(day.key);return <div key={day.key}><i style={{height:done?"82%":"5%"}} className={done?"":"empty"}/><span>{day.label}</span></div>})}</div></section>
-    <p className="progress-data-note">真实内容与 Demo 都不会自动增加进度；只有主动完成才会记录，且数据仅保存在当前浏览器中。</p>
+    <section className="rhythm-card text-rhythm"><div><span>最近 7 天</span><h2>阅读节奏</h2><p>过去七天，你完成了 {recentCount} 次晨读。读完一期后，记得留下今天的完成标记。</p></div><div className="rhythm-bars">{recentDays.map(day=>{const done=completedDates.has(day.key);return <div key={day.key}><i style={{height:done?"82%":"5%"}} className={done?"":"empty"}/><span>{day.label}</span></div>})}</div></section>
+    <p className="progress-data-note">阅读记录保存在当前设备。</p>
     <SectionIntro eyebrow="CURRENT FOCUS" title="Language paths" subtitle="三个语言目前的学习重点"/>
     <div className="focus-list">{languages.map(l=><article key={l.name}><div><h3>{l.name}</h3><span>{l.level}</span></div><ol>{l.focus.map((x,i)=><li key={x}><span>{String(i+1).padStart(2,"0")}</span>{x}</li>)}</ol></article>)}</div>
   </main></SiteChrome>;

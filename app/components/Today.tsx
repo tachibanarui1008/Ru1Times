@@ -65,19 +65,19 @@ export function Today({ archiveMode = false, reportData }: { archiveMode?: boole
     });
   }
 
-  return <SiteChrome active={archiveMode ? "Archive" : "Today"} demo={report.demo} sourced={!report.demo} edition={report.edition_number}>
+  return <SiteChrome active={archiveMode ? "Archive" : "Today"} demo={report.demo} edition={report.edition_number}>
     <div className="reading-progress" style={{width:`${progress}%`}} />
     <main>
       {archiveMode && <div className="archive-reader-bar"><a href="/archive">← Back to Archive</a><span>Archived edition · {report.date}</span></div>}
       <section className="hero text-hero" id="top">
-        <div className="eyebrow"><span>{report.demo ? "Demo Content" : "Today’s Edition"}</span> {displayDate} · Edition {String(report.edition_number).padStart(3,"0")}</div>
+        <div className="eyebrow"><span>{report.demo ? "样刊" : `第 ${String(report.edition_number).padStart(3,"0")} 期`}</span> {displayDate}</div>
         <h1>小橘日报</h1>
         <p>每天四十分钟，用四种语言理解同一个世界。</p>
         <div className="edition-meta"><span><strong>40</strong> min</span><span><strong>8</strong> Hot Words</span><span><strong>3</strong> Expressions</span><span><strong>4</strong> Briefings</span><span><strong>1</strong> Deep Read</span><span><strong>5</strong> Challenges</span></div>
       </section>
 
       <section className="big-story" id="morning-brief">
-        <div className="story-copy"><p className="kicker">TODAY’S BIG STORY · {report.big_story.category}</p><h2>{report.big_story.title_en}</h2><h3>{report.big_story.title_zh}</h3><p className="summary">{report.big_story.summary}</p><a className="primary-action" href="#hot-words">Start Morning Brief <span>↓</span></a><small>{report.big_story.minutes} min deep read · {report.demo ? "Illustrative editorial synthesis" : report.big_story.source_url ? <a className="source-link" href={report.big_story.source_url} target="_blank" rel="noreferrer">Source: {report.big_story.source_label} ↗</a> : "Sourced editorial synthesis"}</small></div>
+        <div className="story-copy"><p className="kicker">TODAY’S BIG STORY · {report.big_story.category}</p><h2>{report.big_story.title_en}</h2><h3>{report.big_story.title_zh}</h3><p className="summary">{report.big_story.summary}</p><a className="primary-action" href="#hot-words">Start Morning Brief <span>↓</span></a><small>{report.big_story.minutes} min deep read {report.big_story.source_url && <>· <a className="source-link" href={report.big_story.source_url} target="_blank" rel="noreferrer">{report.big_story.source_label} ↗</a></>}</small></div>
       </section>
 
       <section className="content-section" id="hot-words">
@@ -101,8 +101,8 @@ export function Today({ archiveMode = false, reportData }: { archiveMode?: boole
           <div className={`language-content mode-${selected}`}>
             {(selected==="all"||selected==="zh")&&<div><span>中文</span><p>{item.zh}</p></div>}
             {(selected==="all"||selected==="en")&&<div><span>English</span><p>{item.en}</p></div>}
-            {(selected==="all"||selected==="ja")&&<LearnerLine label="日本語 · 每个词下方对应罗马音与中文" segments={item.ja_segments}/>}
-            {(selected==="all"||selected==="ko")&&<LearnerLine label="한국어 · 每个词下方对应罗马音与中文" segments={item.ko_segments}/>}
+            {(selected==="all"||selected==="ja")&&<LearnerLine label="日本語" segments={item.ja_segments}/>}
+            {(selected==="all"||selected==="ko")&&<LearnerLine label="한국어" segments={item.ko_segments}/>}
           </div>
         </article>})}</div>
       </section>
@@ -119,7 +119,7 @@ export function Today({ archiveMode = false, reportData }: { archiveMode?: boole
 
       <section className="content-section challenge-section"><SectionIntro eyebrow="07" title="Today’s Challenge" subtitle="今日挑战" meta="约 3 min"/><div className="challenge-list">{report.challenge.map(q=><article key={q.id}><span>{String(q.id).padStart(2,"0")} · {q.kind}</span><h3>{q.question}</h3><div>{q.options.map((option,i)=><button className={answers[q.id]===i ? (i===q.answer?"correct":"wrong") : ""} disabled={answers[q.id]!==undefined} onClick={()=>setAnswers({...answers,[q.id]:i})} key={option}>{option}</button>)}</div>{answers[q.id]!==undefined&&<p className="answer-note"><strong>{answers[q.id]===q.answer?"Correct":"Not quite"}</strong>{q.explanation}</p>}</article>)}</div><p className="score-line">Answered {Object.keys(answers).length} / 5 · Correct {score}</p></section>
 
-      {!report.demo && <aside className="source-ledger"><div><span>SOURCES · CHECKED</span><h2>本期来源</h2><p>新闻事实来自原始机构或可靠通讯社；四语文本与学习注释由小橘日报独立整理。</p></div><ol>{report.sources.map(source=><li key={source.url}><a href={source.url} target="_blank" rel="noreferrer"><span>{source.label}</span><strong>{source.title}</strong><small>{source.published} ↗</small></a></li>)}</ol></aside>}
+      {!report.demo && <aside className="source-ledger"><div><span>FURTHER READING</span><h2>延伸阅读</h2><p>继续阅读本期提到的报道与资料。</p></div><ol>{report.sources.map(source=><li key={source.url}><a href={source.url} target="_blank" rel="noreferrer"><span>{source.label}</span><strong>{source.title}</strong><small>{source.published} ↗</small></a></li>)}</ol></aside>}
 
       {!archiveMode && <section className={`complete-card ${completed?"is-complete":""}`}><p>HOW WAS TODAY’S BRIEF?</p><h2>{completed?"Morning brief complete.":"Make it yours, one morning at a time."}</h2><div>{["Easy","Just Right","Challenging"].map(level=><button className={feedback===level?"active":""} onClick={()=>setFeedback(level)} key={level}>{level}</button>)}</div><button className="complete-button" onClick={toggleCompletion}>{completed?"Completed ✓":"Complete Today’s Brief"}</button><small>{completed?"Saved to your learning history.":"完成后才会计入 Progress；记录仅保存在这台设备。"}</small></section>}
     </main>

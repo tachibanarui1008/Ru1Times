@@ -21,7 +21,7 @@ function readStreak() {
   return streak;
 }
 
-export function SiteChrome({ active, children, demo = false, sourced = false, edition }: { active: string; children: ReactNode; demo?: boolean; sourced?: boolean; edition?: number }) {
+export function SiteChrome({ active, children, demo = false, edition }: { active: string; children: ReactNode; demo?: boolean; edition?: number }) {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [menu, setMenu] = useState(false);
   const [searching, setSearching] = useState(false);
@@ -46,25 +46,22 @@ export function SiteChrome({ active, children, demo = false, sourced = false, ed
 
   return (
     <>
-      <div className="demo-ribbon">
-        {demo ? <><span>Demo Content</span><span>示例内容 · 非实时新闻</span></> : sourced ? <><span>Sourced Edition</span><span>已核验来源 · 独立学习摘要</span></> : <><span>小橘日报</span><span>独立四语学习刊物</span></>}
-      </div>
       <header className="site-header">
-        <a className="brand" href="/" aria-label="小橘日报首页">小橘日报<span>四语全球晨报</span></a>
+        <a className="brand" href="/" aria-label="小橘日报首页">小橘日报<span>MORNING BRIEF</span></a>
         <nav aria-label="Primary navigation">
           {links.map(([label, href]) => <a className={active === label ? "active" : ""} href={href} key={href}>{label}</a>)}
         </nav>
         <div className="header-actions">
           <button className="icon-button search-button" onClick={() => setSearching(!searching)} aria-label="Search">⌕</button>
           <button className="icon-button" onClick={toggleTheme} aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}>{theme === "light" ? "◐" : "☼"}</button>
-          <span className="learning-status" title="Learning status"><i /> {streak ? `${streak} day rhythm` : "Start today"}</span>
+          <span className="learning-status" title="阅读记录"><i /> {streak ? `连续 ${streak} 天` : "今日未读"}</span>
           <button className="menu-button" onClick={() => setMenu(!menu)} aria-expanded={menu} aria-label="Open menu"><span /><span /></button>
         </div>
       </header>
-      {searching && <div className="search-panel"><label><span>Search the morning library</span><input autoFocus placeholder="Try “semiconductor” or “AI”…" /></label><button onClick={() => setSearching(false)}>Close</button></div>}
+      {searching && <div className="search-panel"><label><span>搜索小橘日报</span><input autoFocus placeholder="输入主题、词汇或新闻关键词……" /></label><button onClick={() => setSearching(false)}>关闭</button></div>}
       {menu && <nav className="mobile-menu" aria-label="Mobile navigation">{links.map(([label,href]) => <a className={active === label ? "active" : ""} href={href} key={href}>{label}<span>↗</span></a>)}</nav>}
       {children}
-      <footer className="site-footer"><div><strong>小橘日报</strong><p>One world. Four languages. One morning at a time.</p></div><div><span>English · 日本語 · 한국어 · 中文</span><span>{demo ? "Demo Edition" : edition ? `Edition ${String(edition).padStart(3,"0")}` : "Learning Archive"}</span></div></footer>
+      <footer className="site-footer"><div><strong>小橘日报</strong><p>One world. Four languages. One morning at a time.</p></div><div><span>English · 日本語 · 한국어 · 中文</span><span>{demo ? "样刊" : edition ? `第 ${String(edition).padStart(3,"0")} 期` : "阅读档案"}</span></div></footer>
     </>
   );
 }
