@@ -12,7 +12,7 @@ const vocab: Record<string,{zh:string; phonetic:string; collocation:string; cont
 };
 
 function LearnerLine({ label, segments }: { label: string; segments: LearnerSegment[] }) {
-  return <div className="learner-language"><span>{label}</span><div className="learner-segments">{segments.map((segment,i)=><div className="learner-token" key={`${segment.text}-${i}`}><strong>{segment.text}</strong><small>{segment.romanization}</small><em>{segment.zh}</em></div>)}</div></div>;
+  return <div className="learner-language"><span>{label}</span><div className="learner-sentence">{segments.map((segment,i)=><div className="learner-token" key={`${segment.text}-${i}`}><strong>{segment.reading?<ruby>{segment.text}<rt>{segment.reading}</rt></ruby>:segment.text}</strong><small><span>{segment.romanization}</span><b>·</b><em>{segment.zh}</em></small></div>)}</div></div>;
 }
 
 export function Today({ archiveMode = false, reportData }: { archiveMode?: boolean; reportData?: DailyReport }) {
@@ -101,8 +101,8 @@ export function Today({ archiveMode = false, reportData }: { archiveMode?: boole
           <div className={`language-content mode-${selected}`}>
             {(selected==="all"||selected==="zh")&&<div><span>中文</span><p>{item.zh}</p></div>}
             {(selected==="all"||selected==="en")&&<div><span>English</span><p>{item.en}</p></div>}
-            {(selected==="all"||selected==="ja")&&<LearnerLine label="日本語 · 词组 / 罗马音 / 中文" segments={item.ja_segments}/>} 
-            {(selected==="all"||selected==="ko")&&<LearnerLine label="한국어 · 词组 / 罗马音 / 中文" segments={item.ko_segments}/>} 
+            {(selected==="all"||selected==="ja")&&<LearnerLine label="日本語 · 每个词下方对应罗马音与中文" segments={item.ja_segments}/>}
+            {(selected==="all"||selected==="ko")&&<LearnerLine label="한국어 · 每个词下方对应罗马音与中文" segments={item.ko_segments}/>}
           </div>
         </article>})}</div>
       </section>
