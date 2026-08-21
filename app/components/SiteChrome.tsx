@@ -21,7 +21,7 @@ function readStreak() {
   return streak;
 }
 
-export function SiteChrome({ active, children }: { active: string; children: ReactNode }) {
+export function SiteChrome({ active, children, demo = false, sourced = false, edition }: { active: string; children: ReactNode; demo?: boolean; sourced?: boolean; edition?: number }) {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [menu, setMenu] = useState(false);
   const [searching, setSearching] = useState(false);
@@ -46,7 +46,9 @@ export function SiteChrome({ active, children }: { active: string; children: Rea
 
   return (
     <>
-      <div className="demo-ribbon"><span>Demo Content</span><span>示例内容 · 非实时新闻</span></div>
+      <div className="demo-ribbon">
+        {demo ? <><span>Demo Content</span><span>示例内容 · 非实时新闻</span></> : sourced ? <><span>Sourced Edition</span><span>已核验来源 · 独立学习摘要</span></> : <><span>小橘日报</span><span>独立四语学习刊物</span></>}
+      </div>
       <header className="site-header">
         <a className="brand" href="/" aria-label="小橘日报首页">小橘日报<span>四语全球晨报</span></a>
         <nav aria-label="Primary navigation">
@@ -62,7 +64,7 @@ export function SiteChrome({ active, children }: { active: string; children: Rea
       {searching && <div className="search-panel"><label><span>Search the morning library</span><input autoFocus placeholder="Try “semiconductor” or “AI”…" /></label><button onClick={() => setSearching(false)}>Close</button></div>}
       {menu && <nav className="mobile-menu" aria-label="Mobile navigation">{links.map(([label,href]) => <a className={active === label ? "active" : ""} href={href} key={href}>{label}<span>↗</span></a>)}</nav>}
       {children}
-      <footer className="site-footer"><div><strong>小橘日报</strong><p>One world. Four languages. One morning at a time.</p></div><div><span>English · 日本語 · 한국어 · 中文</span><span>Demo Edition 001</span></div></footer>
+      <footer className="site-footer"><div><strong>小橘日报</strong><p>One world. Four languages. One morning at a time.</p></div><div><span>English · 日本語 · 한국어 · 中文</span><span>{demo ? "Demo Edition" : edition ? `Edition ${String(edition).padStart(3,"0")}` : "Learning Archive"}</span></div></footer>
     </>
   );
 }
