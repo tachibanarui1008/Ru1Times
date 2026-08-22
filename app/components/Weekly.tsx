@@ -41,7 +41,7 @@ export function Weekly({ reportData = latestWeeklyReport, archiveMode = false }:
       </article>)}
 
       <section className="weekly-closing concord-closing"><span>MARGINALIA · 余白</span><h2>一周之后，留下什么</h2><HybridProse paragraphs={report.closing_note}/></section>
-      <aside className="source-ledger weekly-sources"><div><span>SOURCE LEDGER</span><h2>来源与延伸阅读</h2><p>事实来自可追溯报道与官方资料；interpretation 与 unknown 在正文中明确区分。</p></div><ol>{report.sources.map(source=><li key={source.url}><a href={source.url} target="_blank" rel="noreferrer"><span>{source.label}</span><strong>{source.title}</strong><small>{source.published} ↗</small></a></li>)}</ol></aside>
+      <aside className="source-ledger weekly-sources"><div><span>SOURCE LEDGER</span><h2>来源与延伸阅读</h2><p>本期所涉报道与资料汇于此处。</p></div><ol>{report.sources.map(source=><li key={source.url}><a href={source.url} target="_blank" rel="noreferrer"><span>{source.label}</span><strong>{source.title}</strong><small>{source.published} ↗</small></a></li>)}</ol></aside>
       <AiCredit credit={report.ai_credit}/>
     </main>
   </SiteChrome>;
