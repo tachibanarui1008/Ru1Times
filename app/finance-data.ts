@@ -11,5 +11,5 @@ export const financeArchiveReports = financeReports.map(report => ({
   title: report.title_zh,
   fields: ["Ru1Finance", report.learning.category],
   status: report.draft ? "Draft" : "Sourced",
-  summary: `${report.learning.title_zh} · 六市场速览 · ${report.movers.length} 个特殊点`,
+  summary: `${report.learning.title_zh} · 今日市场总览 · ${report.movers.length} 个特殊点`,
 }));

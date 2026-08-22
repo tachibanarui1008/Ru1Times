@@ -21,9 +21,12 @@ export function ArchivePage() {
   const [selectedId,setSelectedId]=useState<string|null>(null);
 
   useEffect(()=>{
-    const params=new URLSearchParams(location.search);
-    const pathEdition=location.pathname.match(/\/archive\/([^/]+)\/?$/)?.[1];
-    setSelectedId(params.get("edition")??params.get("date")??(pathEdition?decodeURIComponent(pathEdition):null));
+    const frame=requestAnimationFrame(()=>{
+      const params=new URLSearchParams(location.search);
+      const pathEdition=location.pathname.match(/\/archive\/([^/]+)\/?$/)?.[1];
+      setSelectedId(params.get("edition")??params.get("date")??(pathEdition?decodeURIComponent(pathEdition):null));
+    });
+    return ()=>cancelAnimationFrame(frame);
   },[]);
   const selectedReport = selectedId ? getReportById(selectedId) ?? getReportByDate(selectedId) : undefined;
   const selectedWeekly = selectedId ? getWeeklyReportById(selectedId) : undefined;

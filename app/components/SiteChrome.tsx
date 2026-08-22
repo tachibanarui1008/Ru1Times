@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 
 const links = [
@@ -12,9 +13,12 @@ export function SiteChrome({ active, children, demo = false, edition }: { active
   const [searching, setSearching] = useState(false);
 
   useEffect(() => {
-    const initial = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    setTheme(initial);
-    document.documentElement.dataset.theme = initial;
+    const frame = requestAnimationFrame(() => {
+      const initial = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      setTheme(initial);
+      document.documentElement.dataset.theme = initial;
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   function toggleTheme() {
@@ -25,9 +29,9 @@ export function SiteChrome({ active, children, demo = false, edition }: { active
   return (
     <>
       <header className="site-header">
-        <a className="brand" href="/" aria-label="Ru1Times 小橘时代首页"><strong>Ru1Times</strong><span>小橘时代 · TACHIBANA</span></a>
+        <Link className="brand" href="/" aria-label="Ru1Times 小橘时代首页"><strong>Ru1Times</strong><span>小橘时代 · TACHIBANA</span></Link>
         <nav aria-label="Primary navigation">
-          {links.map(([label, href]) => <a className={active === label ? "active" : ""} href={href} key={href}>{label}</a>)}
+          {links.map(([label, href]) => <Link className={active === label ? "active" : ""} href={href} key={href}>{label}</Link>)}
         </nav>
         <div className="header-actions">
           <button className="icon-button search-button" onClick={() => setSearching(!searching)} aria-label="Search">⌕</button>
@@ -35,8 +39,8 @@ export function SiteChrome({ active, children, demo = false, edition }: { active
           <button className="menu-button" onClick={() => setMenu(!menu)} aria-expanded={menu} aria-label="Open menu"><span /><span /></button>
         </div>
       </header>
-      {searching && <div className="search-panel"><label><span>搜索小橘日报</span><input autoFocus placeholder="输入主题、词汇或新闻关键词……" /></label><button onClick={() => setSearching(false)}>关闭</button></div>}
-      {menu && <nav className="mobile-menu" aria-label="Mobile navigation">{links.map(([label,href]) => <a className={active === label ? "active" : ""} href={href} key={href}>{label}<span>{href.startsWith("#") ? "Soon" : "↗"}</span></a>)}</nav>}
+      {searching && <div className="search-panel"><label><span>搜索小橘日报</span><input placeholder="输入主题、词汇或新闻关键词……" /></label><button onClick={() => setSearching(false)}>关闭</button></div>}
+      {menu && <nav className="mobile-menu" aria-label="Mobile navigation">{links.map(([label,href]) => <Link className={active === label ? "active" : ""} href={href} key={href}>{label}<span>{href.startsWith("#") ? "Soon" : "↗"}</span></Link>)}</nav>}
       {children}
       <footer className="site-footer"><div><strong>Ru1Times</strong><p>小橘时代 · One world, many points of view.</p></div><div><span>Ru1Daily · Ru1Weekly · Ru1Commentary · Ru1Finance</span><span>{demo ? "样刊" : edition ? `第 ${String(edition).padStart(3,"0")} 期` : "Archive"}</span></div></footer>
     </>

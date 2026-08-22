@@ -3,6 +3,8 @@
 import { latestWeeklyReport } from "../weekly-data";
 import type { HybridParagraph, WeeklyReport } from "../weekly-types";
 import { AiCredit } from "./AiCredit";
+import { IssueLead } from "./IssueLead";
+import { PublicationMasthead } from "./PublicationMasthead";
 import { SiteChrome } from "./SiteChrome";
 
 export function Weekly({ reportData = latestWeeklyReport, archiveMode = false }: { reportData?: WeeklyReport; archiveMode?: boolean }) {
@@ -10,11 +12,20 @@ export function Weekly({ reportData = latestWeeklyReport, archiveMode = false }:
   return <SiteChrome active={archiveMode ? "Archive" : "Ru1Weekly"} edition={report.edition_number}>
     <main className="weekly-main weekly-longform">
       {archiveMode && <div className="archive-reader-bar"><a href="/archive">← Back to Archive</a><span>Ru1Weekly · {report.id}</span></div>}
-      <header className="weekly-cover">
-        <p className="weekly-kicker">RU1WEEKLY · {report.week_label} {report.draft && <span>样刊</span>}</p>
-        <h1>{report.title_en}</h1><h2>{report.title_zh}</h2><p className="weekly-dek">{report.dek}</p>
-        <div className="weekly-meta"><span>{report.period_start} — {report.period_end}</span><span>{report.estimated_minutes} min long read</span><span>Issue {String(report.edition_number).padStart(3,"0")}</span></div>
-      </header>
+      <PublicationMasthead
+        edition={report.edition_number}
+        publishedAt={report.published_at}
+        draft={report.draft}
+        title="Ru1Weekly"
+        subtitle="以混合语言重组一周信息，在跨语境阅读中理解事件之间的联系。"
+      />
+
+      <IssueLead
+        eyebrow={`RU1WEEKLY · ${report.week_label} · ${report.period_start}—${report.period_end}`}
+        title={report.title_en}
+        subtitle={report.title_zh}
+        dek={report.dek}
+      />
 
       <article className="weekly-cover-story concord-story">
         <div><p>OPENING ESSAY</p><h2>本周主线</h2><small>{report.editorial_note}</small></div>

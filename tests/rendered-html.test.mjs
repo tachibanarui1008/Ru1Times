@@ -22,6 +22,13 @@ test("server-renders the Ru1Daily homepage", async () => {
   assert.match(html, /Ru1Commentary/);
   assert.match(html, /Ru1Finance/);
   assert.match(html, /六个月的战争/);
+  assert.match(html, /publication-masthead/);
+  assert.match(html, /第 002 期/);
+  assert.match(html, /<h1>Ru1Daily<\/h1>/);
+  assert.match(html, /以不同语言转述今日新闻，在阅读与鉴赏中提升多语言能力。/);
+  assert.ok(html.indexOf("<h1>Ru1Daily</h1>") < html.indexOf('class="big-story"'));
+  assert.doesNotMatch(html, /edition-meta|publication-map|Hot Words<\/span>|Briefings<\/span>/);
+  assert.doesNotMatch(html, /Start Morning Brief|primary-action/);
   assert.doesNotMatch(html, /Save to Words|Today’s Challenge|Complete Today|连续学习天数/);
 });
 
@@ -49,6 +56,12 @@ test("server-renders the Ru1Weekly draft", async () => {
   assert.match(html, /Ru1 Concord Edition/);
   assert.match(html, /which yield 仍然可以接受/);
   assert.match(html, /search for visibility or 見通し/);
+  assert.match(html, /publication-masthead/);
+  assert.match(html, /样刊 · 第 001 期/);
+  assert.match(html, /<h1>Ru1Weekly<\/h1>/);
+  assert.match(html, /以混合语言重组一周信息，在跨语境阅读中理解事件之间的联系。/);
+  assert.match(html, /issue-lead/);
+  assert.ok(html.indexOf("<h1>Ru1Weekly</h1>") < html.indexOf('class="issue-lead"'));
   assert.match(html, /見通し（日语 みとおし \/ mitōshi，前景判断）/);
   assert.match(html, /눈치（韩语 nunchi \/ nun\.tɕʰi，察言观色的能力）/);
   assert.match(html, /seguridad（西班牙语 \/se\.ɣu\.ɾiˈðað\/，安全）/);
@@ -65,6 +78,12 @@ test("server-renders the Ru1Commentary draft", async () => {
   assert.match(html, /读懂这篇时评/);
   assert.match(html, /Zeus’s Law and Xenia/);
   assert.match(html, /Nash equilibrium/);
+  assert.match(html, /publication-masthead/);
+  assert.match(html, /样刊 · 第 001 期/);
+  assert.match(html, /<h1>Ru1Commentary<\/h1>/);
+  assert.match(html, /记录橘瑠衣的所思所想，在个人经验与公共议题之间保留真实判断。/);
+  assert.match(html, /issue-lead/);
+  assert.ok(html.indexOf("<h1>Ru1Commentary</h1>") < html.indexOf('class="issue-lead"'));
   assert.doesNotMatch(html, /English Version|日本語版/);
 });
 
@@ -72,10 +91,15 @@ test("server-renders the Ru1Finance edition", async () => {
   const response = await render("/finance");
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /RU1FINANCE · 小橘财经/);
   assert.match(html, /When banks learn to hold equity/);
+  assert.match(html, /publication-masthead/);
+  assert.match(html, /第 001 期/);
+  assert.match(html, /<h1>Ru1Finance<\/h1>/);
+  assert.match(html, /为金融学生准备的快速日报：学习一个概念，读懂今日市场。/);
+  assert.match(html, /issue-lead/);
+  assert.ok(html.indexOf("<h1>Ru1Finance</h1>") < html.indexOf('class="issue-lead"'));
   assert.match(html, /投贷联动：当贷款的利息，覆盖不了科创的风险/);
-  assert.match(html, /六市场总览/);
+  assert.match(html, /今日总览/);
   assert.match(html, /3,905\.20/);
   assert.match(html, /66,016\.36/);
   assert.match(html, /6,912\.95/);

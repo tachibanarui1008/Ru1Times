@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ru1Times 快速出刊"
+  short_description: "统一制作、核查、落盘并验收 Ru1Times 四类刊物"
+  default_prompt: "Use $ru1times-publishing to draft and validate the next Ru1Times issue, then wait for my publication command."

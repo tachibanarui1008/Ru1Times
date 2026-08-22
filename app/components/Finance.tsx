@@ -3,6 +3,8 @@
 import { latestFinanceReport } from "../finance-data";
 import type { FinanceReport, IndexQuote } from "../finance-types";
 import { AiCredit } from "./AiCredit";
+import { IssueLead } from "./IssueLead";
+import { PublicationMasthead } from "./PublicationMasthead";
 import { SiteChrome } from "./SiteChrome";
 
 function Quote({ index }: { index: IndexQuote }) {
@@ -19,24 +21,24 @@ function Quote({ index }: { index: IndexQuote }) {
 
 export function Finance({ reportData = latestFinanceReport, archiveMode = false }: { reportData?: FinanceReport; archiveMode?: boolean }) {
   const report = reportData;
-  const displayDate = new Intl.DateTimeFormat("en-GB", { weekday: "long", day: "numeric", month: "long" }).format(new Date(`${report.date}T00:00:00`));
   return <SiteChrome active={archiveMode ? "Archive" : "Ru1Finance"} demo={report.draft} edition={report.edition_number}>
     <main className="finance-main">
       {archiveMode && <div className="archive-reader-bar"><a href="/archive">← Back to Archive</a><span>Ru1Finance · {report.date}</span></div>}
 
-      <header className="finance-cover">
-        <p className="finance-kicker">RU1FINANCE · 小橘财经 {report.draft && <span>样刊</span>}</p>
-        <h1>{report.title_en}</h1>
-        <h2>{report.title_zh}</h2>
-        <p className="finance-dek">{report.dek}</p>
-        <div className="finance-meta">
-          <span>{report.market_as_of}数据</span>
-          <span>{displayDate}</span>
-          <span>{report.estimated_minutes} min read</span>
-          <span>Issue {String(report.edition_number).padStart(3, "0")}</span>
-        </div>
-        <p className="finance-data-note">行情数据为 {report.market_as_of} 的静态快照，发布后不随盘中变动；美股与欧股为美东/欧洲时间同日收盘。所有数据来源见页尾。</p>
-      </header>
+      <PublicationMasthead
+        edition={report.edition_number}
+        publishedAt={report.published_at}
+        draft={report.draft}
+        title="Ru1Finance"
+        subtitle="为金融学生准备的快速日报：学习一个概念，读懂今日市场。"
+      />
+
+      <IssueLead
+        eyebrow={`RU1FINANCE · 小橘财经 · ${report.market_as_of}`}
+        title={report.title_en}
+        subtitle={report.title_zh}
+        dek={report.dek}
+      />
 
       <section className="finance-learning" aria-label="金融学习">
         <header className="finance-heading">
@@ -65,9 +67,9 @@ export function Finance({ reportData = latestFinanceReport, archiveMode = false 
       <section className="finance-markets" aria-label="今日金融市场总览">
         <header className="finance-heading">
           <p>02 · TODAY&apos;S FINANCE · MARKET SNAPSHOT</p>
-          <h2>六市场总览</h2>
-          <h3>Six markets, one session</h3>
-          <p className="finance-standfirst">数据截至 {report.market_as_of}。涨跌为收盘对前一交易日，涨绿跌红，采用国际惯例。</p>
+          <h2>今日总览</h2>
+          <h3>Today at a glance</h3>
+          <p className="finance-standfirst">数据截至 {report.market_as_of}。</p>
         </header>
         <div className="markets-grid">
           {report.markets.map(market => <article className="market-card" key={market.id}>
