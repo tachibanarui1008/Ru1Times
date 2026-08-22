@@ -53,3 +53,15 @@ test("server-renders the Ru1Weekly draft", async () => {
   assert.match(html, /desfase（西班牙语 \/desˈfa\.se\/，不同步或错位）/);
   assert.doesNotMatch(html, /Hot Words|Today’s Challenge|Complete Today/);
 });
+
+test("server-renders the Ru1Commentary draft", async () => {
+  const response = await render("/commentary");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /海上来的人，是我们/);
+  assert.match(html, /礼崩乐坏/);
+  assert.match(html, /读懂这篇时评/);
+  assert.match(html, /Zeus’s Law and Xenia/);
+  assert.match(html, /Nash equilibrium/);
+  assert.doesNotMatch(html, /English Version|日本語版/);
+});

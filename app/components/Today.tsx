@@ -54,7 +54,7 @@ export function Today({ archiveMode = false, reportData }: { archiveMode?: boole
       <section className="publication-map" aria-label="Ru1Times 栏目">
         <a className="channel-current" href="/"><span>01</span><strong>Ru1Daily</strong><small>每日新闻与语言</small></a>
         <a href="#weekly"><span>02</span><strong>Ru1Weekly</strong><small>每周精选与回望 · 即将上线</small></a>
-        <a href="#commentary"><span>03</span><strong>Ru1Commentary</strong><small>小橘时评 · 个人观察与短评 · 即将上线</small></a>
+        <a href="/commentary"><span>03</span><strong>Ru1Commentary</strong><small>不定期时评 · 个人观察与长短评</small></a>
         <a href="#finance"><span>04</span><strong>Ru1Finance</strong><small>小橘财经 · 市场、经济与制度 · 即将上线</small></a>
       </section>
 
