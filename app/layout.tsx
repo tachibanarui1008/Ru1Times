@@ -13,11 +13,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "小橘日报 · 四语全球晨报",
-  description: "每天四十分钟，用四种语言理解同一个世界。A calm daily magazine for language learning and global knowledge.",
+  title: "Ru1Times · 小橘时代",
+  description: "Ru1Times 是橘瑠衣的个人电子报纸，记录每日新闻、语言、时评与财经观察。",
   openGraph: {
-    title: "小橘日报 · 四语全球晨报",
-    description: "One world. Four languages. One morning at a time.",
+    title: "Ru1Times · 小橘时代",
+    description: "News, language, commentary and finance from Tachibana.",
     type: "website",
     images: [{ url: "/og.png", width: 1731, height: 909, alt: "小橘日报" }],
   },

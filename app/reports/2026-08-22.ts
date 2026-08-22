@@ -1,14 +1,15 @@
 import type { DailyReport } from "../report-types";
 
-export const realReport20260821: DailyReport = {
-  id: "2026-08-21",
-  date: "2026-08-21",
-  published_at: "2026-08-21T20:30:00+08:00",
-  updated_at: "2026-08-21T20:30:00+08:00",
-  edition_number: 1,
+export const realReport20260822: DailyReport = {
+  id: "2026-08-22",
+  date: "2026-08-22",
+  published_at: "2026-08-22T08:30:00+08:00",
+  updated_at: "2026-08-22T08:30:00+08:00",
+  edition_number: 2,
   demo: false,
   estimated_minutes: 40,
   sources: [
+    { label:"Reuters", title:"Take Five: Six months of war", url:"https://za.investing.com/news/economy-news/take-five-six-months-of-war-4438848", published:"2026-08-21" },
     { label:"AP", title:"Why Treasury Secretary Bessent's moves to calm the bond market haven't worked so far", url:"https://apnews.com/article/c6e148f8235a98245adf04b2d4bdd8d1", published:"2026-08-20" },
     { label:"U.S. Treasury", title:"August 2026 Quarterly Refunding Statement", url:"https://home.treasury.gov/news/press-releases/sb0590", published:"2026-08-05" },
     { label:"OpenAI", title:"Pacing model development in an era of cyber-critical capabilities", url:"https://openai.com/index/pacing-model-development-cyber-capabilities/", published:"2026-08-18" },
@@ -17,13 +18,13 @@ export const realReport20260821: DailyReport = {
     { label:"NASA", title:"NASA Data Feeds River Forecasts as Snow Drought Effects Linger", url:"https://science.nasa.gov/centers-and-facilities/goddard/nasa-river-forecasts-snow-drought/", published:"2026-08-20" },
   ],
   big_story: {
-    category:"Finance · Economy · Public Debt",
-    title_zh:"一次国债回购，为何没能让长期利率真正平静？",
-    title_en:"Why a larger Treasury buyback could not calm long-term rates for long",
-    summary:"美国财政部将长期国债回购规模至少翻倍，希望改善市场流动性；但收益率很快回升，提醒投资者：交易工具可以缓解市场摩擦，却不能自动消除赤字、通胀与债务供给带来的长期风险。",
+    category:"Finance · Markets · Central Banks",
+    title_zh:"六个月的战争，为什么又回到了债券市场？",
+    title_en:"Six months of war have brought the bond market back into focus",
+    summary:"能源价格、长期美国国债收益率与科技股估值再次连成一条线。投资者正在等待杰克逊霍尔央行年会，判断通胀冲击会不会改变降息路径；今天值得看的，不是一条单独的市场 headline，而是战争、油价、债券与 AI 投资如何互相传导。",
     minutes:14,
-    source_label:"AP · U.S. Treasury",
-    source_url:"https://apnews.com/article/c6e148f8235a98245adf04b2d4bdd8d1",
+    source_label:"Reuters",
+    source_url:"https://za.investing.com/news/economy-news/take-five-six-months-of-war-4438848",
   },
   hot_words: [
     { en:"Yield", zh:"收益率；债券回报率", ja:"利回り（りまわり）", ja_romaji:"rimawari", ko:"수익률", ko_romaja:"suikryul", why_today:"长期美国国债收益率回升，是今天市场讨论的核心指标。", example:"Long-term yields rose again after the initial relief faded.", topic:"Finance" },
@@ -42,9 +43,9 @@ export const realReport20260821: DailyReport = {
   ],
   briefings: [
     {
-      id:1, category:"Finance / Public Debt", title_zh:"美国扩大长期国债回购，但收益率很快反弹", title_en:"U.S. expands long-bond buybacks, but yields rebound", source:"AP · U.S. Treasury", source_url:"https://apnews.com/article/c6e148f8235a98245adf04b2d4bdd8d1", minutes:3,
-      zh:"美国财政部宣布，从 9 月起把部分十年至三十年期国债的单次回购规模从 20 亿美元提高到至少 40 亿美元。回购可以改善旧债券的流动性并暂时推高价格，但十年期收益率随后回到约 4.69%。市场仍在消化财政赤字、通胀和新增债券供给的压力。",
-      en:"The U.S. Treasury said it would at least double the size of selected buyback operations for securities with maturities of ten to thirty years, raising the amount from $2 billion to at least $4 billion per operation from September. Buybacks can improve liquidity and temporarily support prices, yet the ten-year yield soon returned to about 4.69 percent. Investors remain focused on inflation, fiscal deficits and the volume of debt that must be absorbed.",
+      id:1, category:"Finance / Central Banks", title_zh:"战争、油价与央行年会，让债券重新成为市场主线", title_en:"War, oil and Jackson Hole put bonds back at the center", source:"Reuters", source_url:"https://za.investing.com/news/economy-news/take-five-six-months-of-war-4438848", minutes:3,
+      zh:"路透社梳理称，伊朗战争进入第六个月后，能源供应、油价和长期美国国债收益率再次相互牵动。全球主要央行行长下周将在杰克逊霍尔会面，投资者希望从通胀、增长和利率路径中找到线索。债券市场的变化也会重新影响科技股和 AI 公司的估值。",
+      en:"Reuters notes that six months into the Iran war, energy supply, oil prices and long-dated U.S. Treasury yields are moving together again. Major central-bank chiefs will meet at Jackson Hole next week, and investors are looking for clues about inflation, growth and the path of interest rates. Changes in bond yields also reshape valuations for technology and AI companies.",
       ja:"米国財務省は長期国債の買い戻しを増やします。市場の流動性を支えるためです。しかし、長期金利はまた上がりました。投資家は財政赤字とインフレを心配しています。",
       ko:"미국 재무부는 장기 국채 환매를 늘립니다. 시장의 유동성을 돕기 위해서입니다. 하지만 장기 금리는 다시 올랐습니다. 투자자들은 재정 적자와 물가를 걱정합니다.",
       ja_segments:[
@@ -119,11 +120,11 @@ export const realReport20260821: DailyReport = {
     },
   ],
   deep_read: {
-    category:"Finance · Economy · Institutions",
-    title_en:"A bond buyback can repair the plumbing without fixing the pressure",
-    title_zh:"国债回购能疏通管道，却未必能降低水压",
+    category:"Finance · Markets · Central Banks",
+    title_en:"War, oil and rates: why bonds have become the pressure gauge again",
+    title_zh:"战争、油价与利率：债券市场重新成为全球经济的压力计",
     minutes:14,
-    standfirst:"The Treasury can make old bonds easier to trade. It cannot, through buybacks alone, settle the larger argument about inflation, deficits and who will absorb future debt.",
+    standfirst:"Six months into the Iran war, markets are watching the same chain from several angles: energy supply affects inflation, inflation affects yields, and yields reshape the price investors are willing to pay for technology and other long-duration growth.",
     paragraphs:[
       { en:"Bond markets translate expectations into prices with unusual speed. When investors sell a government bond, its price falls and its yield rises. That yield is not confined to one security: the ten-year Treasury rate is a benchmark for mortgages, corporate borrowing and the valuation of many financial assets. This is why a sharp rise in long-term yields quickly becomes an economic and political issue. It raises financing costs even when a central bank has not changed its short-term policy rate.", zh:"债券市场会以极快速度把预期转化为价格。当投资者卖出政府债券时，债券价格下降、收益率上升。这种收益率并不只影响一只证券：十年期美国国债利率还是按揭贷款、企业融资和大量金融资产估值的基准。因此，长期收益率快速上升会迅速成为经济与政治问题。即使央行没有调整短期政策利率，社会融资成本也可能上升。" },
       { en:"A Treasury buyback is best understood as market maintenance. The government offers to purchase older securities that may trade less easily than newly issued benchmark bonds. Dealers receive cash, the supply of those older bonds falls and price differences can narrow. The operation may improve liquidity and reduce temporary disorder. It is not the same as cancelling the government's financing needs. Securities bought back are normally replaced within the broader funding plan, so the transaction changes the composition and functioning of the market more than the underlying fiscal arithmetic.", zh:"理解财政部回购最合适的方式，是把它看作市场维护。政府提出购买流动性较差的旧债券；交易商获得现金，旧券供给减少，新旧债券之间的价格差异可能收窄。这个操作可以改善流动性并减少短期市场失序。但它并不等于取消政府的融资需求。被回购的证券通常会在更广泛的融资计划中由新发行替代，因此交易改变的主要是债务构成和市场运行方式，而不是基础财政算术。" },

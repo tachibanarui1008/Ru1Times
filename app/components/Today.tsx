@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { latestReport, type DailyReport, type Language, type LearnerSegment } from "../data";
 import { SectionIntro, SiteChrome } from "./SiteChrome";
 
@@ -19,43 +19,18 @@ export function Today({ archiveMode = false, reportData }: { archiveMode?: boole
   const report = reportData ?? latestReport;
   const displayDate = new Intl.DateTimeFormat("en-GB", { weekday:"long", day:"numeric", month:"long" }).format(new Date(`${report.date}T00:00:00`));
   const [langByBrief, setLangByBrief] = useState<Record<number,Language>>({1:"all",2:"all",3:"all",4:"all"});
-  const [savedWords, setSavedWords] = useState<number[]>([]);
   const [deepMode, setDeepMode] = useState<"bilingual"|"english">("bilingual");
   const [popover, setPopover] = useState<string|null>(null);
-  const [answers, setAnswers] = useState<Record<number,number>>({});
-  const [feedback, setFeedback] = useState<string|null>(null);
-  const [completed, setCompleted] = useState(false);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const stored = localStorage.getItem("pmb-state");
-    if (stored) { const parsed = JSON.parse(stored); setSavedWords(parsed.savedWords ?? []); setFeedback(parsed.feedback ?? null); }
-    try { const history = JSON.parse(localStorage.getItem("pmb-history") ?? "{}"); setCompleted(Boolean(history[report.date])); } catch { setCompleted(false); }
-    const lastY = Number(localStorage.getItem("pmb-scroll") ?? 0);
-    if (lastY > 100) setTimeout(() => scrollTo({top:lastY,behavior:"smooth"}), 250);
     const onScroll = () => {
       const total = document.documentElement.scrollHeight - innerHeight;
       setProgress(total ? Math.min(100, Math.round(scrollY / total * 100)) : 0);
-      localStorage.setItem("pmb-scroll", String(scrollY));
     };
     addEventListener("scroll", onScroll, {passive:true}); onScroll();
     return () => removeEventListener("scroll", onScroll);
   }, []);
-
-  useEffect(() => { localStorage.setItem("pmb-state", JSON.stringify({savedWords,feedback,completed,answers})); }, [savedWords,feedback,completed,answers]);
-
-  const score = useMemo(() => Object.entries(answers).filter(([id,answer]) => report.challenge.find(q => q.id === Number(id))?.answer === answer).length, [answers,report.challenge]);
-
-  function toggleCompletion() {
-    const next = !completed;
-    setCompleted(next);
-    let history: Record<string,{date:string;minutes:number;completedAt:string}> = {};
-    try { history = JSON.parse(localStorage.getItem("pmb-history") ?? "{}"); } catch { history = {}; }
-    if (next) history[report.date] = {date:report.date,minutes:report.estimated_minutes,completedAt:new Date().toISOString()};
-    else delete history[report.date];
-    localStorage.setItem("pmb-history", JSON.stringify(history));
-    dispatchEvent(new Event("pmb-history-update"));
-  }
 
   function renderEnglish(text:string) {
     const parts = text.split(/\b(constraints|infrastructure|depreciation)\b/gi);
@@ -65,15 +40,22 @@ export function Today({ archiveMode = false, reportData }: { archiveMode?: boole
     });
   }
 
-  return <SiteChrome active={archiveMode ? "Archive" : "Today"} demo={report.demo} edition={report.edition_number}>
+  return <SiteChrome active={archiveMode ? "Archive" : "Ru1Daily"} demo={report.demo} edition={report.edition_number}>
     <div className="reading-progress" style={{width:`${progress}%`}} />
     <main>
-      {archiveMode && <div className="archive-reader-bar"><a href="/archive">← Back to Archive</a><span>Archived edition · {report.date}</span></div>}
+      {archiveMode && <div className="archive-reader-bar"><a href="/archive">← Back to Archive</a><span>Ru1Daily · {report.date}</span></div>}
       <section className="hero text-hero" id="top">
         <div className="eyebrow"><span>{report.demo ? "样刊" : `第 ${String(report.edition_number).padStart(3,"0")} 期`}</span> {displayDate}</div>
-        <h1>小橘日报</h1>
-        <p>每天四十分钟，用四种语言理解同一个世界。</p>
-        <div className="edition-meta"><span><strong>40</strong> min</span><span><strong>8</strong> Hot Words</span><span><strong>3</strong> Expressions</span><span><strong>4</strong> Briefings</span><span><strong>1</strong> Deep Read</span><span><strong>5</strong> Challenges</span></div>
+        <h1>Ru1Daily</h1>
+        <p>橘瑠衣的个人电子报纸。用新闻、观察与语言，记录每天值得留下的世界。</p>
+        <div className="edition-meta"><span><strong>{report.estimated_minutes}</strong> min read</span><span><strong>{report.hot_words.length}</strong> Hot Words</span><span><strong>{report.expressions.length}</strong> Expressions</span><span><strong>{report.briefings.length}</strong> Briefings</span><span><strong>1</strong> Deep Read</span></div>
+      </section>
+
+      <section className="publication-map" aria-label="Ru1Times 栏目">
+        <a className="channel-current" href="/"><span>01</span><strong>Ru1Daily</strong><small>每日新闻与语言</small></a>
+        <a href="#weekly"><span>02</span><strong>Ru1Weekly</strong><small>每周精选与回望 · 即将上线</small></a>
+        <a href="#commentary"><span>03</span><strong>Ru1Commentary</strong><small>小橘时评 · 个人观察与短评 · 即将上线</small></a>
+        <a href="#finance"><span>04</span><strong>Ru1Finance</strong><small>小橘财经 · 市场、经济与制度 · 即将上线</small></a>
       </section>
 
       <section className="big-story" id="morning-brief">
@@ -84,7 +66,7 @@ export function Today({ archiveMode = false, reportData }: { archiveMode?: boole
         <SectionIntro eyebrow="01" title="Hot Words" subtitle="今日热点词" meta="约 5 min" />
         <div className="words-grid">{report.hot_words.map((word,i) => <article className="word-card" key={word.en}>
           <div className="word-main"><span className="word-index">{String(i+1).padStart(2,"0")}</span><h3>{word.en}</h3><p>{word.zh}</p></div>
-          <div className="word-detail"><dl><div><dt>日本語</dt><dd>{word.ja}<small>{word.ja_romaji}</small></dd></div><div><dt>한국어</dt><dd>{word.ko}<small>{word.ko_romaja}</small></dd></div></dl><h4>Why today?</h4><p>{word.why_today}</p><blockquote>{word.example}</blockquote><button className={savedWords.includes(i) ? "saved" : ""} onClick={() => setSavedWords(savedWords.includes(i) ? savedWords.filter(x => x!==i) : [...savedWords,i])}>{savedWords.includes(i) ? "Saved ✓" : "Save to Words"}</button></div>
+          <div className="word-detail"><dl><div><dt>日本語</dt><dd>{word.ja}<small>{word.ja_romaji}</small></dd></div><div><dt>한국어</dt><dd>{word.ko}<small>{word.ko_romaja}</small></dd></div></dl><h4>Why today?</h4><p>{word.why_today}</p><blockquote>{word.example}</blockquote></div>
         </article>)}</div>
       </section>
 
@@ -110,18 +92,15 @@ export function Today({ archiveMode = false, reportData }: { archiveMode?: boole
       <section className="deep-read" id="deep-read">
         <div className="deep-header"><p>04 · DEEP READ · {report.deep_read.category}</p><h2>{report.deep_read.title_en}</h2><h3>{report.deep_read.title_zh}</h3><div><span>{report.deep_read.minutes} min</span><button className={deepMode==="bilingual"?"active":""} onClick={()=>setDeepMode("bilingual")}>中英对照</button><button className={deepMode==="english"?"active":""} onClick={()=>setDeepMode("english")}>English Only</button></div></div>
         <article className="article-body"><p className="standfirst">{report.deep_read.standfirst}</p>{report.deep_read.paragraphs.map((para,i)=><div className="bilingual-pair" key={i}><div><span>English · {String(i+1).padStart(2,"0")}</span><p>{renderEnglish(para.en)}</p></div>{deepMode==="bilingual"&&<div className="zh-paragraph"><span>中文</span><p>{para.zh}</p></div>}</div>)}</article>
-        {popover&&<aside className="vocab-popover"><button onClick={()=>setPopover(null)}>×</button><strong>{popover}</strong><span>{vocab[popover].phonetic}</span><h4>{vocab[popover].zh}</h4><p><b>Collocation</b> {vocab[popover].collocation}</p><p><b>In context</b> {vocab[popover].context}</p><button className="save-vocab">＋ Save to Words</button></aside>}
+        {popover&&<aside className="vocab-popover"><button onClick={()=>setPopover(null)}>×</button><strong>{popover}</strong><span>{vocab[popover].phonetic}</span><h4>{vocab[popover].zh}</h4><p><b>Collocation</b> {vocab[popover].collocation}</p><p><b>In context</b> {vocab[popover].context}</p></aside>}
       </section>
 
       <section className="content-section context-section"><SectionIntro eyebrow="05" title="Context" subtitle="看懂这件事" meta="约 3 min"/><div className="context-grid">{report.context.map((item,i)=><article key={item.title}><span>{String(i+1).padStart(2,"0")}</span><h3>{item.title}</h3><p>{item.text}</p></article>)}</div></section>
 
       {report.history_lens&&<section className="history-lens"><div><span>06 · HISTORY LENS</span><h2>{report.history_lens.title}</h2><p>{report.history_lens.text}</p></div><div className="timeline"><div><strong>{report.history_lens.then}</strong><p>{report.history_lens.similarities}</p></div><i/><div><strong>{report.history_lens.now}</strong><p>{report.history_lens.differences}</p></div></div></section>}
 
-      <section className="content-section challenge-section"><SectionIntro eyebrow="07" title="Today’s Challenge" subtitle="今日挑战" meta="约 3 min"/><div className="challenge-list">{report.challenge.map(q=><article key={q.id}><span>{String(q.id).padStart(2,"0")} · {q.kind}</span><h3>{q.question}</h3><div>{q.options.map((option,i)=><button className={answers[q.id]===i ? (i===q.answer?"correct":"wrong") : ""} disabled={answers[q.id]!==undefined} onClick={()=>setAnswers({...answers,[q.id]:i})} key={option}>{option}</button>)}</div>{answers[q.id]!==undefined&&<p className="answer-note"><strong>{answers[q.id]===q.answer?"Correct":"Not quite"}</strong>{q.explanation}</p>}</article>)}</div><p className="score-line">Answered {Object.keys(answers).length} / 5 · Correct {score}</p></section>
-
       {!report.demo && <aside className="source-ledger"><div><span>FURTHER READING</span><h2>延伸阅读</h2><p>继续阅读本期提到的报道与资料。</p></div><ol>{report.sources.map(source=><li key={source.url}><a href={source.url} target="_blank" rel="noreferrer"><span>{source.label}</span><strong>{source.title}</strong><small>{source.published} ↗</small></a></li>)}</ol></aside>}
 
-      {!archiveMode && <section className={`complete-card ${completed?"is-complete":""}`}><p>HOW WAS TODAY’S BRIEF?</p><h2>{completed?"Morning brief complete.":"Make it yours, one morning at a time."}</h2><div>{["Easy","Just Right","Challenging"].map(level=><button className={feedback===level?"active":""} onClick={()=>setFeedback(level)} key={level}>{level}</button>)}</div><button className="complete-button" onClick={toggleCompletion}>{completed?"Completed ✓":"Complete Today’s Brief"}</button><small>{completed?"Saved to your learning history.":"完成后才会计入 Progress；记录仅保存在这台设备。"}</small></section>}
     </main>
     <div className="mobile-progress"><span style={{width:`${progress}%`}}/><b>{progress}% read</b><a href="#top">↑</a></div>
   </SiteChrome>;
