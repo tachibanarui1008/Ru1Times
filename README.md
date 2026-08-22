@@ -49,7 +49,7 @@ Ru1Times
 - `tests/rendered-html.test.mjs`：首页、Ru1Weekly 和 Archive 渲染验收
 - `skills/ru1times-publishing/`：随仓库维护的四刊快速出刊 Skill 源码；修改刊物规则时应与已安装版本同步
 
-本项目统一使用 `pnpm` 与 `pnpm-lock.yaml`。`dist/`、`out/`、`.vinext/`、`.wrangler/` 和 `work/` 都是可重新生成的本地构建内容，不应提交到 GitHub。
+本项目统一使用 `pnpm` 与 `pnpm-lock.yaml`。`dist/`、`out/`、`exports/`、`.vinext/`、`.wrangler/` 和 `work/` 都是可重新生成的本地构建内容，不应提交到 GitHub。
 
 ## 每期 AI 协作署名
 
