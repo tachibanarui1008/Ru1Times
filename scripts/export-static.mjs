@@ -75,11 +75,11 @@ for (const file of weeklyFiles) {
 }
 
 const commentaryFiles = (await readdir(path.join(root, "app", "commentary-reports")))
-  .filter(file => /^\d{4}-\d{2}-\d{2}\.ts$/.test(file))
+  .filter(file => /^\d{4}-\d{2}-\d{2}(?:-[a-z0-9-]+)?\.ts$/.test(file))
   .sort();
 for (const file of commentaryFiles) {
-  const date = file.slice(0, 10);
-  await writePage(`/archive?edition=commentary-${date}`, `archive/commentary-${date}/index.html`);
+  const issueId = `commentary-${file.slice(0, -3)}`;
+  await writePage(`/archive?edition=${issueId}`, `archive/${issueId}/index.html`);
 }
 
 const financeFiles = (await readdir(path.join(root, "app", "finance-reports")))
