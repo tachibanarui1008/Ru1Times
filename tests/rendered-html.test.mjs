@@ -46,7 +46,7 @@ test("server-renders the editorial archive", async () => {
   assert.match(html, /channel-filter/);
 });
 
-test("server-renders the Ru1Weekly draft", async () => {
+test("server-renders the Ru1Weekly issue without editorial prompts", async () => {
   const response = await render("/weekly");
   assert.equal(response.status, 200);
   const html = await response.text();
@@ -57,7 +57,7 @@ test("server-renders the Ru1Weekly draft", async () => {
   assert.match(html, /延期的语法/);
   assert.match(html, /未完成的结论/);
   assert.match(html, /下周之前/);
-  assert.match(html, /Ru1 Concord Edition/);
+  assert.match(html, /一周之内，多张旧账单同时找到了到期日。/);
   assert.match(html, /把 deferred 改成 due/);
   assert.match(html, /crisis rarely ends with an explosion/);
   assert.match(html, /publication-masthead/);
@@ -72,6 +72,7 @@ test("server-renders the Ru1Weekly draft", async () => {
   assert.match(html, /ajournement（法语 \/a\.ʒuʁ\.nə\.mɑ̃\/，延期审议）/);
   assert.match(html, /حصار（阿拉伯语 \/ħiˈsˤaːr\/，围困）/);
   assert.doesNotMatch(html, /Hot Words|Today’s Challenge|Complete Today/);
+  assert.doesNotMatch(html, /Ru1 Concord Edition|约 55% 中文|Confirmed、inference|prediction list|日报回答今天发生了什么/);
 });
 
 test("server-renders the Ru1Commentary edition", async () => {

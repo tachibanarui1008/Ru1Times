@@ -2,17 +2,17 @@ import type { WeeklyReport } from "../weekly-types";
 
 export const weeklyReport2026W34: WeeklyReport = {
   id: "2026-W34", week_label: "2026 · WEEK 34", period_start: "2026-08-17", period_end: "2026-08-21",
-  published_at: "2026-08-22T20:10:00+08:00", updated_at: "2026-08-22T20:10:00+08:00",
+  published_at: "2026-08-22T20:10:00+08:00", updated_at: "2026-08-22T22:33:19+08:00",
   edition_number: 1, draft: false, estimated_minutes: 36,
-  ai_credit: { provider: "Moonshot AI（月之暗面）", model: "Kimi K3", role: "资料研究、事实核查与编辑协作" },
+  ai_credit: { provider: "OpenAI", model: "GPT-5.6 Terra", role: "事实核查、结构重写与文字编辑" },
   title_zh: "当清算开始有了形状", title_en: "When the reckoning takes shape",
-  dek: "这不是七条新闻的合集，而是一份追踪 deferred costs 如何在同一周变成 current bills 的 weekend reading。从深圳的法庭到华盛顿的 sanctions briefing，从 Walmart 的收银台到 30-year Treasury 的报价屏，我们追问同一个问题：被推迟了这么多年的账单，为什么选择在 now 一起到期？",
-  editorial_note: "Ru1 Concord Edition · 约 55% 中文、35% English、10% 其他语言；中文维持 sentence structure，English 以完整 phrase 或 clause 集中出现，其他语言随文标音释义。披露：本周周一至周五没有正式的 Ru1Daily 日报可供汇编，本期全部内容直接基于原始来源研究；周六（8 月 22 日）日报不在本期覆盖窗口内。",
+  dek: "从深圳的法庭到华盛顿的制裁简报，从沃尔玛的收银台到三十年期美债报价屏，被推迟多年的成本在同一周被重新标价。",
+  editorial_note: "一周之内，多张旧账单同时找到了到期日。",
   cover_story: [
     { language:"concord", text:"这一周最适合的开场不在战场，也不在交易所，而在两间法庭里。周四上午，深圳市中级人民法院对许家印作出一审判决：无期徒刑，剥夺政治权利终身，没收个人全部财产；恒大集团罚金 88.2 亿元，恒大地产罚金 70 亿元，另有 56 名涉案人员获刑。不到二十四小时后，广州市中级人民法院受理了广州农商行对恒大地产的破产清算申请。liquidación（西班牙语 /li.ki.ðaˈθjon/，清算）先是法律词汇，然后才是财务词汇——这一周它同时是两者。" },
     { language:"concord", text:"几乎在同一时刻，世界的其他角落也在提交各自的账单。特朗普宣布对伊朗实施“有史以来最严厉的经济行动”，六十天停火到期而未续；美韩 Ulchi Freedom Shield 军演提前六天收场，首尔表示事先并不知情；美国 30 年期国债收益率触及 5.3% 附近，为 2007 年以来最高，财政部扩大回购的声明没能压住周四的抛售。What connects a courtroom, a carrier group and a bond auction？它们都在做同一件事：把 deferred 改成 due。" },
     { language:"concord", text:"过去许多年，system 的默认操作是 postpone——房企把兑付推迟到下一轮销售，央行把决定推迟到下一份数据，盟友把分歧推迟到下一次峰会，frontier labs 把安全成本推迟到下一次发布。推迟并不是免费的，它只是把利息藏起来。本周的特殊之处在于，several deferrals expired at once：法律的、财政的、货币的、联盟的。조기상환（韩语 jogi-sanghwan /tɕo.ɡi.saŋ.ɦwan/，提前偿付）原本是债务人的选择；这一周看起来更像是债权人的决定。" },
-    { language:"concord", text:"周报的职责不是把 Monday through Friday 排成时间线，然后宣布信息已整理完毕。真正的 編集（日语 へんしゅう / henshū，编辑重组）要追问 headlines 之下共同的机制。本期的暂定答案是：crisis rarely ends with an explosion; it ends with an accounting。爆炸制造头条，清算制造秩序——而秩序的价格，这一周第一次被逐项标出。" },
+    { language:"concord", text:"把法庭、航母与债券拍卖放在一起，能看见同一种变化：crisis rarely ends with an explosion; it ends with an accounting。爆炸制造头条，清算制造秩序；当秩序重新出现，代价也会被逐项标出。" },
   ],
   chapters: [
     {
@@ -64,28 +64,28 @@ export const weeklyReport2026W34: WeeklyReport = {
     },
     {
       id:"provisional-conclusions", eyebrow:"PROVISIONAL CONCLUSIONS", title_zh:"未完成的结论", title_en:"What we know, infer and still cannot see",
-      standfirst:"好的 weekly 不负责消灭 uncertainty，而负责给 certainty 分层。Confirmed、inference 与 unknown 必须留在不同的段落里。",
+      standfirst:"几项关键事实已经落地，但它们之间的因果、代价的分配与下一步的选择，仍然不能被提前写死。",
       paragraphs:[
-        { language:"concord", text:"事实层可以站稳：许家印一审被判处无期徒刑，恒大地产破产清算申请获受理；Ulchi Freedom Shield 提前六天结束且首尔称未获事先告知；对伊“史上最严”制裁落地、六十天停火未续；美国 30 年期收益率触及 2007 年以来高位，财政部承诺扩大回购；中国 7 月消费与投资继续走弱而高技术制造与出口强劲；LPR 第十五个月维持不变；OpenAI 暂停部署模型的强化学习两周。факт（俄语 /fakt/，事实）构成本期的 floor，任何解释都不能越过这条边界。" },
-        { language:"concord", text:"推论层需要更多谨慎。我们认为：延期成本的集中显形不是巧合，而是各体系在 higher-for-longer 的资金价格下被迫同步；债券市场的压力本质上是财政可信度问题，而非流动性问题，因此回购工具注定收效有限；安全成本在 AI 行业的显性化，会把竞争从 capability race 部分转向 governance race。这些不是 sources stated conclusions，而是編集（日语 へんしゅう / henshū，编辑重组）连接多份证据后的判断。" },
-        { language:"concord", text:"未知层同样重要：我们不知道军演缩减是否削弱了真实战备，不知道伊朗制裁的执行半径会不会落到第三国买家头上——中国购买了伊朗出口原油的八成以上，这正是下周一 Bessent 简报的核心悬念；不知道 Warsh 会把 Jackson Hole 首秀献给框架还是献给利率；也不知道恒大的退赔队列最终能兑现多少比例。不確かさ（日语 ふたしかさ / futashikasa，不确定性）不该被排版藏掉，它本来就是 analysis 的一部分。" },
-        { language:"concord", text:"什么证据会让我们改变判断？如果扩表后的回购真能把 30 年期收益率稳定压回 5% 以下，liquidity 解释就胜过 credibility 解释；如果恒大退赔的实际清偿率显著高于市场悲观预期，清算范式就需要上调评价；如果 Warsh 在 Jackson Hole 明确排除加息，9 月会议前的定价逻辑要重写。수정（韩语 sujeong /su.dʑʌŋ/，修正）不是失败，而是 evidence-based analysis 的正常工序。" },
+        { language:"concord", text:"已经落地的节点足以界定这一周：许家印一审被判处无期徒刑，恒大地产破产清算申请获受理；Ulchi Freedom Shield 提前六天结束，首尔称未获事先告知；对伊“史上最严”制裁落地，六十天停火未续；美国三十年期收益率触及 2007 年以来高位，财政部承诺扩大回购；中国消费与投资继续走弱，而高技术制造与出口强劲；LPR 第十五个月维持不变；OpenAI 暂停部署模型的强化学习两周。факт（俄语 /fakt/，事实）是所有判断不能越过的地面。" },
+        { language:"concord", text:"这些节点指向一项谨慎的判断：高利率环境正在迫使原本可以拖延的问题同步显形；债券市场的焦虑更接近财政可信度，而不只是流动性；AI 安全成本一旦进入公开的算力账本，竞争就不再只看 capability race，也要看 governance。它们是从多份资料中连起的线，而不是任何一份来源替我们下出的结论。" },
+        { language:"concord", text:"仍有几处关键的空白。军演缩减究竟会不会影响战备，尚无法从外部确认；对伊制裁是否会真正触及第三国买家，取决于后续执法；恒大退赔队列最终能兑现多少，也仍未可知。不確かさ（日语 ふたしかさ / futashikasa，不确定性）不是缺口的装饰，而是这些事件尚未结算的部分。" },
+        { language:"concord", text:"接下来的结果会检验这些判断。若扩大回购后，三十年期收益率能稳定回到 5% 以下，流动性解释就会更有分量；若恒大退赔的实际清偿率显著高于市场预期，对清算秩序的评价也应上调；若 Warsh 在 Jackson Hole 明确排除加息，9 月会议前的市场定价将被重写。수정（韩语 sujeong /su.dʑʌŋ/，修正）不是退让，而是面对新证据时应有的动作。" },
       ],
     },
     {
       id:"before-next-sunday", eyebrow:"BEFORE NEXT SUNDAY", title_zh:"下周之前", title_en:"The signals that could rewrite this issue",
-      standfirst:"我们不做 prediction list。只留下几个会让这份 analysis 改写的 event，以及阅读它们时真正需要看的 signal。",
+      standfirst:"接下来的几天，制裁的执行边界、通胀与科技资本开支的碰撞，以及美联储的新叙事，都可能改变这周留下的价格。",
       paragraphs:[
         { language:"concord", text:"周一，财政部长 Bessent 将就对伊制裁作专门简报。需要看的不是措辞的强硬程度——那已经没有多少上行空间——而是执行半径：会不会点名第三国买家，会不会出现针对金融机构的具体执法。Kpler 的数据显示中国购买了伊朗海运原油的八成以上，sanctions 的真实重量将在这一细节上被称出。눈치（韩语 nunchi /nun.tɕʰi/，察言观色）的对象，这次是Washington自己。" },
         { language:"concord", text:"周三是一场三十六小时碰撞的开端：美国 7 月 PCE 物价指数上午公布，市场预期核心同比约 3.3%；当天盘后 Nvidia 发布财报，营收指引的门槛已经被抬到 910 亿美元附近，毛利率能否守住 75% 左右将决定 AI 资本开支叙事还能不能自我维持。tension（法语 /tɑ̃.sjɔ̃/，张力）将同时出现在通胀数据与科技周期上——而它们争夺的是同一池长期资本。" },
         { language:"concord", text:"周四至周六，Jackson Hole 年会举行，主题是“金融创新：支付与政策的含义”。周五上午十点，Warsh 以主席身份发表首次主旨演讲——距离 9 月 16 日的 FOMC 只有十九天。需要听的不是 hike or hold 的暗示，而是他如何描述一个取消点阵图、拒绝前瞻指引的美联储与市场的新契约。含意（日语 がんい / gan'i，话语的意涵）比措辞更重要：even his silence will be a signal。同一周还有韩国央行决议、东京 CPI、法国与西班牙 CPI，以及美国非农就业的年度基准修订——后者可能改写过去一年就业叙事的底色。" },
-        { language:"concord", text:"如果这些事件都没有推翻我们的判断，也不要把“没有变化”理解为 no news。Sometimes stability itself is information：它说明延期的新利率已经被 system 吸收进基线。фон（俄语 /fon/，背景底色）常被忽略，但周报仍应追问：当清算成为常态，背景本身正在向哪个方向缓慢移动？" },
+        { language:"concord", text:"若这些事件没有带来新的转折，也不等于没有信息。Sometimes stability itself is information：它可能意味着延期的新利率，已被 system 吸收为日常背景。фон（俄语 /fon/，背景底色）往往最不显眼，却决定了下一次价格变化会从哪里开始。" },
       ],
     },
   ],
   closing_note:[
-    { language:"concord", text:"日报回答今天发生了什么；周报更像一次長い呼吸（日语 ながいこきゅう / nagai kokyū，长呼吸），追问这一周如何改变了我们对世界的理解。Information has never been scarce；真正稀缺的是 relationship——哪些事实应该坐在同一张桌上，哪些数字只是 momentary noise，哪些结论必须暂时用 pencil 写下。" },
-    { language:"concord", text:"清算听起来像结尾，其实更像一种开始：账单被承认之后，秩序才有重建的地基。读者离开时应该带走的不是 fewer headlines，而是一条更长的思考线索，以及更清楚的证伪条件。여운（韩语 yeoun /jʌ.un/，余韵）是最后应该留下的感受：not forced closure，而是阅读结束之后仍在继续的 reasoning。" },
+    { language:"concord", text:"信息从来不稀缺，稀缺的是关系：哪些事实属于同一张桌子，哪些数字只是 momentary noise，哪些判断还只能用 pencil 写下。这一周给出的，不是一条整齐的结论，而是几份正在同时结算的账单。" },
+    { language:"concord", text:"清算听起来像结尾，其实更像一种开始。账单被承认之后，才有重建秩序的地基；而在答案到来之前，保持判断的边界，本身就是一种秩序。" },
   ],
   sources:[
     { label:"最高人民法院", title:"恒大集团、恒大地产、许家印等案一审宣判", url:"https://www.court.gov.cn/fabu/xiangqing/509281.html", published:"2026-08-20" },
