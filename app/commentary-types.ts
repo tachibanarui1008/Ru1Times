@@ -1,4 +1,4 @@
-import type { SourceReference } from "./report-types";
+import type { AiCredit, SourceReference } from "./report-types";
 
 export type CommentarySection = {
   id: string;
@@ -30,6 +30,7 @@ export type CommentaryReport = {
   edition_number: number;
   draft: boolean;
   estimated_minutes: number;
+  ai_credit: AiCredit;
   category: string;
   title: string;
   subtitle: string;

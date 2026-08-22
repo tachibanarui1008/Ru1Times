@@ -1,5 +1,6 @@
 import { latestCommentary } from "../commentary-data";
 import type { CommentaryReport } from "../commentary-types";
+import { AiCredit } from "./AiCredit";
 import { SiteChrome } from "./SiteChrome";
 
 export function Commentary({ reportData = latestCommentary, archiveMode = false }: { reportData?: CommentaryReport; archiveMode?: boolean }) {
@@ -43,6 +44,7 @@ export function Commentary({ reportData = latestCommentary, archiveMode = false 
       </section>
 
       <aside className="source-ledger commentary-sources"><div><span>SOURCE NOTES</span><h2>资料与延伸阅读</h2><p>背景事实经过核对；正文判断与历史类比属于作者评论。</p></div><ol>{report.sources.map(source=><li key={source.url}><a href={source.url} target="_blank" rel="noreferrer"><span>{source.label}</span><strong>{source.title}</strong><small>{source.published} ↗</small></a></li>)}</ol></aside>
+      <AiCredit credit={report.ai_credit}/>
     </main>
   </SiteChrome>;
 }

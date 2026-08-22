@@ -33,6 +33,8 @@ test("server-renders the editorial archive", async () => {
   assert.match(html, />Archive<\/h1>/);
   assert.match(html, /六个月的战争/);
   assert.match(html, /当安全开始为一切定价/);
+  assert.match(html, /当银行开始学着持有股权/);
+  assert.match(html, /channel-filter/);
 });
 
 test("server-renders the Ru1Weekly draft", async () => {
@@ -64,4 +66,23 @@ test("server-renders the Ru1Commentary draft", async () => {
   assert.match(html, /Zeus’s Law and Xenia/);
   assert.match(html, /Nash equilibrium/);
   assert.doesNotMatch(html, /English Version|日本語版/);
+});
+
+test("server-renders the Ru1Finance edition", async () => {
+  const response = await render("/finance");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /RU1FINANCE · 小橘财经/);
+  assert.match(html, /When banks learn to hold equity/);
+  assert.match(html, /投贷联动：当贷款的利息，覆盖不了科创的风险/);
+  assert.match(html, /六市场总览/);
+  assert.match(html, /3,905\.20/);
+  assert.match(html, /66,016\.36/);
+  assert.match(html, /6,912\.95/);
+  assert.match(html, /53,277\.01/);
+  assert.match(html, /26,136\.56/);
+  assert.match(html, /quote-change (up|down)/);
+  assert.match(html, /2026-08-21 收盘/);
+  assert.match(html, /三星电子|阿里巴巴/);
+  assert.doesNotMatch(html, /即将上线/);
 });

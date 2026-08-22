@@ -8,6 +8,7 @@ export const realReport20260822: DailyReport = {
   edition_number: 2,
   demo: false,
   estimated_minutes: 40,
+  ai_credit: { provider: "OpenAI", model: "GPT-5.6 Sol", role: "资料研究、事实核查与编辑协作" },
   sources: [
     { label:"Reuters", title:"Take Five: Six months of war", url:"https://za.investing.com/news/economy-news/take-five-six-months-of-war-4438848", published:"2026-08-21" },
     { label:"AP", title:"Why Treasury Secretary Bessent's moves to calm the bond market haven't worked so far", url:"https://apnews.com/article/c6e148f8235a98245adf04b2d4bdd8d1", published:"2026-08-20" },

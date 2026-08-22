@@ -8,6 +8,7 @@ export const commentary20260822: CommentaryReport = {
   edition_number: 1,
   draft: true,
   estimated_minutes: 12,
+  ai_credit: { provider: "OpenAI", model: "GPT-5.6 Sol", role: "事实核查、结构重写与文字编辑" },
   category: "电影 · 秩序 · 全球化",
   title: "海上来的人，是我们",
   subtitle: "当木马成为礼物——评克里斯托弗·诺兰《奥德赛》",

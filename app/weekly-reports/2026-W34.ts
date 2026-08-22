@@ -4,6 +4,7 @@ export const weeklyReport2026W34: WeeklyReport = {
   id: "2026-W34", week_label: "2026 · WEEK 34", period_start: "2026-08-17", period_end: "2026-08-22",
   published_at: "2026-08-22T18:00:00+08:00", updated_at: "2026-08-22T14:12:00+08:00",
   edition_number: 1, draft: true, estimated_minutes: 34,
+  ai_credit: { provider: "OpenAI", model: "GPT-5.6 Sol", role: "资料研究、事实核查与编辑协作" },
   title_zh: "当安全开始为一切定价", title_en: "When security starts pricing everything",
   dek: "This is not a summary of seven headlines，而是一份追踪 commitment, capital and control 如何在同一周互相改价的 weekend reading。我们从 Seoul 到 Washington、从 the bond market 到 AI laboratories，寻找那条看不见却已经开始变贵的关系线。",
   editorial_note: "Ru1 Concord Edition · 约 55% 中文、35% English、10% 其他语言；中文维持 sentence structure，English 以完整 phrase 或 clause 集中出现，其他语言随文标音释义。",

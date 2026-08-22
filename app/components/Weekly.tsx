@@ -2,6 +2,7 @@
 
 import { latestWeeklyReport } from "../weekly-data";
 import type { HybridParagraph, WeeklyReport } from "../weekly-types";
+import { AiCredit } from "./AiCredit";
 import { SiteChrome } from "./SiteChrome";
 
 export function Weekly({ reportData = latestWeeklyReport, archiveMode = false }: { reportData?: WeeklyReport; archiveMode?: boolean }) {
@@ -30,6 +31,7 @@ export function Weekly({ reportData = latestWeeklyReport, archiveMode = false }:
 
       <section className="weekly-closing concord-closing"><span>MARGINALIA · 余白</span><h2>一周之后，留下什么</h2><HybridProse paragraphs={report.closing_note}/></section>
       <aside className="source-ledger weekly-sources"><div><span>SOURCE LEDGER</span><h2>来源与延伸阅读</h2><p>事实来自可追溯报道与官方资料；interpretation 与 unknown 在正文中明确区分。</p></div><ol>{report.sources.map(source=><li key={source.url}><a href={source.url} target="_blank" rel="noreferrer"><span>{source.label}</span><strong>{source.title}</strong><small>{source.published} ↗</small></a></li>)}</ol></aside>
+      <AiCredit credit={report.ai_credit}/>
     </main>
   </SiteChrome>;
 }

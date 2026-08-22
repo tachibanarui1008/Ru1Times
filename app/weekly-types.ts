@@ -1,4 +1,4 @@
-import type { SourceReference } from "./report-types";
+import type { AiCredit, SourceReference } from "./report-types";
 
 export type HybridParagraph = { language: "concord"; text: string };
 
@@ -22,6 +22,7 @@ export type WeeklyReport = {
   edition_number: number;
   draft: boolean;
   estimated_minutes: number;
+  ai_credit: AiCredit;
   title_zh: string;
   title_en: string;
   dek: string;

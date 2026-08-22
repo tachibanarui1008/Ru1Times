@@ -46,6 +46,23 @@ Ru1Times
 - `scripts/export-static.mjs`：导出首页、周报、Archive 和各期静态归档到 `out/`
 - `tests/rendered-html.test.mjs`：首页、Ru1Weekly 和 Archive 渲染验收
 
+## 每期 AI 协作署名
+
+- Ru1Daily、Ru1Weekly、Ru1Commentary 与 Ru1Finance 的每一期都必须填写 `ai_credit`，并在正文与全站页脚之间显示协作署名。
+- 模型名称由作者逐期明确提供。agent 必须原样记录作者给出的厂商与模型名称；作者未提供时，应在落盘前询问，不得根据运行环境、界面标签或自身判断猜测。
+- `role` 应简要说明模型实际参与的工作，例如“资料研究、事实核查与编辑协作”或“事实核查、结构重写与文字编辑”，不得夸大模型或作者的贡献。
+- 固定数据结构如下；每期复制模板时必须重新确认三项内容：
+
+```ts
+ai_credit: {
+  provider: "OpenAI",
+  model: "GPT-5.6 Sol",
+  role: "资料研究、事实核查与编辑协作",
+},
+```
+
+- 页面统一显示：“本期由橘瑠衣主编，与 {provider} {model} 协作完成。”并补充模型参与范围及“内容取舍、观点表达与最终责任由作者承担”。不要把署名写死在组件或全站页脚中，以免历史刊物被后续模型名称覆盖。
+
 ## AI agent 的日报编写要求
 
 ### 1. 开始前检查
@@ -59,6 +76,10 @@ Ru1Times
 
 - 优先使用 Reuters、AP、BBC、Financial Times、官方政府/央行/统计机构、NASA 等可追溯来源。
 - 每个重要事实至少记录一个来源 URL、来源名称和发布日期。
+- **时效性是硬门槛：日刊采用的每一个信源，在本期 `published_at` 时刻必须属于过去 72 小时以内，且不得晚于本期发布时间。** 这一限制适用于 `big_story`、`hot_words` 的 Why today、`briefings`、`deep_read`、`context`、`history_lens` 以及 `sources` 中用于支撑事实的材料。
+- 以信源页面明确标注的首次发布时间为准；只有页面清楚标明实质性更新时，才能按更新时间计算，并必须核对本期使用的信息确实来自该次更新。不得用网页抓取时间、搜索结果时间或转载时间替代原文发布时间。
+- 如果来源只能确认发布日期、不能确认具体时刻，为避免超过 72 小时，只接受本期发布日期当天及此前两个自然日发布的材料。例如 8 月 22 日发布的日刊，日期不精确到时刻的信源只能来自 8 月 20—22 日。
+- 超过 72 小时的旧报道、旧公告和背景资料不得作为日刊信源。若背景事实不可缺少，应寻找 72 小时内重新确认该事实的权威来源；找不到就删去该事实或更换选题，不得放宽时间窗口。
 - 区分“来源明确说了什么”和 agent 的解释；推断必须用“可能、意味着、值得关注的是”等措辞。
 - 不把搜索摘要当作完整证据；打开原文或权威页面确认标题、日期、数字和上下文。
 - 对战争、灾害、政治、市场、医疗和安全新闻保持克制，不夸张，不制造确定性。
@@ -96,6 +117,7 @@ Ru1Times
 export const realReport20260823: DailyReport = {
   id: "2026-08-23",
   date: "2026-08-23",
+  ai_credit: { provider: "OpenAI", model: "作者本期提供的模型名", role: "资料研究、事实核查与编辑协作" },
   // ...
 };
 ```
@@ -129,16 +151,17 @@ node scripts/export-report.mjs YYYY-MM-DD
 - 这是展示型个人电子报纸，不要加入收藏、答题、Progress、完成记录、用户账户或 localStorage。
 
 工作要求：
-1. 先联网检索 {DATE} 前后最重要的国际、经济、科技、社会或气候新闻。
+1. 先以本期 `published_at` 为截止时刻，联网检索向前 72 小时内最重要的国际、经济、科技、社会或气候新闻；不得采用截止时刻之后发布的内容。
 2. 优先使用 Reuters、AP、BBC、Financial Times、官方机构和原始数据页面。
 3. 打开来源核对日期、数字、人物、机构和上下文；不要只依据搜索摘要。
 4. 选择一个能串起当天信息的主线，写出事实清楚、克制而有观点的中文摘要。
 5. 完整填充 DailyReport：big_story、hot_words、expressions、briefings、deep_read、context、history_lens、sources。
 6. 保持中文、English、日本語、한국어四语内容自然且互相对应；日语和韩语必须提供分词/读音信息。
-7. 每个重要事实写入 sources，包含 label、title、url、published。
+7. 每个重要事实写入 sources，包含 label、title、url、published；逐项确认信源处于本期发布时刻向前 72 小时以内。只有日期、没有时刻的信源，只能来自本期日期及此前两个自然日。
 8. 不编造来源、数字、引语或未来事件；无法确认的内容明确标注不确定性。
 9. 直接修改 app/reports/YYYY-MM-DD.ts 和 app/data.ts，不要改动无关页面。
-10. 完成后运行 pnpm test，并报告构建结果、测试结果和仍存在的风险。
+10. 使用作者本期明确提供的厂商和模型名称填写 ai_credit；若未提供，落盘前询问，不得猜测。
+11. 完成后运行 pnpm test，并报告构建结果、测试结果和仍存在的风险。
 
 输出前自检：
 - 日期、期号和文件名一致；
@@ -146,8 +169,38 @@ node scripts/export-report.mjs YYYY-MM-DD
 - 没有 Rui/RuiDaily 作为总品牌的旧文案；
 - 没有收藏、答题、Progress 或 localStorage 逻辑；
 - 所有来源 URL 可追溯；
+- 所有信源均通过 72 小时时效检查，没有用转载时间、搜索时间或抓取时间冒充原文发布时间；
 - 首页和 Archive 能渲染。
 ```
+
+## AI agent 的财经刊（Ru1Finance）编写要求
+
+### 1. 定位与更新方式
+
+- `Ru1Finance` 是小橘财经版面，不定期日刊，由作者手动发起；未获指令不主动出刊。
+- 数据类型见 `app/finance-types.ts`，注册于 `app/finance-data.ts`，路由 `/finance`，版面组件 `app/components/Finance.tsx`。
+- 每期两大板块：`learning`（金融学习）与当日市场（`markets` + `movers` + `companies`）。
+
+### 2. 金融学习（learning）
+
+- 每期一个主题，类型为概念讲解、金融灾难复盘或经济学事件。
+- 结构固定：讲解分节（blocks）→ 结合具体事件的案例（case_study）→ 价值与边界两栏（pros/cons）→ 要点回顾（takeaways）。
+- 主题来源：作者的复习知识点、作者感兴趣的话题，或从当期市场主线自然引出的概念。作者提供素材时以其素材为核心；未提供时从主线事件中选题。
+
+### 3. 今日金融（markets/movers/companies）
+
+- 覆盖 A股、港股、日本、韩国、美股、欧股六块市场，采用隔夜视角：以最近一个完整交易日为基准（亚市收盘 + 前夜美欧收盘），每个市场标注 `as_of`。
+- 涨跌配色为绿涨红跌（国际惯例），页面已声明数据为静态快照。
+- `movers` 收录当日暴涨暴跌、异动板块、融资/上市/股东回报新闻；`companies` 集成特殊点背后公司的关键数字。传闻必须标注"传闻"并注明口径，无法确认的财务数据不编造。
+- 行情必须来自可追溯来源（新华社、证券时报、新华财经、财联社等），发布前多源交叉核对；不构成投资建议。
+
+### 4. 新增一期流程
+
+1. 新建 `app/finance-reports/YYYY-MM-DD.ts`，导出名如 `financeReport20260823`。
+2. 使用作者本期明确提供的厂商和模型名称填写 `ai_credit`；未提供时先询问，不得沿用上一期或自行猜测。
+3. 在 `app/finance-data.ts` 注册到 `financeReports` 第一位。
+4. 归档 id 使用 `finance-YYYY-MM-DD` 前缀（避免与同日 Ru1Daily 冲突），静态导出脚本与 Archive 已按此约定。
+5. 运行 `pnpm test`，检查 `/finance`、`/archive` 与移动端版式。构建失败时不得宣称已完成。
 
 ## AI agent 的时评编写要求
 
@@ -228,7 +281,7 @@ Ru1Commentary 的稳定风格来自思考方式，而不是固定辞藻：
 
 ### 9. 数据结构与页面边界
 
-- 新一期文件位于 `app/commentary-reports/YYYY-MM-DD.ts`，并完整填写 `CommentaryReport`：元数据、标题、`sections`、`backgrounds`、`glossary` 和 `sources`。
+- 新一期文件位于 `app/commentary-reports/YYYY-MM-DD.ts`，并完整填写 `CommentaryReport`：元数据、`ai_credit`、标题、`sections`、`backgrounds`、`glossary` 和 `sources`。
 - 正文段落只写入 `sections[].paragraphs`；Background 与 Glossary 不得混入正文数组，也不得用长篇英文替代中文正文。
 - 版面沿用现有 `Commentary.tsx` 和全站样式：留白、细线、衬线正文、无衬线元数据和克制的绿色点缀。除非用户明确要求改版，否则新增文章不得另造主题色、字体、海报式首屏、渐变、装饰图形或动画。
 - 新一期先保持 `draft: true`。只有作者明确认可文章和版面后，才改为正式刊；不得自行提交、推送或发布。
@@ -239,10 +292,11 @@ Ru1Commentary 的稳定风格来自思考方式，而不是固定辞藻：
 2. 在内部提炼“必须保留、可以重写、必须核查”三层内容，确定一句中心命题和一条完整论证链。
 3. 联网核对所有外部事实，特别检查原典与改编、事实与评论、历史事实与类比是否混写。
 4. 新建 `app/commentary-reports/YYYY-MM-DD.ts`，不覆盖旧文；完成中文正文、双语背景、双语术语表和来源账本。
-5. 在 `app/commentary-data.ts` 注册新稿，并把最新一期置于数组第一位。
-6. 检查 `/commentary`、Archive 列表及 `/archive?edition=commentary-YYYY-MM-DD` 的完整阅读页。
-7. 运行 `pnpm test` 与 `pnpm run export:static`；构建或归档失败时不得宣称完成。
-8. 向作者报告标题、中心论点、重要事实修正和仍有争议之处；未经明确认可，不把 `draft` 改为 `false`。
+5. 使用作者本期明确提供的厂商和模型名称填写 `ai_credit`；未提供时先询问，不得沿用上一期或自行猜测。
+6. 在 `app/commentary-data.ts` 注册新稿，并把最新一期置于数组第一位。
+7. 检查 `/commentary`、Archive 列表及 `/archive?edition=commentary-YYYY-MM-DD` 的完整阅读页。
+8. 运行 `pnpm test` 与 `pnpm run export:static`；构建或归档失败时不得宣称完成。
+9. 向作者报告标题、中心论点、重要事实修正和仍有争议之处；未经明确认可，不把 `draft` 改为 `false`。
 
 ### 11. 完成前自检
 
@@ -291,10 +345,11 @@ Ru1Commentary 的稳定风格来自思考方式，而不是固定辞藻：
 
 落盘要求：
 1. 新建 app/commentary-reports/YYYY-MM-DD.ts，完整填写 CommentaryReport，保持 draft: true。
-2. 在 app/commentary-data.ts 注册并置于第一位，不覆盖历史文章。
-3. 沿用现有 Commentary.tsx 与全站样式，不擅自改字体、配色、版式或增加装饰效果。
-4. 运行 pnpm test 和 pnpm run export:static，检查 /commentary、Archive 列表和对应归档详情。
-5. 交付时说明中心论点、主要编辑改动、事实修正与不确定性；只有作者明确认可后才能正式发布。
+2. 使用作者本期明确提供的厂商和模型名称填写 ai_credit；未提供时先询问，不得猜测或沿用上一期。
+3. 在 app/commentary-data.ts 注册并置于第一位，不覆盖历史文章。
+4. 沿用现有 Commentary.tsx 与全站样式，不擅自改字体、配色、版式或增加装饰效果。
+5. 运行 pnpm test 和 pnpm run export:static，检查 /commentary、Archive 列表和对应归档详情。
+6. 交付时说明中心论点、主要编辑改动、事实修正与不确定性；只有作者明确认可后才能正式发布。
 ```
 
 ## AI agent 的周报编写要求
@@ -302,6 +357,7 @@ Ru1Commentary 的稳定风格来自思考方式，而不是固定辞藻：
 ### 1. Ru1Weekly 的定位
 
 - `Ru1Daily` 侧重每日新闻与语言学习；`Ru1Weekly` 侧重一周信息的筛选、连接、解释和判断。
+- `Ru1Weekly` 固定在周末发布，回顾窗口为同一周的周一 00:00 至周五 23:59（Asia/Shanghai）；周六、周日发生的新内容留给下一周，不倒灌进本期回顾。
 - 周报不是七份日报的拼接，也不是由大量短卡片组成的信息面板。
 - 正文应以连续长文本为主，每章围绕一个完整论点展开，并把时政、金融、科技、产业和社会新闻放进同一套因果关系。
 - 每一期必须区分已确认事实、编辑推断与仍然未知的部分，并说明什么新证据可能改变本期判断。
@@ -352,7 +408,9 @@ Ru1Commentary 的稳定风格来自思考方式，而不是固定辞藻：
 
 ### 4. 周报事实与写作标准
 
-- 覆盖周期、截稿时间和发布日期必须明确；周六样刊不得假装已经覆盖尚未发生的周日新闻。
+- 覆盖周期固定为当周周一至周五，截稿点为周五 23:59（Asia/Shanghai），发布日期必须是紧随其后的周六或周日；不得声称覆盖周末尚未发生或尚未核实的新闻。
+- 写作前必须完整读取周一至周五五期正式 Ru1Daily 的全部内容及其 `sources`，将五天内容全部纳入周刊候选材料和证据池，不得只挑某一天或只读取标题。周刊成文仍应筛选、连接和解释，不要求按日期逐条复述日报。
+- 周刊的事实范围只覆盖上述周一至周五。`sources` 应以这五期日报核验过的原始来源为基础，去重后保留正文实际使用的来源；若补充新来源，该来源本身也必须在周一 00:00 至周五 23:59 的窗口内发布，并打开原文重新核对。
 - 打开原始报道或官方页面核对日期、数字、人物、机构和上下文，不使用搜索摘要代替来源。
 - 中心论点必须由多个可追溯事实支持；不要为了制造“万事相连”的效果强行建立因果关系。
 - 数字必须写清统计口径、比较基准及局限，不把不同口径的数字直接相减或比较。
@@ -367,8 +425,9 @@ Ru1Commentary 的稳定风格来自思考方式，而不是固定辞藻：
 
 1. 读取本 README、`app/weekly-types.ts`、最近一期 `app/weekly-reports/YYYY-Www.ts`、`app/weekly-data.ts` 和 `scripts/export-static.mjs`。
 2. 检查工作区已有修改并保留用户内容，不覆盖其他 agent 或用户尚未提交的文件。
-3. 按 Asia/Shanghai 时区确认报道截止时间、覆盖周期、ISO 周编号、发布日期和下一期 `edition_number`。
+3. 按 Asia/Shanghai 时区确认周一 00:00 至周五 23:59 的报道窗口、周末发布日期、ISO 周编号和下一期 `edition_number`；不得把周六或周日新闻写入本期。
 4. 查看最近一期是否仍为 `draft: true`。样刊或待审稿不得擅自改成正式刊，也不得在未获用户认可时推送或发布。
+5. 读取覆盖窗口内周一至周五的五期正式 Ru1Daily 及其全部 `sources`；若某个工作日缺刊，必须在交付说明中明确记录，不能假装五期齐全。
 
 ### 2. 建立新一期文件
 
@@ -381,18 +440,19 @@ import type { WeeklyReport } from "../weekly-types";
 export const weeklyReport2026W35: WeeklyReport = {
   id: "2026-W35",
   week_label: "2026 · WEEK 35",
-  period_start: "2026-08-23",
-  period_end: "2026-08-29",
+  period_start: "2026-08-24",
+  period_end: "2026-08-28",
   published_at: "2026-08-29T18:00:00+08:00",
   updated_at: "2026-08-29T18:00:00+08:00",
   edition_number: 2,
   draft: true,
+  ai_credit: { provider: "OpenAI", model: "作者本期提供的模型名", role: "资料研究、事实核查与编辑协作" },
   // 继续填写其余字段
 };
 ```
 
 3. `WeeklyReport` 的字段不得遗漏：
-   - 基本信息：`id`、`week_label`、`period_start`、`period_end`、`published_at`、`updated_at`、`edition_number`、`draft`、`estimated_minutes`；
+   - 基本信息：`id`、`week_label`、`period_start`、`period_end`、`published_at`、`updated_at`、`edition_number`、`draft`、`estimated_minutes`、`ai_credit`；
    - 标题信息：`title_zh`、`title_en`、`dek`、`editorial_note`；
    - 正文：`cover_story`、`chapters`、`closing_note`；
    - 来源账本：`sources`。
@@ -401,8 +461,8 @@ export const weeklyReport2026W35: WeeklyReport = {
 
 ### 3. 研究、写作与核查
 
-1. 先确定一个可以连接多个领域的中心问题，再选择支持它的新闻；不要先收集一堆新闻后强行寻找共同点。
-2. 打开原始报道、官方公告或数据页面，逐项核对日期、人物、数字、统计口径和上下文。
+1. 先完整阅读周一至周五五期 Ru1Daily 及其来源账本，把全部内容纳入候选材料；再确定一个可以连接多个领域的中心问题，不要只选取单日材料，也不要强行寻找共同点。
+2. 回到日报所列的原始报道、官方公告或数据页面，逐项核对发布日期、人物、数字、统计口径和上下文；新增材料也必须发布于本周周一至周五窗口内。
 3. 按“本周主线—跨领域连接—传导机制—数字解释—共同机制—暂定结论—下周证据—余白”完成长文本。
 4. 全篇按约 55% 中文、35% English、10% 其他语言控制；比例按完整文章判断，不逐句计数。
 5. 对所有日语、韩语、西班牙语、法语和俄语使用 `词语（语言 /读音/，中文释义）` 的统一结构；日语和韩语的假名、罗马字及音标写法遵循上文示例。
@@ -432,6 +492,8 @@ pnpm run export:static
 ### 5. 完成前自检
 
 - 文件名、`id`、ISO 周编号、覆盖周期、期号和发布时间一致；
+- `period_start` 为周一、`period_end` 为周五，`published_at` 为紧随其后的周六或周日；
+- 已完整读取周一至周五五期日报及其全部来源；如有缺刊，已明确披露，没有用周末新闻补位；
 - 新一期已置于 `weeklyReports` 第一位，旧刊没有被覆盖或删除；
 - 正文是连贯长文本，八个章节功能完整，没有退回短卡片模式；
 - English 以完整 phrase 或 clause 集中出现，没有逐词拼贴或大段对照翻译；
@@ -444,7 +506,7 @@ pnpm run export:static
 ## 给周报 agent 的推荐提示词
 
 ```text
-你是 Ru1Times 的周报编辑 agent。请为 {PERIOD_START} 至 {PERIOD_END} 编写 Ru1Weekly 第 {EDITION} 期。
+你是 Ru1Times 的周报编辑 agent。请为 {MONDAY_DATE} 至 {FRIDAY_DATE} 编写 Ru1Weekly 第 {EDITION} 期，并在紧随其后的周六或周日发布。
 
 定位：
 - Ru1Daily 负责每日新闻与语言学习；Ru1Weekly 负责一周信息的筛选、连接、解释和判断。
@@ -452,11 +514,13 @@ pnpm run export:static
 - 以数篇彼此衔接的长文本组成一份完整 weekend review。
 
 资料要求：
-1. 联网检索本周最重要的时政、金融、科技、产业、社会和气候新闻。
-2. 优先使用 Reuters、AP、BBC、Financial Times、政府、央行、统计机构、公司原始公告和研究机构资料。
-3. 打开原文核对事实；每个重要数字、人名、日期和机构都必须可追溯。
-4. 选择一个能够连接多个领域的中心问题，但不要强行建立没有证据的因果关系。
-5. 明确区分 confirmed facts、editorial inference 和 unknowns，并说明 what evidence would change the judgment。
+1. 先完整读取本周周一至周五五期 Ru1Daily 的全部内容及其 sources，把五天内容全部纳入候选材料和证据池；周刊可以筛选重组，但不得跳过任何一个工作日。
+2. 报道窗口严格限定为周一 00:00 至周五 23:59（Asia/Shanghai）。周六、周日的新内容留给下一周，不写入本期。
+3. 在五期日报及其原始来源基础上，补充检索本周最重要的时政、金融、科技、产业、社会和气候新闻；补充来源也必须发布于周一至周五窗口内。
+4. 优先使用 Reuters、AP、BBC、Financial Times、政府、央行、统计机构、公司原始公告和研究机构资料。
+5. 打开原文核对事实；每个重要数字、人名、日期和机构都必须可追溯。
+6. 选择一个能够连接多个领域的中心问题，但不要强行建立没有证据的因果关系。
+7. 明确区分 confirmed facts、editorial inference 和 unknowns，并说明 what evidence would change the judgment。
 
 长刊结构：
 - Opening Essay / 本周主线
@@ -479,10 +543,12 @@ Ru1 Concord 语言规则：
 
 执行步骤：
 1. 先读取 README、app/weekly-types.ts、最近一期周报、app/weekly-data.ts 和 scripts/export-static.mjs，并检查工作区已有修改。
-2. 新建 app/weekly-reports/YYYY-Www.ts，不覆盖历史刊物；完整填写 WeeklyReport 的元数据、标题、cover_story、chapters、closing_note 和 sources。
-3. 在 app/weekly-data.ts 引入新刊并放到 weeklyReports 第一位。
-4. 先保持 draft: true；只有得到用户明确认可后才能改为 false、推送或发布。
-5. 运行 pnpm test 和 pnpm run export:static，检查 /weekly、/archive、/archive?edition=YYYY-Www 及 out/archive/YYYY-Www/index.html。
+2. 按 Asia/Shanghai 时区核对周一至周五窗口，完整读取这五期日报和全部来源；缺少任何一期时必须如实说明。
+3. 新建 app/weekly-reports/YYYY-Www.ts，不覆盖历史刊物；完整填写 WeeklyReport 的元数据、标题、cover_story、chapters、closing_note 和 sources。
+4. 使用作者本期明确提供的厂商和模型名称填写 ai_credit；未提供时先询问，不得猜测或沿用上一期。
+5. 在 app/weekly-data.ts 引入新刊并放到 weeklyReports 第一位。
+6. 先保持 draft: true；只有得到用户明确认可后才能改为 false、推送或发布。
+7. 运行 pnpm test 和 pnpm run export:static，检查 /weekly、/archive、/archive?edition=YYYY-Www 及 out/archive/YYYY-Www/index.html。
 
 输出前自检：
 - 全文以长段落为主，没有退回短卡片模式；
@@ -490,7 +556,8 @@ Ru1 Concord 语言规则：
 - 没有大段独立英文；
 - 所有小语种均有正确读音和中文释义；
 - confirmed、inference、unknown 没有混写；
-- 日期、期号、覆盖周期和来源一致；
+- 日期、期号、覆盖周期和来源一致，覆盖期为周一至周五且发布日为紧随其后的周末；
+- 五期日报及其全部来源均已读入候选材料，没有混入周六、周日新闻；
 - /weekly 与 Archive 均能渲染。
 ```
 
@@ -519,6 +586,12 @@ pnpm run build
 - 版面延续 Ru1Times 的留白、细线、衬线正文和绿色点缀，不使用电影海报式装饰或夸张动效。
 - README 已补充完整的作者原意边界、编辑声线、论证骨架、句法节奏、知识附录、事实核查、数据落盘、自检表和可复用提示词，供后续 agent 保持统一风格。
 - 当前样刊保持 `draft: true`，未经作者明确认可不作为正式刊发布。
+
+### 2026-08-22 · 日刊与周刊信源时间窗口
+
+- 自本规则更新后的新刊起，Ru1Daily 的全部信源必须在本期发布时刻向前 72 小时以内；只有日期、没有具体时刻的来源按更保守的“本期当天及此前两个自然日”执行。
+- Ru1Weekly 固定于周末发布，只覆盖同一周周一至周五，并须完整读取五期日报及其全部来源作为候选材料和证据池。
+- 既有日报和 `2026-W34` 样刊保留为历史内容，不据此放宽新刊时间门槛；复制样刊结构时必须重新填写周一至周五的覆盖日期。
 
 ### 2026-08-22 · Ru1Weekly 样刊与工作流建立
 

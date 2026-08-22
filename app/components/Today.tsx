@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { latestReport, type DailyReport, type Language, type LearnerSegment } from "../data";
+import { AiCredit } from "./AiCredit";
 import { SectionIntro, SiteChrome } from "./SiteChrome";
 
 const languageLabels: Array<[Language,string]> = [["all","四语对照"],["zh","中文"],["en","English"],["ja","日本語"],["ko","한국어"]];
@@ -53,9 +54,9 @@ export function Today({ archiveMode = false, reportData }: { archiveMode?: boole
 
       <section className="publication-map" aria-label="Ru1Times 栏目">
         <a className="channel-current" href="/"><span>01</span><strong>Ru1Daily</strong><small>每日新闻与语言</small></a>
-        <a href="#weekly"><span>02</span><strong>Ru1Weekly</strong><small>每周精选与回望 · 即将上线</small></a>
+        <a href="/weekly"><span>02</span><strong>Ru1Weekly</strong><small>每周精选、连接与回望</small></a>
         <a href="/commentary"><span>03</span><strong>Ru1Commentary</strong><small>不定期时评 · 个人观察与长短评</small></a>
-        <a href="#finance"><span>04</span><strong>Ru1Finance</strong><small>小橘财经 · 市场、经济与制度 · 即将上线</small></a>
+        <a href="/finance" className="channel-current-finance"><span>04</span><strong>Ru1Finance</strong><small>小橘财经 · 市场、经济与制度</small></a>
       </section>
 
       <section className="big-story" id="morning-brief">
@@ -100,6 +101,8 @@ export function Today({ archiveMode = false, reportData }: { archiveMode?: boole
       {report.history_lens&&<section className="history-lens"><div><span>06 · HISTORY LENS</span><h2>{report.history_lens.title}</h2><p>{report.history_lens.text}</p></div><div className="timeline"><div><strong>{report.history_lens.then}</strong><p>{report.history_lens.similarities}</p></div><i/><div><strong>{report.history_lens.now}</strong><p>{report.history_lens.differences}</p></div></div></section>}
 
       {!report.demo && <aside className="source-ledger"><div><span>FURTHER READING</span><h2>延伸阅读</h2><p>继续阅读本期提到的报道与资料。</p></div><ol>{report.sources.map(source=><li key={source.url}><a href={source.url} target="_blank" rel="noreferrer"><span>{source.label}</span><strong>{source.title}</strong><small>{source.published} ↗</small></a></li>)}</ol></aside>}
+
+      <AiCredit credit={report.ai_credit}/>
 
     </main>
     <div className="mobile-progress"><span style={{width:`${progress}%`}}/><b>{progress}% read</b><a href="#top">↑</a></div>

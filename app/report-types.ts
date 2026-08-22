@@ -1,6 +1,7 @@
 export type Language = "zh" | "en" | "ja" | "ko" | "all";
 export type LearnerSegment = { text: string; reading?: string; romanization: string; zh: string };
 export type SourceReference = { label: string; title: string; url: string; published: string };
+export type AiCredit = { provider: string; model: string; role: string };
 
 export type DailyReport = {
   id: string;
@@ -10,6 +11,7 @@ export type DailyReport = {
   edition_number: number;
   demo: boolean;
   estimated_minutes: number;
+  ai_credit: AiCredit;
   sources: SourceReference[];
   big_story: { category: string; title_zh: string; title_en: string; summary: string; minutes: number; source_label?: string; source_url?: string };
   hot_words: Array<{ en: string; zh: string; ja: string; ja_romaji: string; ko: string; ko_romaja: string; why_today: string; example: string; topic: string }>;

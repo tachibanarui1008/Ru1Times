@@ -8,6 +8,7 @@ export const demoReport: DailyReport = {
   edition_number: 0,
   demo: true,
   estimated_minutes: 40,
+  ai_credit: { provider: "OpenAI", model: "GPT-5.6 Sol", role: "资料整理、内容编辑与版面协作" },
   sources: [],
   big_story: {
     category: "Technology · AI Infrastructure",
