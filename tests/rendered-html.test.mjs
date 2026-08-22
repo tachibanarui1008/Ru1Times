@@ -40,6 +40,7 @@ test("server-renders the editorial archive", async () => {
   assert.match(html, />Archive<\/h1>/);
   assert.match(html, /六个月的战争/);
   assert.match(html, /当清算开始有了形状/);
+  assert.match(html, /海上来的人，是我们/);
   assert.match(html, /当银行开始学着持有股权/);
   assert.match(html, /channel-filter/);
 });
