@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { latestReport, type DailyReport, type Language, type LearnerSegment } from "../data";
 import { AiCredit } from "./AiCredit";
+import { PublicationMasthead } from "./PublicationMasthead";
 import { SectionIntro, SiteChrome } from "./SiteChrome";
 
 const languageLabels: Array<[Language,string]> = [["all","四语对照"],["zh","中文"],["en","English"],["ja","日本語"],["ko","한국어"]];
@@ -18,7 +19,6 @@ function LearnerLine({ label, segments }: { label: string; segments: LearnerSegm
 
 export function Today({ archiveMode = false, reportData }: { archiveMode?: boolean; reportData?: DailyReport }) {
   const report = reportData ?? latestReport;
-  const displayDate = new Intl.DateTimeFormat("en-GB", { weekday:"long", day:"numeric", month:"long" }).format(new Date(`${report.date}T00:00:00`));
   const [langByBrief, setLangByBrief] = useState<Record<number,Language>>({1:"all",2:"all",3:"all",4:"all"});
   const [deepMode, setDeepMode] = useState<"bilingual"|"english">("bilingual");
   const [popover, setPopover] = useState<string|null>(null);
@@ -43,24 +43,18 @@ export function Today({ archiveMode = false, reportData }: { archiveMode?: boole
 
   return <SiteChrome active={archiveMode ? "Archive" : "Ru1Daily"} demo={report.demo} edition={report.edition_number}>
     <div className="reading-progress" style={{width:`${progress}%`}} />
-    <main>
+    <main className="daily-main">
       {archiveMode && <div className="archive-reader-bar"><a href="/archive">← Back to Archive</a><span>Ru1Daily · {report.date}</span></div>}
-      <section className="hero text-hero" id="top">
-        <div className="eyebrow"><span>{report.demo ? "样刊" : `第 ${String(report.edition_number).padStart(3,"0")} 期`}</span> {displayDate}</div>
-        <h1>Ru1Daily</h1>
-        <p>橘瑠衣的个人电子报纸。用新闻、观察与语言，记录每天值得留下的世界。</p>
-        <div className="edition-meta"><span><strong>{report.estimated_minutes}</strong> min read</span><span><strong>{report.hot_words.length}</strong> Hot Words</span><span><strong>{report.expressions.length}</strong> Expressions</span><span><strong>{report.briefings.length}</strong> Briefings</span><span><strong>1</strong> Deep Read</span></div>
-      </section>
-
-      <section className="publication-map" aria-label="Ru1Times 栏目">
-        <a className="channel-current" href="/"><span>01</span><strong>Ru1Daily</strong><small>每日新闻与语言</small></a>
-        <a href="/weekly"><span>02</span><strong>Ru1Weekly</strong><small>每周精选、连接与回望</small></a>
-        <a href="/commentary"><span>03</span><strong>Ru1Commentary</strong><small>不定期时评 · 个人观察与长短评</small></a>
-        <a href="/finance" className="channel-current-finance"><span>04</span><strong>Ru1Finance</strong><small>小橘财经 · 市场、经济与制度</small></a>
-      </section>
+      <PublicationMasthead
+        edition={report.edition_number}
+        publishedAt={report.published_at}
+        draft={report.demo}
+        title="Ru1Daily"
+        subtitle="以不同语言转述今日新闻，在阅读与鉴赏中提升多语言能力。"
+      />
 
       <section className="big-story" id="morning-brief">
-        <div className="story-copy"><p className="kicker">TODAY’S BIG STORY · {report.big_story.category}</p><h2>{report.big_story.title_en}</h2><h3>{report.big_story.title_zh}</h3><p className="summary">{report.big_story.summary}</p><a className="primary-action" href="#hot-words">Start Morning Brief <span>↓</span></a><small>{report.big_story.minutes} min deep read {report.big_story.source_url && <>· <a className="source-link" href={report.big_story.source_url} target="_blank" rel="noreferrer">{report.big_story.source_label} ↗</a></>}</small></div>
+        <div className="story-copy"><p className="kicker">TODAY’S BIG STORY · {report.big_story.category}</p><h2>{report.big_story.title_en}</h2><h3>{report.big_story.title_zh}</h3><p className="summary">{report.big_story.summary}</p><small>{report.big_story.minutes} min deep read {report.big_story.source_url && <>· <a className="source-link" href={report.big_story.source_url} target="_blank" rel="noreferrer">{report.big_story.source_label} ↗</a></>}</small></div>
       </section>
 
       <section className="content-section" id="hot-words">

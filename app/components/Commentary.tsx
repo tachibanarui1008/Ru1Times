@@ -1,6 +1,8 @@
 import { latestCommentary } from "../commentary-data";
 import type { CommentaryReport } from "../commentary-types";
 import { AiCredit } from "./AiCredit";
+import { IssueLead } from "./IssueLead";
+import { PublicationMasthead } from "./PublicationMasthead";
 import { SiteChrome } from "./SiteChrome";
 
 export function Commentary({ reportData = latestCommentary, archiveMode = false }: { reportData?: CommentaryReport; archiveMode?: boolean }) {
@@ -8,15 +10,20 @@ export function Commentary({ reportData = latestCommentary, archiveMode = false 
   return <SiteChrome active={archiveMode ? "Archive" : "Ru1Commentary"} demo={report.draft} edition={report.edition_number}>
     <main className="commentary-main">
       {archiveMode && <div className="archive-reader-bar"><a href="/archive">← Back to Archive</a><span>Ru1Commentary · {report.id}</span></div>}
-      <header className="commentary-cover" id="top">
-        <div className="commentary-cover-copy">
-          <p>RU1COMMENTARY · {report.category} {report.draft && <span>样刊</span>}</p>
-          <h1>{report.title}</h1>
-          <h2>{report.subtitle}</h2>
-          <p className="commentary-dek">{report.dek}</p>
-          <div className="commentary-meta"><span>{report.date}</span><span>{report.byline}</span><span>{report.estimated_minutes} min read</span><span>Issue {String(report.edition_number).padStart(3,"0")}</span></div>
-        </div>
-      </header>
+      <PublicationMasthead
+        edition={report.edition_number}
+        publishedAt={report.published_at}
+        draft={report.draft}
+        title="Ru1Commentary"
+        subtitle="记录橘瑠衣的所思所想，在个人经验与公共议题之间保留真实判断。"
+      />
+
+      <IssueLead
+        eyebrow={`RU1COMMENTARY · ${report.category} · ${report.byline}`}
+        title={report.title}
+        subtitle={report.subtitle}
+        dek={report.dek}
+      />
 
       <div className="commentary-editor-note"><span>EDITOR’S NOTE</span><p>{report.editor_note}</p></div>
 

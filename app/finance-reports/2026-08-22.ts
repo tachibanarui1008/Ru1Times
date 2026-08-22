@@ -12,7 +12,7 @@ export const financeReport20260822: FinanceReport = {
   market_as_of: "2026-08-21 收盘",
   title_zh: "当银行开始学着持有股权",
   title_en: "When banks learn to hold equity",
-  dek: "本期学一个中国科创金融绕不开的机制——投贷联动：银行用股权的上行收益，补信贷覆盖不了的风险。再看上周五六个市场的表情：黄金创新高，A股缩量，医药回落，日经盘中跌逾九百点。",
+  dek: "本期学一个中国科创金融绕不开的机制——投贷联动：银行用股权的上行收益，补信贷覆盖不了的风险。再看上周五主要市场的表情：黄金创新高，A股缩量，医药回落，日经盘中跌逾九百点。",
   learning: {
     category: "概念",
     category_en: "Concept",
