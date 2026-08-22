@@ -32,4 +32,24 @@ test("server-renders the editorial archive", async () => {
   assert.match(html, /ARCHIVE/);
   assert.match(html, />Archive<\/h1>/);
   assert.match(html, /六个月的战争/);
+  assert.match(html, /当安全开始为一切定价/);
+});
+
+test("server-renders the Ru1Weekly draft", async () => {
+  const response = await render("/weekly");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /When security starts pricing everything/);
+  assert.match(html, /世界在同一张桌上/);
+  assert.match(html, /潜流与回声/);
+  assert.match(html, /数字之后/);
+  assert.match(html, /未完成的结论/);
+  assert.match(html, /Ru1 Concord Edition/);
+  assert.match(html, /which yield 仍然可以接受/);
+  assert.match(html, /search for visibility or 見通し/);
+  assert.match(html, /見通し（日语 みとおし \/ mitōshi，前景判断）/);
+  assert.match(html, /눈치（韩语 nunchi \/ nun\.tɕʰi，察言观色的能力）/);
+  assert.match(html, /seguridad（西班牙语 \/se\.ɣu\.ɾiˈðað\/，安全）/);
+  assert.match(html, /desfase（西班牙语 \/desˈfa\.se\/，不同步或错位）/);
+  assert.doesNotMatch(html, /Hot Words|Today’s Challenge|Complete Today/);
 });

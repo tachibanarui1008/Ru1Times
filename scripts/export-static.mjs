@@ -53,6 +53,7 @@ async function writePage(route, relativeOutput) {
 
 await cp(client, output, { recursive: true });
 await writePage("/", "index.html");
+await writePage("/weekly", "weekly/index.html");
 await writePage("/archive", "archive/index.html");
 
 const reportFiles = (await readdir(path.join(root, "app", "reports")))
@@ -61,6 +62,14 @@ const reportFiles = (await readdir(path.join(root, "app", "reports")))
 for (const file of reportFiles) {
   const date = file.slice(0, 10);
   await writePage(`/archive?edition=${date}`, `archive/${date}/index.html`);
+}
+
+const weeklyFiles = (await readdir(path.join(root, "app", "weekly-reports")))
+  .filter(file => /^\d{4}-W\d{2}\.ts$/.test(file))
+  .sort();
+for (const file of weeklyFiles) {
+  const id = file.slice(0, -3);
+  await writePage(`/archive?edition=${id}`, `archive/${id}/index.html`);
 }
 
 await writeFile(path.join(output, ".nojekyll"), "", "utf8");

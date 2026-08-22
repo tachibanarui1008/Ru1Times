@@ -3,7 +3,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 
 const links = [
-  ["Ru1Daily", "/"], ["Ru1Weekly", "#weekly"], ["Ru1Commentary", "#commentary"], ["Ru1Finance", "#finance"], ["Archive", "/archive"],
+  ["Ru1Daily", "/"], ["Ru1Weekly", "/weekly"], ["Ru1Commentary", "#commentary"], ["Ru1Finance", "#finance"], ["Archive", "/archive"],
 ] as const;
 
 export function SiteChrome({ active, children, demo = false, edition }: { active: string; children: ReactNode; demo?: boolean; edition?: number }) {
