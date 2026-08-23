@@ -21,9 +21,9 @@ test("server-renders the Ru1Daily homepage", async () => {
   assert.match(html, /Ru1Times/);
   assert.match(html, /Ru1Commentary/);
   assert.match(html, /Ru1Finance/);
-  assert.match(html, /六个月的战争/);
+  assert.match(html, /上市三天，宇树科技/);
   assert.match(html, /publication-masthead/);
-  assert.match(html, /第 002 期/);
+  assert.match(html, /第 003 期/);
   assert.match(html, /<h1>Ru1Daily<\/h1>/);
   assert.match(html, /以不同语言转述今日新闻，在阅读与鉴赏中提升多语言能力。/);
   assert.ok(html.indexOf("<h1>Ru1Daily</h1>") < html.indexOf('class="big-story"'));
@@ -98,14 +98,14 @@ test("server-renders the Ru1Finance edition", async () => {
   const response = await render("/finance");
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /When banks learn to hold equity/);
+  assert.match(html, /When the secondary market prices humanoid robots for the first time/);
   assert.match(html, /publication-masthead/);
-  assert.match(html, /第 001 期/);
+  assert.match(html, /第 002 期/);
   assert.match(html, /<h1>Ru1Finance<\/h1>/);
   assert.match(html, /为金融学生准备的快速日报：学习一个概念，读懂今日市场。/);
   assert.match(html, /issue-lead/);
   assert.ok(html.indexOf("<h1>Ru1Finance</h1>") < html.indexOf('class="issue-lead"'));
-  assert.match(html, /投贷联动：当贷款的利息，覆盖不了科创的风险/);
+  assert.match(html, /新股定价与首日博弈：宇树科技演示的五件事/);
   assert.match(html, /今日总览/);
   assert.match(html, /3,905\.20/);
   assert.match(html, /66,016\.36/);
@@ -114,6 +114,6 @@ test("server-renders the Ru1Finance edition", async () => {
   assert.match(html, /26,136\.56/);
   assert.match(html, /quote-change (up|down)/);
   assert.match(html, /2026-08-21 收盘/);
-  assert.match(html, /三星电子|阿里巴巴/);
+  assert.match(html, /宇树科技|智元机器人/);
   assert.doesNotMatch(html, /即将上线/);
 });
