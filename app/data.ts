@@ -1,3 +1,4 @@
+import { realReport20260823 } from "./reports/2026-08-23";
 import { realReport20260822 } from "./reports/2026-08-22";
 import { demoReport } from "./reports/demo";
 import type { DailyReport } from "./report-types";
@@ -5,7 +6,7 @@ import type { DailyReport } from "./report-types";
 export type { DailyReport, Language, LearnerSegment, SourceReference } from "./report-types";
 export { demoReport } from "./reports/demo";
 
-export const reports: DailyReport[] = [realReport20260822, demoReport];
+export const reports: DailyReport[] = [realReport20260823, realReport20260822, demoReport];
 export const latestReport = reports.find(report => !report.demo) ?? reports[0];
 export const getReportById = (id: string) => reports.find(report => report.id === id);
 export const getReportByDate = (date: string) => reports.find(report => report.date === date && !report.demo);

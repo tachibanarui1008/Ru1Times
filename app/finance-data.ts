@@ -1,7 +1,8 @@
+import { financeReport20260823 } from "./finance-reports/2026-08-23";
 import { financeReport20260822 } from "./finance-reports/2026-08-22";
 import type { FinanceReport } from "./finance-types";
 
-export const financeReports: FinanceReport[] = [financeReport20260822];
+export const financeReports: FinanceReport[] = [financeReport20260823, financeReport20260822];
 export const latestFinanceReport = financeReports[0];
 export const getFinanceReportById = (id: string) => financeReports.find(report => report.id === id || `finance-${report.id}` === id);
 export const financeArchiveReports = financeReports.map(report => ({
