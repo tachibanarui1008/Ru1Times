@@ -6,7 +6,7 @@ export const financeReport20260824: FinanceReport = {
   published_at: "2026-08-24T19:48:25+08:00",
   updated_at: "2026-08-24T19:48:25+08:00",
   edition_number: 3,
-  draft: true,
+  draft: false,
   estimated_minutes: 18,
   ai_credit: { provider: "OpenAI", model: "GPT5.6terra", role: "资料研究、事实核查与编辑协作" },
   market_as_of: "2026-08-24 19:48（北京时间；亚太为当日收盘，美欧为 8 月 21 日最近完整收盘）",
