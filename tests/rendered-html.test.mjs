@@ -21,9 +21,9 @@ test("server-renders the Ru1Daily homepage", async () => {
   assert.match(html, /Ru1Times/);
   assert.match(html, /Ru1Commentary/);
   assert.match(html, /Ru1Finance/);
-  assert.match(html, /上市三天，宇树科技/);
+  assert.match(html, /天工 Ultra/);
   assert.match(html, /publication-masthead/);
-  assert.match(html, /第 003 期/);
+  assert.match(html, /第 004 期/);
   assert.match(html, /<h1>Ru1Daily<\/h1>/);
   assert.match(html, /以不同语言转述今日新闻，在阅读与鉴赏中提升多语言能力。/);
   assert.ok(html.indexOf("<h1>Ru1Daily</h1>") < html.indexOf('class="big-story"'));
