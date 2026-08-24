@@ -9,7 +9,7 @@ export type DailyReport = {
   published_at: string;
   updated_at: string;
   edition_number: number;
-  demo: boolean;
+  draft: boolean;
   estimated_minutes: number;
   ai_credit: AiCredit;
   sources: SourceReference[];

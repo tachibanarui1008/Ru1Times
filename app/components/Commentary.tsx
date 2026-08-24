@@ -7,13 +7,12 @@ import { SiteChrome } from "./SiteChrome";
 
 export function Commentary({ reportData = latestCommentary, archiveMode = false }: { reportData?: CommentaryReport; archiveMode?: boolean }) {
   const report = reportData;
-  return <SiteChrome active={archiveMode ? "Archive" : "Ru1Commentary"} demo={report.draft} edition={report.edition_number}>
+  return <SiteChrome active={archiveMode ? "Archive" : "Ru1Commentary"} edition={report.edition_number}>
     <main className="commentary-main">
       {archiveMode && <div className="archive-reader-bar"><a href="/archive">← Back to Archive</a><span>Ru1Commentary · {report.id}</span></div>}
       <PublicationMasthead
         edition={report.edition_number}
         publishedAt={report.published_at}
-        draft={report.draft}
         title="Ru1Commentary"
         subtitle="记录橘瑠衣的所思所想，在个人经验与公共议题之间保留真实判断。"
       />

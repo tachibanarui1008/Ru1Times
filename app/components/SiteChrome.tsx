@@ -8,7 +8,7 @@ const links = [
   ["Ru1Daily", "/"], ["Ru1Weekly", "/weekly"], ["Ru1Commentary", "/commentary"], ["Ru1Finance", "/finance"], ["Archive", "/archive"],
 ] as const;
 
-export function SiteChrome({ active, children, demo = false, edition }: { active: string; children: ReactNode; demo?: boolean; edition?: number }) {
+export function SiteChrome({ active, children, edition }: { active: string; children: ReactNode; edition?: number }) {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [menu, setMenu] = useState(false);
   const [searching, setSearching] = useState(false);
@@ -43,7 +43,7 @@ export function SiteChrome({ active, children, demo = false, edition }: { active
       {searching && <div className="search-panel"><label><span>搜索小橘日报</span><input placeholder="输入主题、词汇或新闻关键词……" /></label><button onClick={() => setSearching(false)}>关闭</button></div>}
       {menu && <nav className="mobile-menu" aria-label="Mobile navigation">{links.map(([label,href]) => <a className={active === label ? "active" : ""} href={href} key={href}>{label}<span>{href.startsWith("#") ? "Soon" : "↗"}</span></a>)}</nav>}
       {children}
-      <footer className="site-footer"><div><strong>Ru1Times</strong><p>小橘时代 · One world, many points of view.</p></div><div><span>Ru1Daily · Ru1Weekly · Ru1Commentary · Ru1Finance</span><span>{demo ? "样刊" : edition ? `第 ${String(edition).padStart(3,"0")} 期` : "Archive"}</span></div></footer>
+      <footer className="site-footer"><div><strong>Ru1Times</strong><p>小橘时代 · One world, many points of view.</p></div><div><span>Ru1Daily · Ru1Weekly · Ru1Commentary · Ru1Finance</span><span>{edition === undefined ? "Archive" : `第 ${String(edition).padStart(3,"0")} 期`}</span></div></footer>
     </>
   );
 }

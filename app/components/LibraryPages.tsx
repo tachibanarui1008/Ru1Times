@@ -38,8 +38,8 @@ export function ArchivePage() {
   if(selectedFinance) return <Finance archiveMode reportData={selectedFinance}/>;
 
   const publications = [
-    ...commentaryReports.map(report=>({ id:report.id, date:report.date, demo:report.draft, title:report.title, fields:["Ru1Commentary",report.category], status:report.draft?"Draft":"Sourced", summary:report.subtitle })),
-    ...weeklyReports.map(report=>({ id:report.id, date:report.period_end, demo:report.draft, title:report.title_zh, fields:["Ru1Weekly","Concord Long Read"], status:report.draft?"Draft":"Sourced", summary:"世界在同一张桌上 · 潜流与回声 · 数字之后 · 未完成的结论" })),
+    ...commentaryReports.map(report=>({ id:report.id, date:report.date, draft:report.draft, title:report.title, fields:["Ru1Commentary",report.category], status:report.draft?"Draft":"Sourced", summary:report.subtitle })),
+    ...weeklyReports.map(report=>({ id:report.id, date:report.period_end, draft:report.draft, title:report.title_zh, fields:["Ru1Weekly","Concord Long Read"], status:report.draft?"Draft":"Sourced", summary:"世界在同一张桌上 · 潜流与回声 · 数字之后 · 未完成的结论" })),
     ...financeArchiveReports,
     ...archiveReports.map(report=>({ ...report, fields:["Ru1Daily",...report.fields], summary:"热点词 · 地道表达 · 四语简报 · 深度阅读" })),
   ].sort((a,b)=>b.date.localeCompare(a.date));
@@ -51,6 +51,6 @@ export function ArchivePage() {
     <div className="channel-filter" role="tablist" aria-label="按刊型筛选">
       {channels.map(name=><button key={name} role="tab" aria-selected={channel===name} className={channel===name?"active":""} onClick={()=>setChannel(name)}>{name}<small>{name==="All"?publications.length:publications.filter(r=>r.fields[0]===name).length}</small></button>)}
     </div>
-    <section className="archive-index"><div className="archive-year"><strong>2026</strong><span>August</span></div><div className="archive-list">{reports.map(r=><a href={`/archive?edition=${encodeURIComponent(r.id)}`} key={r.id}><time>{r.date.slice(5).replace("-",".")}</time><div><span>{r.fields.join(" · ")} {r.demo&&<i className="archive-status demo">样刊</i>}</span><h2>{r.title}</h2><p>{r.summary}</p></div><b>打开阅读 →</b></a>)}{reports.length===0&&<p className="empty-state">没有找到相符的往期刊物。</p>}</div></section>
+    <section className="archive-index"><div className="archive-year"><strong>2026</strong><span>August</span></div><div className="archive-list">{reports.map(r=><a href={`/archive?edition=${encodeURIComponent(r.id)}`} key={r.id}><time>{r.date.slice(5).replace("-",".")}</time><div><span>{r.fields.join(" · ")}</span><h2>{r.title}</h2><p>{r.summary}</p></div><b>打开阅读 →</b></a>)}{reports.length===0&&<p className="empty-state">没有找到相符的往期刊物。</p>}</div></section>
   </main></SiteChrome>;
 }

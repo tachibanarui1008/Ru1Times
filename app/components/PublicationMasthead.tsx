@@ -1,13 +1,11 @@
 export function PublicationMasthead({
   edition,
   publishedAt,
-  draft = false,
   title,
   subtitle,
 }: {
   edition: number;
   publishedAt: string;
-  draft?: boolean;
   title: string;
   subtitle: string;
 }) {
@@ -21,7 +19,7 @@ export function PublicationMasthead({
 
   return <header className="publication-masthead" id="top">
     <div className="publication-edition">
-      <span>{draft ? `样刊 · ${issueLabel}` : issueLabel}</span>
+      <span>{issueLabel}</span>
       <time dateTime={publishedAt}>{displayDate}</time>
     </div>
     <h1>{title}</h1>

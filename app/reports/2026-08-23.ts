@@ -6,7 +6,7 @@ export const realReport20260823: DailyReport = {
   published_at: "2026-08-23T08:30:00+08:00",
   updated_at: "2026-08-23T08:30:00+08:00",
   edition_number: 3,
-  demo: false,
+  draft: false,
   estimated_minutes: 40,
   ai_credit: { provider: "DeepSeek", model: "V4 Flash", role: "资料研究、事实核查与编辑协作" },
   sources: [

@@ -10,7 +10,7 @@ if (!/^\d{4}-\d{2}-\d{2}$/.test(date ?? "")) {
 const moduleName = `realReport${date.replaceAll("-", "")}`;
 const reportModule = await import(pathToFileURL(path.resolve(`app/reports/${date}.ts`)));
 const report = reportModule[moduleName];
-if (!report || report.demo) throw new Error(`No formal report exported by ${moduleName}`);
+if (!report || report.draft) throw new Error(`No formal report exported by ${moduleName}`);
 
 const esc = (value = "") => String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
 const nl = value => esc(value).replaceAll("\n", "<br>");

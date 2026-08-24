@@ -6,7 +6,7 @@ export const realReport20260822: DailyReport = {
   published_at: "2026-08-22T08:30:00+08:00",
   updated_at: "2026-08-22T08:30:00+08:00",
   edition_number: 2,
-  demo: false,
+  draft: false,
   estimated_minutes: 40,
   ai_credit: { provider: "OpenAI", model: "GPT-5.6 Sol", role: "资料研究、事实核查与编辑协作" },
   sources: [

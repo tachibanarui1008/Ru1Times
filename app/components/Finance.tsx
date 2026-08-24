@@ -21,14 +21,13 @@ function Quote({ index }: { index: IndexQuote }) {
 
 export function Finance({ reportData = latestFinanceReport, archiveMode = false }: { reportData?: FinanceReport; archiveMode?: boolean }) {
   const report = reportData;
-  return <SiteChrome active={archiveMode ? "Archive" : "Ru1Finance"} demo={report.draft} edition={report.edition_number}>
+  return <SiteChrome active={archiveMode ? "Archive" : "Ru1Finance"} edition={report.edition_number}>
     <main className="finance-main">
       {archiveMode && <div className="archive-reader-bar"><a href="/archive">← Back to Archive</a><span>Ru1Finance · {report.date}</span></div>}
 
       <PublicationMasthead
         edition={report.edition_number}
         publishedAt={report.published_at}
-        draft={report.draft}
         title="Ru1Finance"
         subtitle="为金融学生准备的快速日报：学习一个概念，读懂今日市场。"
       />

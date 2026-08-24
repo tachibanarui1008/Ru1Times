@@ -6,7 +6,7 @@ export const realReport20260824: DailyReport = {
   published_at: "2026-08-24T08:30:00+08:00",
   updated_at: "2026-08-24T08:30:00+08:00",
   edition_number: 4,
-  demo: false,
+  draft: false,
   estimated_minutes: 40,
   ai_credit: { provider: "MiniMax", model: "MiniMax-M3", role: "资料研究、事实核查与编辑协作" },
   sources: [

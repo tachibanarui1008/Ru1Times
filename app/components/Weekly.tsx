@@ -15,7 +15,6 @@ export function Weekly({ reportData = latestWeeklyReport, archiveMode = false }:
       <PublicationMasthead
         edition={report.edition_number}
         publishedAt={report.published_at}
-        draft={report.draft}
         title="Ru1Weekly"
         subtitle="以混合语言重组一周信息，在跨语境阅读中理解事件之间的联系。"
       />

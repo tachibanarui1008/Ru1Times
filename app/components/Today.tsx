@@ -41,14 +41,13 @@ export function Today({ archiveMode = false, reportData }: { archiveMode?: boole
     });
   }
 
-  return <SiteChrome active={archiveMode ? "Archive" : "Ru1Daily"} demo={report.demo} edition={report.edition_number}>
+  return <SiteChrome active={archiveMode ? "Archive" : "Ru1Daily"} edition={report.edition_number}>
     <div className="reading-progress" style={{width:`${progress}%`}} />
     <main className="daily-main">
       {archiveMode && <div className="archive-reader-bar"><a href="/archive">← Back to Archive</a><span>Ru1Daily · {report.date}</span></div>}
       <PublicationMasthead
         edition={report.edition_number}
         publishedAt={report.published_at}
-        draft={report.demo}
         title="Ru1Daily"
         subtitle="以不同语言转述今日新闻，在阅读与鉴赏中提升多语言能力。"
       />
@@ -94,7 +93,7 @@ export function Today({ archiveMode = false, reportData }: { archiveMode?: boole
 
       {report.history_lens&&<section className="history-lens"><div><span>06 · HISTORY LENS</span><h2>{report.history_lens.title}</h2><p>{report.history_lens.text}</p></div><div className="timeline"><div><strong>{report.history_lens.then}</strong><p>{report.history_lens.similarities}</p></div><i/><div><strong>{report.history_lens.now}</strong><p>{report.history_lens.differences}</p></div></div></section>}
 
-      {!report.demo && <aside className="source-ledger"><div><span>FURTHER READING</span><h2>延伸阅读</h2><p>继续阅读本期提到的报道与资料。</p></div><ol>{report.sources.map(source=><li key={source.url}><a href={source.url} target="_blank" rel="noreferrer"><span>{source.label}</span><strong>{source.title}</strong><small>{source.published} ↗</small></a></li>)}</ol></aside>}
+      {!report.draft && <aside className="source-ledger"><div><span>FURTHER READING</span><h2>延伸阅读</h2><p>继续阅读本期提到的报道与资料。</p></div><ol>{report.sources.map(source=><li key={source.url}><a href={source.url} target="_blank" rel="noreferrer"><span>{source.label}</span><strong>{source.title}</strong><small>{source.published} ↗</small></a></li>)}</ol></aside>}
 
       <AiCredit credit={report.ai_credit}/>
 
