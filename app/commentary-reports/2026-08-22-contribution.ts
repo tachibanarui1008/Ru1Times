@@ -5,7 +5,7 @@ export const commentary20260822Contribution: CommentaryReport = {
   date: "2026-08-22",
   published_at: "2026-08-22T20:28:42+08:00",
   updated_at: "2026-08-22T20:28:42+08:00",
-  edition_number: 2,
+  edition_number: 3,
   draft: false,
   estimated_minutes: 9,
   ai_credit: { provider: "OpenAI", model: "gpt 5.6 Luna", role: "结构重写、论证梳理与文字编辑" },

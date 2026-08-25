@@ -26,27 +26,27 @@ Treat issue work as three separate phases. This supports handoff from another ag
 
 ### Phase A: generate the `.ts` content package
 
-The content agent may create exactly one complete typed `.ts` issue file for the requested channel. It should include the full issue object, all required metadata, `ai_credit`, sources, and the channel-specific content fields. It should not edit the registry, shared components, page routes, generated `out/`, Git state, or deployment settings unless explicitly asked.
+The content agent may create exactly one complete typed `.ts` issue file for the requested channel. It should include the full issue object, all required metadata, `ai_credit`, sources, and the channel-specific content fields. It should not edit channel data adapters, shared components, page routes, generated `app/generated/` or `out/`, Git state, or deployment settings unless explicitly asked.
 
-The handoff should identify the channel, file path, issue date or week, intended ID and edition number, AI provider/model, and whether the file is a draft or intended for formal publication. A standalone `.ts` file is a content package, not a published issue; it is invisible to the formal site until registered.
+The handoff should identify the channel, file path, issue date or week, intended ID and edition number, AI provider/model, and whether the file is a draft or intended for formal publication. The build-time index discovers the file automatically. A `draft: true` content package remains outside the public index; `draft: false` makes it eligible for the next authorized build and deployment, but does not itself authorize either action.
 
 ### Phase B: render the `.ts` file to HTML for preview
 
 When the user asks to preview a supplied `.ts` file, validate and render it through the existing channel component into an isolated preview HTML or preview directory. Prefer the real `Today`, `Weekly`, `Commentary`, or `Finance` renderer so typography, sections, source notes, AI credit, and layout match the eventual site.
 
-Preview integration may use a temporary registry or isolated preview data layer, but must not alter the formal registry, commit, push, or deploy. Report the generated HTML path or local preview URL and clearly label it as preview-only. If the repository has no dedicated issue-to-HTML helper yet, use the smallest safe temporary integration and do not claim that a standalone `.ts` file can already be converted without project setup.
+Preview integration may use an isolated preview data layer, but must not change `draft` to `false`, commit, push, or deploy. Report the generated HTML path or local preview URL and clearly label it as preview-only. If the repository has no dedicated issue-to-HTML helper yet, use the smallest safe temporary integration and do not claim that a standalone `.ts` file can already be converted without project setup.
 
 ### Phase C: integrate and publish the issue
 
 Only after the user asks to publish, the publication agent:
 
-1. Inspects the real checkout, selected type definition, registry, neighboring issues, and worktree.
+1. Inspects the real checkout, selected type definition, automatic-index rules, neighboring issues, and worktree.
 2. Validates the supplied object and corrects only integration problems or explicitly requested editorial issues. Do not silently replace author content.
-3. Adds the file to the appropriate registry and places the intended latest issue first. Resolves duplicate IDs, dates, filenames, and edition numbers without overwriting history.
+3. Runs `pnpm run content:index`; the generator discovers, validates, and sorts the issue without a manual registry edit. Resolve duplicate IDs, dates, filenames, and edition numbers without overwriting history.
 4. Runs `pnpm test`; runs `pnpm run export:static` for weekly, commentary, finance, or archive/export changes.
-5. Finalizes the status (`demo: false` for formal Daily; `draft: false` for formal Weekly, Commentary, or Finance), commits only issue-related source and registry changes, pushes the authorized GitHub target, and verifies Pages deployment and the public page separately.
+5. Finalizes `draft: false` for a formal issue, commits only the issue content and other explicitly required source changes, pushes the authorized GitHub target, and verifies Pages deployment and the public page separately.
 
-When a user supplies a `.ts` file and asks to publish it, do not ask the content agent to repeat the registry or deployment work. Treat the supplied file as Phase A, optionally perform Phase B first, then perform Phase C locally.
+When a user supplies a `.ts` file and asks to publish it, do not ask the content agent to edit a channel data adapter or repeat deployment work. Treat the supplied file as Phase A, optionally perform Phase B first, then perform Phase C locally.
 
 ## Required inputs
 
@@ -56,9 +56,9 @@ Commentary additionally requires author-supplied thoughts. Daily and weekly requ
 
 ## Compact workflow
 
-1. Run `scripts/inspect_ru1times.ps1` for a concise checkout snapshot. Inspect the selected type definition, registry, and latest issue; preserve unrelated or unfinished changes. If another agent supplied a `.ts` file, treat it as a Phase A content package and do not assume its preview, registry, or deployment work is complete.
+1. Run `scripts/inspect_ru1times.ps1` for a concise checkout snapshot. Inspect the selected type definition, automatic-index configuration, and latest issue; preserve unrelated or unfinished changes. If another agent supplied a `.ts` file, treat it as a Phase A content package and do not assume its preview or deployment work is complete.
 2. Research only what the selected guide requires. Open original sources and record publication dates. Separate confirmed facts, editorial inference, and uncertainty.
-3. Create a new dated issue file rather than overwriting history. Fill the typed object, including `ai_credit`, and register the issue first in its channel array.
+3. Create a new dated issue file rather than overwriting history. Fill the typed object, including `ai_credit`; do not edit a channel data adapter because the build-time index registers and sorts the issue automatically.
 4. Keep the current components, typography, colors, spacing system, and archive conventions unless the author explicitly requests a design change.
 5. Run `pnpm test`. For weekly and commentary, and whenever archive/export behavior changes, also run `pnpm run export:static`. Treat a successful build as code evidence, not proof that a public deployment updated.
 6. Report the issue created, editorial choices, source limitations, model credit, and validation result. Keep drafts as drafts until the author approves them.
@@ -68,7 +68,7 @@ Commentary additionally requires author-supplied thoughts. Daily and weekly requ
 Treat these phrases as distinct workflow states:
 
 - `制作` or `起草`: create the Phase A `.ts` file locally, or accept one from another agent, validate it, and stop for review. Do not commit, push, merge, or deploy.
-- `预览`: perform Phase B and produce an isolated HTML/local preview. Do not modify the formal registry or claim publication.
+- `预览`: perform Phase B and produce an isolated HTML/local preview. Keep the issue outside the formal public index and do not claim publication.
 - `修改`: revise the named local issue, validate it again, and stop for review.
 - `推送留档`: commit only the approved issue-related files to a feature branch and push that branch. Do not merge it or claim the website changed.
 - `推送发布` or `确认发布`: explicit authorization to finalize the named issue and execute the GitHub Pages publication workflow in [references/publication-modes.md](references/publication-modes.md), including verification.

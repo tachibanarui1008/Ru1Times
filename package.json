@@ -6,11 +6,13 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "dev": "vinext dev",
-    "build": "vinext build",
+    "content:index": "node scripts/generate-content-index.mjs",
+    "typecheck": "tsc --noEmit",
+    "dev": "pnpm run content:index && vinext dev",
+    "build": "pnpm run content:index && pnpm run typecheck && vinext build",
     "export:static": "pnpm run build && node scripts/export-static.mjs",
     "start": "vinext start",
-    "test": "vinext build && node --test tests/rendered-html.test.mjs",
+    "test": "pnpm run build && node --test tests/content-index.test.mjs tests/rendered-html.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "export:report": "node scripts/export-report.mjs"
   },

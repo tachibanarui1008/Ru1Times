@@ -3,17 +3,17 @@ param(
 )
 
 $resolvedRoot = (Resolve-Path -LiteralPath $ProjectRoot -ErrorAction Stop).Path
-$required = @("package.json", "app/report-types.ts", "app/data.ts")
+$required = @("package.json", "app/report-types.ts", "scripts/generate-content-index.mjs")
 foreach ($relativePath in $required) {
   if (-not (Test-Path -LiteralPath (Join-Path $resolvedRoot $relativePath))) {
     throw "Not a Ru1Times application root: missing $relativePath"
   }
 }
 $channels = @(
-  @{ Name = "daily"; Directory = "app/reports"; Registry = "app/data.ts"; Exclude = "demo.ts" },
-  @{ Name = "weekly"; Directory = "app/weekly-reports"; Registry = "app/weekly-data.ts"; Exclude = "" },
-  @{ Name = "commentary"; Directory = "app/commentary-reports"; Registry = "app/commentary-data.ts"; Exclude = "" },
-  @{ Name = "finance"; Directory = "app/finance-reports"; Registry = "app/finance-data.ts"; Exclude = "" }
+  @{ Name = "daily"; Directory = "app/reports"; Adapter = "app/data.ts"; Exclude = "" },
+  @{ Name = "weekly"; Directory = "app/weekly-reports"; Adapter = "app/weekly-data.ts"; Exclude = "" },
+  @{ Name = "commentary"; Directory = "app/commentary-reports"; Adapter = "app/commentary-data.ts"; Exclude = "" },
+  @{ Name = "finance"; Directory = "app/finance-reports"; Adapter = "app/finance-data.ts"; Exclude = "" }
 )
 
 Write-Output "root=$resolvedRoot"
@@ -27,7 +27,7 @@ foreach ($channel in $channels) {
   } else { @() }
   $latest = if ($files.Count -gt 0) { $files[0].Name } else { "missing" }
   $credit = if ($files.Count -gt 0) { [bool](Select-String -LiteralPath $files[0].FullName -Pattern "ai_credit" -Quiet) } else { $false }
-  Write-Output "$($channel.Name): latest=$latest ai_credit=$credit registry=$($channel.Registry)"
+  Write-Output "$($channel.Name): latest_file=$latest ai_credit=$credit adapter=$($channel.Adapter) auto_index=True"
 }
 
 $git = Get-Command git -ErrorAction SilentlyContinue

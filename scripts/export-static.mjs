@@ -1,4 +1,4 @@
-import { cp, mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -51,6 +51,7 @@ async function writePage(route, relativeOutput) {
   await writeFile(destination, relativize(await render(route), depth), "utf8");
 }
 
+await rm(output, { recursive: true, force: true });
 await cp(client, output, { recursive: true });
 await writePage("/", "index.html");
 await writePage("/weekly", "weekly/index.html");
@@ -58,36 +59,11 @@ await writePage("/commentary", "commentary/index.html");
 await writePage("/finance", "finance/index.html");
 await writePage("/archive", "archive/index.html");
 
-const reportFiles = (await readdir(path.join(root, "app", "reports")))
-  .filter(file => /^\d{4}-\d{2}-\d{2}\.ts$/.test(file))
-  .sort();
-for (const file of reportFiles) {
-  const date = file.slice(0, 10);
-  await writePage(`/archive?edition=${date}`, `archive/${date}/index.html`);
-}
-
-const weeklyFiles = (await readdir(path.join(root, "app", "weekly-reports")))
-  .filter(file => /^\d{4}-W\d{2}\.ts$/.test(file))
-  .sort();
-for (const file of weeklyFiles) {
-  const id = file.slice(0, -3);
-  await writePage(`/archive?edition=${id}`, `archive/${id}/index.html`);
-}
-
-const commentaryFiles = (await readdir(path.join(root, "app", "commentary-reports")))
-  .filter(file => /^\d{4}-\d{2}-\d{2}(?:-[a-z0-9-]+)?\.ts$/.test(file))
-  .sort();
-for (const file of commentaryFiles) {
-  const issueId = `commentary-${file.slice(0, -3)}`;
-  await writePage(`/archive?edition=${issueId}`, `archive/${issueId}/index.html`);
-}
-
-const financeFiles = (await readdir(path.join(root, "app", "finance-reports")))
-  .filter(file => /^\d{4}-\d{2}-\d{2}\.ts$/.test(file))
-  .sort();
-for (const file of financeFiles) {
-  const date = file.slice(0, 10);
-  await writePage(`/archive?edition=finance-${date}`, `archive/finance-${date}/index.html`);
+const manifest = JSON.parse(await readFile(path.join(root, "app", "generated", "content-manifest.json"), "utf8"));
+for (const issues of Object.values(manifest)) {
+  for (const issue of issues) {
+    await writePage(`/archive?edition=${encodeURIComponent(issue.id)}`, `archive/${issue.id}/index.html`);
+  }
 }
 
 await writeFile(path.join(output, ".nojekyll"), "", "utf8");

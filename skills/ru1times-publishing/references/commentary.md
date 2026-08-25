@@ -18,4 +18,4 @@ After the Chinese body, add two to four bilingual `backgrounds` and three to six
 
 ## File workflow
 
-Create `app/commentary-reports/YYYY-MM-DD.ts`, fill the current `CommentaryReport`, including author-provided `ai_credit`, and keep `draft: true`. Register first in `commentaryReports`. Reuse the existing component and styles. Run `pnpm test` and `pnpm run export:static`; verify `/commentary`, Archive, and `commentary-YYYY-MM-DD` detail output. Report material editorial changes and factual corrections to the author before publication.
+Create `app/commentary-reports/YYYY-MM-DD[-slug].ts`, fill the current `CommentaryReport`, including author-provided `ai_credit`, and keep `draft: true` until approval. Set it to `false` for authorized publication; the build-time index discovers and sorts it automatically, so do not edit `app/commentary-data.ts`. Reuse the existing component and styles. Run `pnpm test` and `pnpm run export:static`; verify `/commentary`, Archive, and the matching `commentary-...` detail output. Report material editorial changes and factual corrections to the author before publication.

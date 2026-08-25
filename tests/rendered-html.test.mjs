@@ -86,7 +86,7 @@ test("server-renders the Ru1Commentary edition", async () => {
   assert.match(html, /The stages of distribution in the Critique of the Gotha Programme/);
   assert.match(html, /Contribution \/ dedication/);
   assert.match(html, /publication-masthead/);
-  assert.match(html, /第 002 期/);
+  assert.match(html, /第 003 期/);
   assert.match(html, /<h1>Ru1Commentary<\/h1>/);
   assert.match(html, /记录橘瑠衣的所思所想，在个人经验与公共议题之间保留真实判断。/);
   assert.match(html, /issue-lead/);
