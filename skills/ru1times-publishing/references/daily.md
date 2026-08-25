@@ -20,4 +20,4 @@ Use the original first-publication time. A substantive update counts only when t
 
 ## File workflow
 
-Create `app/reports/YYYY-MM-DD.ts` with a date-matching ID and export. Keep `draft: true` until approval, then set `draft: false`; the build-time index discovers and sorts it automatically, so do not edit `app/data.ts`. Run `pnpm test`; run `pnpm run export:report -- YYYY-MM-DD` only when a single offline HTML is requested, and `pnpm run export:static` when the site archive must be refreshed.
+Create `app/reports/YYYY-MM-DD.ts` with a date-matching internal ID and export. Keep `draft: true` until approval, then set `draft: false`; the build-time index discovers and sorts it automatically, so do not edit `app/data.ts`. The latest issue appears at `/daily`, the Ru1Times homepage card updates automatically, and the public archive ID is `daily-YYYY-MM-DD`. Run `pnpm test`; run `pnpm run export:report -- YYYY-MM-DD` only when a single offline HTML is requested, and `pnpm run export:static` when the site archive must be refreshed.

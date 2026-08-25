@@ -19,12 +19,12 @@ export const metadata: Metadata = {
     title: "Ru1Times · 小橘时代",
     description: "News, language, commentary and finance from Tachibana.",
     type: "website",
-    images: [{ url: "/og.png", width: 1731, height: 909, alt: "小橘日报" }],
+    images: [{ url: "/og.png", width: 1731, height: 909, alt: "Ru1Times 小橘时代" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "小橘日报 · 四语全球晨报",
-    description: "One world. Four languages. One morning at a time.",
+    title: "Ru1Times · 小橘时代",
+    description: "觀世相，愛憎離合。自分を綴る。",
     images: ["/og.png"],
   },
   icons: {

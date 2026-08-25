@@ -1,3 +1,3 @@
-import { Today } from "./components/Today";
+import { Homepage } from "./components/Homepage";
 
-export default function Home() { return <Today />; }
+export default function Home() { return <Homepage />; }

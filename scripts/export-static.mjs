@@ -54,15 +54,20 @@ async function writePage(route, relativeOutput) {
 await rm(output, { recursive: true, force: true });
 await cp(client, output, { recursive: true });
 await writePage("/", "index.html");
+await writePage("/daily", "daily/index.html");
 await writePage("/weekly", "weekly/index.html");
 await writePage("/commentary", "commentary/index.html");
 await writePage("/finance", "finance/index.html");
 await writePage("/archive", "archive/index.html");
 
 const manifest = JSON.parse(await readFile(path.join(root, "app", "generated", "content-manifest.json"), "utf8"));
-for (const issues of Object.values(manifest)) {
+for (const [channel, issues] of Object.entries(manifest)) {
   for (const issue of issues) {
     await writePage(`/archive?edition=${encodeURIComponent(issue.id)}`, `archive/${issue.id}/index.html`);
+    if (channel === "daily" && issue.id.startsWith("daily-")) {
+      const legacyId = issue.id.slice("daily-".length);
+      await writePage(`/archive?edition=${encodeURIComponent(issue.id)}`, `archive/${legacyId}/index.html`);
+    }
   }
 }
 
