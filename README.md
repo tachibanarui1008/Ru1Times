@@ -22,11 +22,14 @@ Ru1Times
 
 `Ru1Daily` 是一个版面名称，不是整个网站的总品牌。不要把网站标题、页脚或 Open Graph 标题重新写回 RuiDaily 或小橘日报旧品牌。
 
-四种刊物统一使用同一开篇顺序：先以黑色期号徽标、发布日期、固定刊名和固定创刊词组成门头；门头结束后，才显示本期大标题、小标题、导语与具体内容。刊名与创刊词不随每期选题变化，本期标题不得取代刊名。创刊词使用小号正文，不与刊名或本期标题争夺视觉层级；门头与本期内容之间只保留一条分隔线。门头不显示阅读时长、栏目数量或内容数量，也不在正文前重复放置四刊切换卡；刊物之间通过全站顶部导航切换。日报主故事不显示 `Start Morning Brief` 按钮。
+四种刊物统一使用同一开篇顺序：先以黑色期号徽标、发布日期、固定刊名和固定创刊词组成门头；门头结束后，才显示本期大标题、小标题、导语与具体内容。刊名与创刊词不随每期选题变化，本期标题不得取代刊名。创刊词使用小号正文，不与刊名或本期标题争夺视觉层级；门头与本期内容之间只保留一条分隔线。门头不显示阅读时长、栏目数量或内容数量，也不在正文前重复放置四刊切换卡。顶部导航只保留 `Home` 与 `Archive`，四刊入口集中在首页。日报主故事不显示 `Start Morning Brief` 按钮。
 
 ## 项目结构
 
+- `app/components/Homepage.tsx`：Ru1Times 首页、四刊自动最新一期与作者简介
+- `app/page.tsx`：Ru1Times 首页入口
 - `app/components/Today.tsx`：日报阅读版面和交互
+- `app/daily/page.tsx`：Ru1Daily 最新一期入口
 - `app/components/SiteChrome.tsx`：总导航、品牌、页脚和主题切换
 - `app/components/LibraryPages.tsx`：Archive 页面
 - `app/reports/YYYY-MM-DD.ts`：日报内容包；`draft: false` 时由构建自动加入正式索引
@@ -46,16 +49,16 @@ Ru1Times
 - `app/globals.css`：全站版式和响应式样式
 - `scripts/export-report.mjs`：单期静态 HTML 导出脚本
 - `scripts/generate-content-index.mjs`：扫描四刊内容包、校验元数据并生成公开索引
-- `scripts/export-static.mjs`：导出首页、周报、Archive 和各期静态归档到 `out/`
+- `scripts/export-static.mjs`：导出首页、四刊入口、Archive 和各期静态归档到 `out/`
 - `tests/content-index.test.mjs`：自动发现、草稿隔离与重复期号验收
-- `tests/rendered-html.test.mjs`：四刊首页和 Archive 渲染验收
+- `tests/rendered-html.test.mjs`：Ru1Times 首页、四刊入口和 Archive 渲染验收
 - `skills/ru1times-publishing/`：随仓库维护的四刊快速出刊 Skill 源码；修改刊物规则时应与已安装版本同步
 
 本项目统一使用 `pnpm` 与 `pnpm-lock.yaml`。`app/generated/`、`dist/`、`out/`、`exports/`、`.vinext/`、`.wrangler/` 和 `work/` 都是可重新生成的本地构建内容，不应提交到 GitHub。
 
 ## 自动内容索引
 
-四刊采用“一期一个 typed `.ts` 文件”的内容包模式。构建开始时，`pnpm run content:index` 自动扫描四个内容目录，按 `published_at` 与期号排序，并生成首页与 Archive 使用的索引。新增一期时不要手动修改 `app/data.ts`、`app/weekly-data.ts`、`app/commentary-data.ts` 或 `app/finance-data.ts`。
+四刊采用“一期一个 typed `.ts` 文件”的内容包模式。构建开始时，`pnpm run content:index` 自动扫描四个内容目录，按 `published_at` 与期号排序，并生成四刊最新入口、Ru1Times 首页卡片与 Archive 使用的索引。新增一期时不要手动修改 `app/data.ts`、`app/weekly-data.ts`、`app/commentary-data.ts` 或 `app/finance-data.ts`。
 
 索引程序会检查文件名、`id`、日期、`edition_number`、`published_at`、`updated_at`、`draft`、导出类型以及 `ai_credit`，并拒绝同一栏目的重复 ID 或重复期号。只有 `draft: false` 的内容包会进入生成索引、公开页面和静态归档；`draft: true` 只作为本地内容包保留。`pnpm run build`、`pnpm test`、`pnpm dev` 与 `pnpm run export:static` 都会在需要时自动刷新索引。
 
@@ -149,7 +152,7 @@ pnpm test
 node scripts/export-report.mjs YYYY-MM-DD
 ```
 
-7. 最后检查首页、`/archive`、对应归档详情和移动端版式。构建失败时不得宣称已完成。
+7. 最后检查 `/daily`、`/archive`、`/archive/daily-YYYY-MM-DD` 对应归档详情和移动端版式。旧的 `/archive/YYYY-MM-DD` 地址仅作为兼容入口保留。构建失败时不得宣称已完成。
 
 ## 给日报 agent 的推荐提示词
 
@@ -584,11 +587,17 @@ pnpm test
 pnpm run build
 ```
 
-本地预览通常为 `http://localhost:3000/`，Ru1Weekly 为 `http://localhost:3000/weekly`，Archive 为 `http://localhost:3000/archive`。
+本地预览通常为 `http://localhost:3000/`。Ru1Daily 为 `http://localhost:3000/daily`，Ru1Weekly 为 `http://localhost:3000/weekly`，Archive 为 `http://localhost:3000/archive`。
 
 构建通过只说明代码和服务端渲染成功；如果要发布到 GitHub Pages 或其他托管平台，还要另外确认静态导出、资源路径、子路径和部署配置。
 
 ## 项目日志
+
+### 2026-08-25 · Ru1Times 首页与独立日报入口
+
+- `/` 改为 Ru1Times 总首页，展示创刊初衷、四刊自动最新一期、作者简介、头像与人物设定图。
+- 顶部导航只保留 `Home` 与 `Archive`；四刊从首页进入，Ru1Daily 最新一期迁至 `/daily`。
+- 日报公开归档统一使用 `daily-YYYY-MM-DD`，并保留旧的 `YYYY-MM-DD` 静态地址兼容既有链接。
 
 ### 2026-08-22 · Ru1Commentary 样刊建立
 

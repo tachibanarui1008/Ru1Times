@@ -12,18 +12,39 @@ async function render(pathname = "/") {
   );
 }
 
-test("server-renders the Ru1Daily homepage", async () => {
+test("server-renders the Ru1Times homepage", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
   assert.match(html, /<title>Ru1Times · 小橘时代<\/title>/i);
-  assert.match(html, /Ru1Times/);
+  assert.match(html, /觀世相，愛憎離合。/);
+  assert.match(html, /自分を綴る。/);
+  assert.match(html, /personal gazette—not a final verdict on the world/);
+  assert.match(html, /接住世界/);
+  assert.match(html, /向内生长/);
+  assert.match(html, /留下声音/);
+  assert.doesNotMatch(html, /接收信息，|获得进步，|表达观点。|一份刊物，三件事情|读世界，|也写自己。|書己見。|世界を知る。|世の相を読み、/);
+  assert.match(html, /橘瑠衣是谁/);
+  assert.match(html, /1403143456@qq\.com/);
+  assert.match(html, /tachibanarui1008@gmail\.com/);
+  assert.match(html, /tachibana-rui-avatar\.png/);
+  assert.match(html, /tachibana-rui-character-sheet\.png/);
+  assert.match(html, /href="\/daily"/);
+  assert.match(html, /href="\/weekly"/);
   assert.match(html, /Ru1Commentary/);
   assert.match(html, /Ru1Finance/);
-  assert.match(html, /天工 Ultra/);
+  assert.match(html, /800 亿港元押注 AI/);
+  assert.match(html, /最新一期由内容索引自动更新/);
+  assert.doesNotMatch(html, /进入 Ru1Daily|浏览全部刊物/);
+});
+
+test("server-renders Ru1Daily at its own route", async () => {
+  const response = await render("/daily");
+  assert.equal(response.status, 200);
+  const html = await response.text();
   assert.match(html, /publication-masthead/);
-  assert.match(html, /第 004 期/);
+  assert.match(html, /第 005 期/);
   assert.match(html, /<h1>Ru1Daily<\/h1>/);
   assert.match(html, /以不同语言转述今日新闻，在阅读与鉴赏中提升多语言能力。/);
   assert.ok(html.indexOf("<h1>Ru1Daily</h1>") < html.indexOf('class="big-story"'));
@@ -44,6 +65,7 @@ test("server-renders the editorial archive", async () => {
   assert.match(html, /来煎人寿/);
   assert.match(html, /当银行开始学着持有股权/);
   assert.match(html, /channel-filter/);
+  assert.match(html, /daily-2026-08-25/);
 });
 
 test("server-renders the Ru1Weekly issue without editorial prompts", async () => {

@@ -11,7 +11,7 @@ const channels = [
     typeName: "DailyReport",
     generatedName: "generatedDailyReports",
     filename: /^\d{4}-\d{2}-\d{2}$/,
-    publicId: record => record.id,
+    publicId: record => `daily-${record.id}`,
     archiveDateField: "date",
   },
   {

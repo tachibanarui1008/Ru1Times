@@ -47,7 +47,7 @@ test("auto-index discovers formal issues and keeps drafts out of the public inde
   const { manifest } = await generateContentIndex(root);
   const index = await readFile(path.join(root, "app", "generated", "content-index.ts"), "utf8");
   assert.equal(manifest.daily.length, 1);
-  assert.equal(manifest.daily[0].id, "2026-08-25");
+  assert.equal(manifest.daily[0].id, "daily-2026-08-25");
   assert.match(index, /dailyIssue/);
   assert.doesNotMatch(index, /draftDaily/);
 });
