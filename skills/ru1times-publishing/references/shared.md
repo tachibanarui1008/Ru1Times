@@ -2,14 +2,14 @@
 
 ## Project map
 
-| Channel | Issue files | Type | Registry | Latest route |
+| Channel | Issue files | Type | Stable adapter | Latest route |
 |---|---|---|---|---|
 | Ru1Daily | `app/reports/YYYY-MM-DD.ts` | `app/report-types.ts` | `app/data.ts` | `/` |
 | Ru1Weekly | `app/weekly-reports/YYYY-Www.ts` | `app/weekly-types.ts` | `app/weekly-data.ts` | `/weekly` |
 | Ru1Commentary | `app/commentary-reports/YYYY-MM-DD.ts` | `app/commentary-types.ts` | `app/commentary-data.ts` | `/commentary` |
 | Ru1Finance | `app/finance-reports/YYYY-MM-DD.ts` | `app/finance-types.ts` | `app/finance-data.ts` | `/finance` |
 
-Archive rendering is driven by these registries. A file that is not imported and placed in the relevant array is not published in the site experience.
+`scripts/generate-content-index.mjs` discovers these issue files before every build and writes the ignored `app/generated/` index. Do not manually edit the stable adapters. Only `draft: false` issues enter the public index, latest routes, Archive, and static export; `draft: true` files remain local content packages.
 
 ## Shared editorial voice
 
@@ -44,7 +44,7 @@ Copy `provider` and `model` exactly from the author. Never reuse the previous is
 
 - Filename, ID, date/week, edition number, timestamps, draft status, and export variable agree.
 - Important facts have traceable original sources; dates and numbers were checked in the opened source.
-- The new issue is first in the correct registry and old issues remain present.
+- `pnpm run content:index` discovers the new issue, selects the latest formal issue by metadata, and preserves old issues without a manual registry edit.
 - `ai_credit` is present and matches the author's explicit model statement.
 - `/`, the channel route, `/archive`, and the issue archive route render as applicable.
 - `pnpm test` passes. Static export is refreshed when required.

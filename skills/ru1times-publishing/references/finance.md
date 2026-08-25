@@ -18,4 +18,4 @@ Use the stable visible heading `今日总览 / Today at a glance`. Do not name t
 
 ## File workflow
 
-Create `app/finance-reports/YYYY-MM-DD.ts`, use a date-matching export name, and fill author-provided `ai_credit`. Register first in `financeReports`. Archive IDs use `finance-YYYY-MM-DD` to avoid collision with Ru1Daily. Run `pnpm test`; refresh `pnpm run export:static` when producing an archival/publication-ready issue. Verify `/finance`, Archive, and the finance detail page.
+Create `app/finance-reports/YYYY-MM-DD.ts`, use date-matching ID and export metadata, fill author-provided `ai_credit`, and keep `draft: true` until approval. Set it to `false` for authorized publication; the build-time index discovers and sorts it automatically, so do not edit `app/finance-data.ts`. Archive IDs use `finance-YYYY-MM-DD` to avoid collision with Ru1Daily. Run `pnpm test`; refresh `pnpm run export:static` when producing an archival/publication-ready issue. Verify `/finance`, Archive, and the finance detail page.

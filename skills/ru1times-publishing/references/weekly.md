@@ -18,4 +18,4 @@ Target roughly 55% Chinese, 35% English, and 10% other languages across the full
 
 ## File workflow
 
-Create `app/weekly-reports/YYYY-Www.ts`; ensure ISO week, Monday-Friday dates, weekend `published_at`, variable name, and edition agree. Keep `draft: true` until approval. Register first in `weeklyReports`, then run `pnpm test` and `pnpm run export:static`. Verify `/weekly`, Archive, and the dated weekly archive output.
+Create `app/weekly-reports/YYYY-Www.ts`; ensure ISO week, Monday-Friday dates, weekend `published_at`, variable name, and edition agree. Keep `draft: true` until approval, then set it to `false`. The build-time index discovers and sorts it automatically; do not edit `app/weekly-data.ts`. Run `pnpm test` and `pnpm run export:static`. Verify `/weekly`, Archive, and the dated weekly archive output.

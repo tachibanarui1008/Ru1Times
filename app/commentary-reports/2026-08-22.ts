@@ -5,7 +5,7 @@ export const commentaryOdyssey20260822: CommentaryReport = {
   date: "2026-08-22",
   published_at: "2026-08-22T20:00:00+08:00",
   updated_at: "2026-08-22T20:00:00+08:00",
-  edition_number: 1,
+  edition_number: 2,
   draft: false,
   estimated_minutes: 12,
   ai_credit: { provider: "OpenAI", model: "GPT-5.6 Sol", role: "事实核查、结构重写与文字编辑" },

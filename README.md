@@ -29,27 +29,35 @@ Ru1Times
 - `app/components/Today.tsx`：日报阅读版面和交互
 - `app/components/SiteChrome.tsx`：总导航、品牌、页脚和主题切换
 - `app/components/LibraryPages.tsx`：Archive 页面
-- `app/reports/YYYY-MM-DD.ts`：正式日报数据
-- `app/reports/demo.ts`：样刊数据，不作为正式日报
+- `app/reports/YYYY-MM-DD.ts`：日报内容包；`draft: false` 时由构建自动加入正式索引
+- `app/reports/2026-08-21.ts`：保留的早期草稿，不进入公开索引
 - `app/report-types.ts`：日报数据类型
-- `app/data.ts`：注册正式日报并决定最新一期
+- `app/data.ts`：读取自动生成的日报索引并提供稳定查询接口
 - `app/components/Weekly.tsx`：周报长文本阅读版面
 - `app/weekly-reports/YYYY-Www.ts`：正式周报或周报样刊数据
 - `app/weekly-types.ts`：周报章节与类协和语段落类型
-- `app/weekly-data.ts`：注册周报并决定最新一期
+- `app/weekly-data.ts`：读取自动生成的周报索引并决定最新正式一期
 - `app/weekly/page.tsx`：Ru1Weekly 最新一期入口
 - `app/components/Commentary.tsx`：时评长文、背景知识和名词解释版面
 - `app/commentary-reports/YYYY-MM-DD.ts`：正式时评或时评样刊数据
 - `app/commentary-types.ts`：时评文章、双语背景和术语数据类型
-- `app/commentary-data.ts`：注册时评并决定最新一期
+- `app/commentary-data.ts`：读取自动生成的时评索引并决定最新正式一期
 - `app/commentary/page.tsx`：Ru1Commentary 最新一期入口
 - `app/globals.css`：全站版式和响应式样式
 - `scripts/export-report.mjs`：单期静态 HTML 导出脚本
+- `scripts/generate-content-index.mjs`：扫描四刊内容包、校验元数据并生成公开索引
 - `scripts/export-static.mjs`：导出首页、周报、Archive 和各期静态归档到 `out/`
-- `tests/rendered-html.test.mjs`：首页、Ru1Weekly 和 Archive 渲染验收
+- `tests/content-index.test.mjs`：自动发现、草稿隔离与重复期号验收
+- `tests/rendered-html.test.mjs`：四刊首页和 Archive 渲染验收
 - `skills/ru1times-publishing/`：随仓库维护的四刊快速出刊 Skill 源码；修改刊物规则时应与已安装版本同步
 
-本项目统一使用 `pnpm` 与 `pnpm-lock.yaml`。`dist/`、`out/`、`exports/`、`.vinext/`、`.wrangler/` 和 `work/` 都是可重新生成的本地构建内容，不应提交到 GitHub。
+本项目统一使用 `pnpm` 与 `pnpm-lock.yaml`。`app/generated/`、`dist/`、`out/`、`exports/`、`.vinext/`、`.wrangler/` 和 `work/` 都是可重新生成的本地构建内容，不应提交到 GitHub。
+
+## 自动内容索引
+
+四刊采用“一期一个 typed `.ts` 文件”的内容包模式。构建开始时，`pnpm run content:index` 自动扫描四个内容目录，按 `published_at` 与期号排序，并生成首页与 Archive 使用的索引。新增一期时不要手动修改 `app/data.ts`、`app/weekly-data.ts`、`app/commentary-data.ts` 或 `app/finance-data.ts`。
+
+索引程序会检查文件名、`id`、日期、`edition_number`、`published_at`、`updated_at`、`draft`、导出类型以及 `ai_credit`，并拒绝同一栏目的重复 ID 或重复期号。只有 `draft: false` 的内容包会进入生成索引、公开页面和静态归档；`draft: true` 只作为本地内容包保留。`pnpm run build`、`pnpm test`、`pnpm dev` 与 `pnpm run export:static` 都会在需要时自动刷新索引。
 
 ## 每期 AI 协作署名
 
@@ -72,7 +80,7 @@ ai_credit: {
 
 ### 1. 开始前检查
 
-1. 读取本 README、`app/report-types.ts`、最近一期日报和 `app/data.ts`。
+1. 读取本 README、`app/report-types.ts` 和最近一期日报；无需编辑 `app/data.ts`。
 2. 确认当前日期、时区和最新一期编号。
 3. 检查工作区是否有未提交修改；保留用户已有修改，不覆盖无关文件。
 4. 新闻型内容必须联网检索，不得凭记忆编造“今天的新闻”。
@@ -127,9 +135,9 @@ export const realReport20260823: DailyReport = {
 };
 ```
 
-3. 在 `app/data.ts` 引入并加入 `reports` 数组，把最新正式日报放在第一位。
+3. 保持 `draft: true` 进行本地制作；得到发布确认后改为 `draft: false`。构建会自动发现并排序，不要修改 `app/data.ts`。
 4. 检查 `edition_number`、`published_at`、`updated_at`、来源 URL 和所有数组数量。
-5. 运行构建和测试：
+5. 运行构建和测试；命令会先自动生成内容索引：
 
 ```bash
 pnpm test
@@ -164,7 +172,7 @@ node scripts/export-report.mjs YYYY-MM-DD
 6. 保持中文、English、日本語、한국어四语内容自然且互相对应；日语和韩语必须提供分词/读音信息。
 7. 每个重要事实写入 sources，包含 label、title、url、published；逐项确认信源处于本期发布时刻向前 72 小时以内。只有日期、没有时刻的信源，只能来自本期日期及此前两个自然日。
 8. 不编造来源、数字、引语或未来事件；无法确认的内容明确标注不确定性。
-9. 直接修改 app/reports/YYYY-MM-DD.ts 和 app/data.ts，不要改动无关页面。
+9. 只创建或修改 app/reports/YYYY-MM-DD.ts；不要手动修改 app/data.ts 或其他频道索引。
 10. 使用作者本期明确提供的厂商和模型名称填写 ai_credit；若未提供，落盘前询问，不得猜测。
 11. 完成后运行 pnpm test，并报告构建结果、测试结果和仍存在的风险。
 
@@ -183,7 +191,7 @@ node scripts/export-report.mjs YYYY-MM-DD
 ### 1. 定位与更新方式
 
 - `Ru1Finance` 是小橘财经版面，不定期日刊，由作者手动发起；未获指令不主动出刊。
-- 数据类型见 `app/finance-types.ts`，注册于 `app/finance-data.ts`，路由 `/finance`，版面组件 `app/components/Finance.tsx`。
+- 数据类型见 `app/finance-types.ts`，构建自动索引由 `app/finance-data.ts` 读取，路由 `/finance`，版面组件 `app/components/Finance.tsx`。
 - 每期两大板块：`learning`（金融学习）与当日市场（`markets` + `movers` + `companies`）。
 
 ### 2. 金融学习（learning）
@@ -202,7 +210,7 @@ node scripts/export-report.mjs YYYY-MM-DD
 
 1. 新建 `app/finance-reports/YYYY-MM-DD.ts`，导出名如 `financeReport20260823`。
 2. 使用作者本期明确提供的厂商和模型名称填写 `ai_credit`；未提供时先询问，不得沿用上一期或自行猜测。
-3. 在 `app/finance-data.ts` 注册到 `financeReports` 第一位。
+3. 保持 `draft: true` 进行审阅；确认发布后改为 `false`。构建自动加入 `financeReports`，不要编辑 `app/finance-data.ts`。
 4. 归档 id 使用 `finance-YYYY-MM-DD` 前缀（避免与同日 Ru1Daily 冲突），静态导出脚本与 Archive 已按此约定。
 5. 运行 `pnpm test`，检查 `/finance`、`/archive` 与移动端版式。构建失败时不得宣称已完成。
 
@@ -292,12 +300,12 @@ Ru1Commentary 的稳定风格来自思考方式，而不是固定辞藻：
 
 ### 10. 新增时评的标准流程
 
-1. 读取作者原始材料、本 README、`app/commentary-types.ts`、`app/commentary-reports/2026-08-22.ts`、最近一期时评和 `app/commentary-data.ts`。
+1. 读取作者原始材料、本 README、`app/commentary-types.ts`、`app/commentary-reports/2026-08-22.ts` 和最近一期时评；无需编辑 `app/commentary-data.ts`。
 2. 在内部提炼“必须保留、可以重写、必须核查”三层内容，确定一句中心命题和一条完整论证链。
 3. 联网核对所有外部事实，特别检查原典与改编、事实与评论、历史事实与类比是否混写。
 4. 新建 `app/commentary-reports/YYYY-MM-DD.ts`，不覆盖旧文；完成中文正文、双语背景、双语术语表和来源账本。
 5. 使用作者本期明确提供的厂商和模型名称填写 `ai_credit`；未提供时先询问，不得沿用上一期或自行猜测。
-6. 在 `app/commentary-data.ts` 注册新稿，并把最新一期置于数组第一位。
+6. 保持 `draft: true` 进行审阅；确认发布后改为 `false`。构建自动排序并加入时评索引，不要编辑 `app/commentary-data.ts`。
 7. 检查 `/commentary`、Archive 列表及 `/archive?edition=commentary-YYYY-MM-DD` 的完整阅读页。
 8. 运行 `pnpm test` 与 `pnpm run export:static`；构建或归档失败时不得宣称完成。
 9. 向作者报告标题、中心论点、重要事实修正和仍有争议之处；未经明确认可，不把 `draft` 改为 `false`。
@@ -328,7 +336,7 @@ Ru1Commentary 的稳定风格来自思考方式，而不是固定辞藻：
 - 参考 app/commentary-reports/2026-08-22.ts 的声线与结构，但只继承理性、简洁、克制的写法，不机械复制其题材、比喻或句式。
 
 写作前：
-1. 读取 README、app/commentary-types.ts、首期样刊、最近一期时评和 app/commentary-data.ts。
+1. 读取 README、app/commentary-types.ts、首期样刊和最近一期时评；无需编辑 app/commentary-data.ts。
 2. 从原始材料中分别提炼：必须保留的核心判断与比喻、可以重写的表达、必须核查的外部事实。
 3. 用一句话写出中心命题，并设计“具体感受—概念命名—机制展开—人物与代价—边界—当下—未完之问”的论证链；可按题材增减环节。
 4. 联网核对作品、原典、人物、日期、数字、制度和历史背景，区分事实、类比与作者判断。
@@ -350,7 +358,7 @@ Ru1Commentary 的稳定风格来自思考方式，而不是固定辞藻：
 落盘要求：
 1. 新建 app/commentary-reports/YYYY-MM-DD.ts，完整填写 CommentaryReport，保持 draft: true。
 2. 使用作者本期明确提供的厂商和模型名称填写 ai_credit；未提供时先询问，不得猜测或沿用上一期。
-3. 在 app/commentary-data.ts 注册并置于第一位，不覆盖历史文章。
+3. 不覆盖历史文章；构建会自动发现内容包，不要手动修改 app/commentary-data.ts。
 4. 沿用现有 Commentary.tsx 与全站样式，不擅自改字体、配色、版式或增加装饰效果。
 5. 运行 pnpm test 和 pnpm run export:static，检查 /commentary、Archive 列表和对应归档详情。
 6. 交付时说明中心论点、主要编辑改动、事实修正与不确定性；只有作者明确认可后才能正式发布。
@@ -423,11 +431,11 @@ Ru1Commentary 的稳定风格来自思考方式，而不是固定辞藻：
 
 ## 新增一期周报的标准流程
 
-以下流程适用于每周末新增一期 Ru1Weekly。新 agent 不得跳过读取、注册、归档和验收步骤。
+以下流程适用于每周末新增一期 Ru1Weekly。新 agent 不得跳过读取、自动索引、归档和验收步骤。
 
 ### 1. 接手前确认
 
-1. 读取本 README、`app/weekly-types.ts`、最近一期 `app/weekly-reports/YYYY-Www.ts`、`app/weekly-data.ts` 和 `scripts/export-static.mjs`。
+1. 读取本 README、`app/weekly-types.ts`、最近一期 `app/weekly-reports/YYYY-Www.ts` 和 `scripts/export-static.mjs`；无需编辑 `app/weekly-data.ts`。
 2. 检查工作区已有修改并保留用户内容，不覆盖其他 agent 或用户尚未提交的文件。
 3. 按 Asia/Shanghai 时区确认周一 00:00 至周五 23:59 的报道窗口、周末发布日期、ISO 周编号和下一期 `edition_number`；不得把周六或周日新闻写入本期。
 4. 查看最近一期是否仍为 `draft: true`。样刊或待审稿不得擅自改成正式刊，也不得在未获用户认可时推送或发布。
@@ -473,10 +481,10 @@ export const weeklyReport2026W35: WeeklyReport = {
 6. 将 confirmed facts、editorial inference 和 unknowns 分开，并明确写出什么证据会改变本期判断。
 7. 正文每个重要事实都要能在 `sources` 中找到对应来源；没有核实的内容应删除或明确标注不确定性。
 
-### 4. 注册、归档与验收
+### 4. 自动索引、归档与验收
 
-1. 在 `app/weekly-data.ts` 中引入新文件，并把新一期放在 `weeklyReports` 数组第一位；`latestWeeklyReport` 使用数组第一项作为 `/weekly` 最新一期。
-2. 注册后，Archive 会从 `weeklyReports` 读取该期。检查 `/archive?edition=YYYY-Www` 能打开完整周报，而不是只在 Archive 列表中出现标题。
+1. 确认发布后将新文件设为 `draft: false`；构建会按发布时间自动加入 `weeklyReports` 并决定 `/weekly` 最新一期，不要编辑 `app/weekly-data.ts`。
+2. 自动索引后，Archive 会从 `weeklyReports` 读取该期。检查 `/archive?edition=YYYY-Www` 能打开完整周报，而不是只在 Archive 列表中出现标题。
 3. 运行完整渲染验收：
 
 ```bash
@@ -498,7 +506,7 @@ pnpm run export:static
 - 文件名、`id`、ISO 周编号、覆盖周期、期号和发布时间一致；
 - `period_start` 为周一、`period_end` 为周五，`published_at` 为紧随其后的周六或周日；
 - 已完整读取周一至周五五期日报及其全部来源；如有缺刊，已明确披露，没有用周末新闻补位；
-- 新一期已置于 `weeklyReports` 第一位，旧刊没有被覆盖或删除；
+- 新一期已被自动索引为最新正式周报，旧刊没有被覆盖或删除；
 - 正文是连贯长文本，八个章节功能完整，没有退回短卡片模式；
 - English 以完整 phrase 或 clause 集中出现，没有逐词拼贴或大段对照翻译；
 - 每个小语种表达都有语言名称、正确读音和中文释义；
@@ -546,11 +554,11 @@ Ru1 Concord 语言规则：
 7. 小语种表达必须真正补充 nuance，不能作为装饰或随机替词。
 
 执行步骤：
-1. 先读取 README、app/weekly-types.ts、最近一期周报、app/weekly-data.ts 和 scripts/export-static.mjs，并检查工作区已有修改。
+1. 先读取 README、app/weekly-types.ts、最近一期周报和 scripts/export-static.mjs，并检查工作区已有修改；无需编辑 app/weekly-data.ts。
 2. 按 Asia/Shanghai 时区核对周一至周五窗口，完整读取这五期日报和全部来源；缺少任何一期时必须如实说明。
 3. 新建 app/weekly-reports/YYYY-Www.ts，不覆盖历史刊物；完整填写 WeeklyReport 的元数据、标题、cover_story、chapters、closing_note 和 sources。
 4. 使用作者本期明确提供的厂商和模型名称填写 ai_credit；未提供时先询问，不得猜测或沿用上一期。
-5. 在 app/weekly-data.ts 引入新刊并放到 weeklyReports 第一位。
+5. 不要编辑 app/weekly-data.ts；构建会自动发现、校验和排序新刊。
 6. 先保持 draft: true；只有得到用户明确认可后才能改为 false、推送或发布。
 7. 运行 pnpm test 和 pnpm run export:static，检查 /weekly、/archive、/archive?edition=YYYY-Www 及 out/archive/YYYY-Www/index.html。
 
@@ -604,6 +612,6 @@ pnpm run build
 - 周刊定位确定为一周信息的筛选、连接、解释和判断，与侧重语言学习的 Ru1Daily 区分。
 - 正文确定采用 Ru1 Concord 类协和语：约 55% 中文、35% English、10% 其他语言；English 以完整短语或从句集中出现。
 - 小语种统一采用 `词语（语言 /读音/，中文释义）` 的结构，例如 `desfase（西班牙语 /desˈfa.se/，不同步或错位）`；日语和韩语按规范补充假名、罗马字或音标。
-- 固定长刊结构、事实与推论边界、来源要求、新一期注册流程和静态归档验收已记录在本 README。
-- 静态导出会保留 `out/weekly/index.html`、`out/archive/index.html` 以及 `out/archive/YYYY-Www/index.html`；新增周刊必须同时写入文件并注册到 `weeklyReports`。
+- 固定长刊结构、事实与推论边界、来源要求、新一期自动索引流程和静态归档验收已记录在本 README。
+- 静态导出会保留 `out/weekly/index.html`、`out/archive/index.html` 以及 `out/archive/YYYY-Www/index.html`；新增周刊只需提供完整 typed `.ts` 内容包，构建自动加入 `weeklyReports`。
 - 用户已授权将当前样刊版本推送至 GitHub 留档；样刊仍保持 `draft: true`，这次版本推送不等于正式刊发布。
