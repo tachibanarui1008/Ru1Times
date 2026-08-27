@@ -34,7 +34,7 @@ test("server-renders the Ru1Times homepage", async () => {
   assert.match(html, /href="\/weekly"/);
   assert.match(html, /Ru1Commentary/);
   assert.match(html, /Ru1Finance/);
-  assert.match(html, /油价回落给市场喘息/);
+  assert.match(html, /外交安排与法律工具同时推进/);
   assert.match(html, /最新一期由内容索引自动更新/);
   assert.doesNotMatch(html, /进入 Ru1Daily|浏览全部刊物/);
 });
@@ -44,7 +44,7 @@ test("server-renders Ru1Daily at its own route", async () => {
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /publication-masthead/);
-  assert.match(html, /第 006 期/);
+  assert.match(html, /第 007 期/);
   assert.match(html, /<h1>Ru1Daily<\/h1>/);
   assert.match(html, /以不同语言转述今日新闻，在阅读与鉴赏中提升多语言能力。/);
   assert.ok(html.indexOf("<h1>Ru1Daily</h1>") < html.indexOf('class="big-story"'));
@@ -120,14 +120,14 @@ test("server-renders the Ru1Finance edition", async () => {
   const response = await render("/finance");
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /M0, M1 and M2: measuring money and understanding broad liquidity/);
+  assert.match(html, /Valuing new technology companies: from revenue multiples to real options/);
   assert.match(html, /publication-masthead/);
-  assert.match(html, /第 004 期/);
+  assert.match(html, /第 005 期/);
   assert.match(html, /<h1>Ru1Finance<\/h1>/);
   assert.match(html, /为金融学生准备的快速日报：学习一个概念，读懂今日市场。/);
   assert.match(html, /issue-lead/);
   assert.ok(html.indexOf("<h1>Ru1Finance</h1>") < html.indexOf('class="issue-lead"'));
-  assert.match(html, /M0、M1、M2：货币到底有多少，大水漫灌又是什么意思/);
+  assert.match(html, /科技新型企业怎么估值：从收入倍数到期权思维/);
   assert.match(html, /今日总览/);
   assert.match(html, /3,889\.45/);
   assert.match(html, /65,856\.43/);

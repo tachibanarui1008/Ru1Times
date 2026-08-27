@@ -1,0 +1,68 @@
+import type { FinanceReport } from "../finance-types";
+
+export const financeReport20260827: FinanceReport = {
+  id: "2026-08-27",
+  date: "2026-08-27",
+  published_at: "2026-08-27T19:30:00+08:00",
+  updated_at: "2026-08-27T19:30:00+08:00",
+  edition_number: 5,
+  draft: false,
+  estimated_minutes: 18,
+  ai_credit: { provider: "OpenAI", model: "GPT5.6Luna", role: "资料研究、事实核查与编辑协作" },
+  market_as_of: "2026-08-27 19:30（北京时间；本期市场卡片采用截至该时点可核实的最近完整收盘）",
+  title_zh: "科技新型企业怎么估值：从收入倍数到期权思维",
+  title_en: "Valuing new technology companies: from revenue multiples to real options",
+  dek: "科技新型企业常常先有用户、算力和研发投入，后有稳定利润。本期比较可比公司倍数、DCF、风险投资法和实物期权，说明何时该看收入，何时必须回到现金流与稀释，并用 AI 软件公司的简化案例拆开估值假设。",
+  learning: {
+    category: "科技企业估值",
+    category_en: "Technology valuation",
+    title_zh: "科技新型企业估值：增长、现金流与不确定性",
+    title_en: "Technology valuation: growth, cash flow and uncertainty",
+    standfirst: "新型科技企业的难点不是没有数字，而是数字处在快速变化的阶段：收入增长快但利润为负，研发和算力投入大，竞争优势能否持续也未确定。估值因此不是套一个倍数，而是把增长、利润率、资本需求、稀释和退出路径放进同一套假设。",
+    minutes: 9,
+    blocks: [
+      { heading: "可比公司法：先问市场给了什么价", text: "选择业务模式、增长阶段和资本结构相近的上市或交易案例，用 EV/Revenue、EV/EBITDA 或 P/E 等倍数估算企业价值。对尚未盈利的 AI 软件公司，收入倍数通常比市盈率更可用，但必须校正增长率、毛利率、客户集中度和股权稀释；高增长不自动意味着高倍数。" },
+      { heading: "DCF：把故事翻译成现金流", text: "现金流折现法把未来自由现金流按资本成本折回今天：企业价值 = 未来现金流现值 + 终值现值。科技企业的关键不是公式，而是收入增速何时下降、毛利率能否稳定、研发资本化如何处理、终值增长是否过于乐观。小幅改变折现率或终值假设，就可能显著改变结果。" },
+      { heading: "风险投资法与实物期权", text: "早期项目常用风险投资法：先估退出价值，再按目标回报率折回，并反推当前股权价格；它直观但对退出倍数和稀释很敏感。实物期权则承认企业拥有“等待、扩张或放弃”的选择权，适合研发管线和平台型技术，但模型复杂、不能用来掩盖缺乏商业验证。" },
+    ],
+    case_study: {
+      event: "一家 AI 软件公司的四种估值交叉验证",
+      period: "简化案例；不对应某一家真实公司",
+      text: "假设公司 ARR 为 1 亿元、同比增长 80%、毛利率 70%，但仍在投入算力和销售。可比公司法若给 8 倍 ARR，企业价值约 8 亿元；DCF 在高折现率和较慢的利润兑现假设下可能只有 5 亿元；风险投资法若假设五年后以 6 倍收入退出，考虑目标回报率和后续融资稀释，当前股权价值可能落在 3—4 亿元。差异不是谁算错，而是每种方法把风险放在不同的假设里。",
+    },
+    pros: { label: "宽松政策能解决什么", items: ["降低融资成本，缓解流动性紧张和信用市场的突然收缩", "在需求不足时支持企业周转、居民消费和公共投资", "通过利率和资产负债表工具稳定支付系统与金融机构预期"] },
+    cons: { label: "为什么不能只靠放水", items: ["没有有效需求时，准备金可能停留在银行体系或转成低风险储蓄", "信用扩张过快会推高资产价格、杠杆和期限错配", "退出过慢可能带来通胀、汇率、资本流动和未来坏账压力"] },
+    takeaways: [
+      "可比公司倍数适合快速定位市场区间，但必须匹配增长、利润率和商业模式。",
+      "DCF 把经营假设显式化；折现率、终值和资本需求是最容易被忽略的敏感项。",
+      "早期科技企业应交叉使用多种方法，并把融资稀释、失败概率和退出路径写进模型。",
+    ],
+  },
+  markets: [
+    { id: "cn", region_zh: "中国内地", region_en: "China Mainland", as_of: "2026-08-25 收盘（最近完整交易日）", indices: [{ name: "上证指数", close: 3889.45, change_pct: 0.19 }], commentary: "公开收盘数据显示上证指数温和上涨；指数变化只描述交易结果，不单独证明货币政策或某一新闻是唯一原因。" },
+    { id: "hk", region_zh: "中国香港", region_en: "Hong Kong", as_of: "2026-08-25 收盘（最近完整交易日）", indices: [{ name: "恒生指数", close: 25511.10, change_pct: -0.02 }], commentary: "港股接近持平；融资、利率和公司资本开支预期需要分开观察。" },
+    { id: "jp", region_zh: "日本", region_en: "Japan", as_of: "2026-08-25 收盘（最近完整交易日）", indices: [{ name: "日经 225", close: 65856.43, change_pct: 0.50 }], commentary: "日经上涨时，仍需区分指数权重股、汇率和海外科技股表现。" },
+    { id: "kr", region_zh: "韩国", region_en: "South Korea", as_of: "2026-08-25 收盘（最近完整交易日）", indices: [{ name: "KOSPI", close: 6742.74, change_pct: 0.68 }], commentary: "KOSPI 盘中一度明显下挫后收高；韩国市场对半导体与出口公司权重较高，指数变化不能直接代表所有企业。" },
+    { id: "us", region_zh: "美国", region_en: "United States", as_of: "2026-08-25 收盘（最近完整交易日）", indices: [{ name: "道琼斯工业指数", close: 53577.40, change_pct: 0.30 }, { name: "标普 500", close: 7677.28, change_pct: 0.30 }, { name: "纳斯达克综合指数", close: 26151.30, change_pct: 0.70 }], commentary: "油价回落和收益率下降帮助缓解债券市场压力，科技股在 Nvidia 财报前反弹；这仍是市场描述，不是单一因果结论。" },
+    { id: "eu", region_zh: "欧洲", region_en: "Europe", as_of: "2026-08-25 收盘（最近完整交易日）", indices: [{ name: "英国富时 100", close: 10854.60, change_pct: 0.29 }, { name: "德国 DAX", close: 26206.00, change_pct: 0.61 }, { name: "法国 CAC 40", close: 8499.20, change_pct: -0.16 }], commentary: "欧洲基准指数分化；市场仍在评估能源、制裁与利率路径。" },
+  ],
+  movers: [
+    { id: 1, kind: "货币政策", kind_en: "Monetary policy", market: "全球", title: "市场等待数据与 Nvidia 财报，流动性预期仍是定价背景", text: "8 月 25 日的全球市场报道显示，投资者在等待重要宏观数据和 Nvidia 财报；收益率回落、油价走弱与美国对伊朗相关制裁威胁共同影响风险偏好。事件之间存在相关性，但不能把单日指数变化归因于单一变量。", source_label: "Reuters / Investing.com", source_url: "https://www.investing.com/news/commodities-news/morning-bid-economic-salvos-4874888" },
+    { id: 2, kind: "市场结构", kind_en: "Market structure", market: "亚太", title: "亚洲市场 8 月 25 日多数温和变化", text: "亚洲市场报道显示，韩国 KOSPI 反弹约 0.68%，恒生指数接近持平，投资者关注 Jackson Hole、地缘政治与科技股估值。市场表现提供的是结果，不是货币量变化的直接证明。", source_label: "Asia Market Wrap", source_url: "https://edgeconsultancykw.com/asia-market-wrap-25-august-2026/" },
+    { id: 3, kind: "流动性", kind_en: "Liquidity", market: "美国 / 欧洲", title: "油价走弱与收益率回落改变风险资产的折现背景", text: "Reuters 8 月 25 日市场综述称，全球股票指标上涨、收益率下降，油价因制裁消息而走弱。对货币政策学习而言，这提醒我们区分央行流动性、市场利率和风险溢价三个不同变量。", source_label: "Reuters / LSE", source_url: "https://www.lse.co.uk/news/global-markets-equities-rise-with-tech-boost-and-yields-fall-with-oil-prices-fdzn20xom7uepsn.html" },
+  ],
+  companies: [
+    { name: "Nvidia", ticker: "NVDA", market: "美国", event: "财报成为全球科技股的重要观察点", metrics: [{ label: "观察窗口", value: "8 月 25 日市场等待后续财报" }, { label: "关联主题", value: "AI 资本开支与科技估值" }], note: "财报预期会影响风险偏好，但不能把公司业绩预期等同于广义货币变化。", source_label: "Reuters / Investing.com", source_url: "https://www.investing.com/news/commodities-news/morning-bid-economic-salvos-4874888" },
+  ],
+  sources: [
+    { label: "中国人民银行", title: "狭义货币和广义货币", url: "https://www.pbc.gov.cn/rmyh/109339/2025080818580470423/index.html", published: "2025-03-10" },
+    { label: "欧洲央行", title: "What are monetary aggregates?", url: "https://data.ecb.europa.eu/methodology/what-are-monetary-aggregates", published: "2026-06" },
+    { label: "欧洲央行", title: "What is money?", url: "https://www.ecb.europa.eu/ecb-and-you/explainers/tell-me-more/html/what_is_money.en.html", published: "长期教育资料" },
+    { label: "美联社", title: "How major US stock indexes fared Tuesday 8/25/2026", url: "https://apnews.com/article/69aae9f2f61737936f126e7820833bbe", published: "2026-08-25" },
+    { label: "FRED / Nikkei Indexes", title: "Nikkei Stock Average, Nikkei 225", url: "https://fred.stlouisfed.org/series/NIKKEI225/", published: "2026-08-25" },
+    { label: "韩联社", title: "Seoul stocks end higher ahead of Nvidia earnings", url: "https://en.yna.co.kr/view/AEN20260825007351320?section=economy-finance%2Feconomy", published: "2026-08-25" },
+    { label: "SPFutures", title: "World Markets", url: "https://spfutures.org/world-markets/", published: "2026-08-25" },
+    { label: "Reuters / LSE", title: "Global markets: equities rise with tech boost", url: "https://www.lse.co.uk/news/global-markets-equities-rise-with-tech-boost-and-yields-fall-with-oil-prices-fdzn20xom7uepsn.html", published: "2026-08-25" },
+    { label: "Asia Market Wrap", title: "Nine of 11 benchmarks rise before Nvidia earnings", url: "https://edgeconsultancykw.com/asia-market-wrap-25-august-2026/", published: "2026-08-25" },
+  ],
+};
