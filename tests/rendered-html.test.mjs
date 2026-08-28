@@ -34,7 +34,7 @@ test("server-renders the Ru1Times homepage", async () => {
   assert.match(html, /href="\/weekly"/);
   assert.match(html, /Ru1Commentary/);
   assert.match(html, /Ru1Finance/);
-  assert.match(html, /油价回落给市场喘息/);
+  assert.match(html, /当外交仍在谈判，灾害与安全问题已经要求即时协作/);
   assert.match(html, /最新一期由内容索引自动更新/);
   assert.doesNotMatch(html, /进入 Ru1Daily|浏览全部刊物/);
 });
@@ -44,7 +44,7 @@ test("server-renders Ru1Daily at its own route", async () => {
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /publication-masthead/);
-  assert.match(html, /第 006 期/);
+  assert.match(html, /第 008 期/);
   assert.match(html, /<h1>Ru1Daily<\/h1>/);
   assert.match(html, /以不同语言转述今日新闻，在阅读与鉴赏中提升多语言能力。/);
   assert.ok(html.indexOf("<h1>Ru1Daily</h1>") < html.indexOf('class="big-story"'));
