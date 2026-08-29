@@ -4,12 +4,17 @@ export const draftReport: DailyReport = {
   id: "2026-08-21",
   date: "2026-08-21",
   published_at: "2026-08-21T08:00:00+08:00",
-  updated_at: "2026-08-21T08:00:00+08:00",
+  updated_at: "2026-08-29T11:15:00+08:00",
   edition_number: 0,
-  draft: true,
+  draft: false,
   estimated_minutes: 40,
   ai_credit: { provider: "OpenAI", model: "GPT-5.6 Sol", role: "资料整理、内容编辑与版面协作" },
-  sources: [],
+  sources: [
+    { label: "国际能源署", title: "Data centre electricity use surged in 2025, even with tightening bottlenecks driving a scramble for solutions", url: "https://www.iea.org/news/data-centre-electricity-use-surged-in-2025-even-with-tightening-bottlenecks-driving-a-scramble-for-solutions", published: "2026-04-16" },
+    { label: "美国商务部", title: "Final National Security Guardrails for CHIPS for America Incentives Program", url: "https://www.commerce.gov/node/6360", published: "2023-09-22" },
+    { label: "Alphabet / SEC", title: "Quarterly report for the period ended June 30, 2026", url: "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000071/goog-20260630.htm", published: "2026-07" },
+    { label: "美国能源部", title: "Best Practices Guide for Energy-Efficient Data Center Design", url: "https://www.energy.gov/cmei/femp/articles/best-practices-guide-energy-efficient-data-center-design", published: "2024-07-26" },
+  ],
   big_story: {
     category: "Technology · AI Infrastructure",
     title_zh: "塑造下一阶段人工智能的静默基础设施竞赛",
@@ -33,7 +38,7 @@ export const draftReport: DailyReport = {
     { language:"한국어", flag:"KR", phrase:"그럴 수도 있죠.", romanization:"geureol sudo itjyo", meaning:"也有可能是那样。", nuance:"表示接受一种可能性，但不一定完全同意。", scene:"讨论、委婉回应、职场沟通", dialogue:"A: 계획이 바뀔 것 같아요.\nB: 그럴 수도 있죠.", register:"礼貌 · 日常", frequency:"很常用", note:"句尾 있죠 比 있어요 多一点共同确认的感觉。" },
   ],
   briefings: [
-    { id:1, category:"Technology / AI", title_zh:"AI 扩张开始受到电力与土地条件约束", title_en:"AI expansion meets the physical limits of power and land", source:"小橘日报第 0 期", minutes:3,
+    { id:1, category:"Technology / AI", title_zh:"AI 扩张开始受到电力与土地条件约束", title_en:"AI expansion meets the physical limits of power and land", source:"国际能源署", source_url:"https://www.iea.org/news/data-centre-electricity-use-surged-in-2025-even-with-tightening-bottlenecks-driving-a-scramble-for-solutions", minutes:3,
       zh:"大型 AI 系统需要越来越多的数据中心。企业不仅要采购芯片，还要寻找稳定电力、冷却用水、网络连接和可建设土地。基础设施审批速度因此成为新变量。",
       en:"The expansion of artificial intelligence is becoming a physical infrastructure story. Companies still need advanced chips, but they must also secure reliable electricity, cooling systems, network links and suitable land. As a result, grid connections and local permitting can shape where—and how quickly—new computing capacity is built.",
       ja:"AI の拡大（かくだい）には、多くのデータセンターが必要（ひつよう）です。半導体（はんどうたい）だけではなく、電気（でんき）や水（みず）、土地（とち）も大切です。建設（けんせつ）の許可（きょか）にも時間がかかります。",
@@ -48,7 +53,7 @@ export const draftReport: DailyReport = {
         {text:"반도체뿐",romanization:"bandocheppun",zh:"不只半导体"},{text:"아니라",romanization:"anira",zh:"而且"},{text:"전기,",romanization:"jeongi",zh:"电，"},{text:"물,",romanization:"mul",zh:"水，"},{text:"땅도",romanization:"ttangdo",zh:"土地也"},{text:"중요합니다.",romanization:"jungyohamnida",zh:"很重要。"},
         {text:"건설",romanization:"geonseol",zh:"建设"},{text:"허가와",romanization:"heogawa",zh:"许可和"},{text:"전력",romanization:"jeollyeok",zh:"电力"},{text:"연결에는",romanization:"yeongyeoreneun",zh:"连接方面"},{text:"시간이",romanization:"sigani",zh:"时间（主语）"},{text:"걸릴",romanization:"geollil",zh:"花费"},{text:"수",romanization:"su",zh:"可能性"},{text:"있습니다.",romanization:"itsseumnida",zh:"存在。"}
       ] },
-    { id:2, category:"Politics / International", title_zh:"产业政策正在重新定义国家间合作", title_en:"Industrial policy is reshaping international cooperation", source:"小橘日报第 0 期", minutes:3,
+    { id:2, category:"Politics / International", title_zh:"产业政策正在重新定义国家间合作", title_en:"Industrial policy is reshaping international cooperation", source:"美国商务部", source_url:"https://www.commerce.gov/node/6360", minutes:3,
       zh:"各国试图扩大关键技术的国内生产，同时又无法摆脱跨国供应链。补贴与出口规则既可能吸引投资，也可能让伙伴之间产生摩擦。政策的真正难点是安全与效率如何平衡。",
       en:"Governments want more domestic production of critical technologies, yet modern supply chains remain deeply international. Subsidies and export rules may attract investment at home while creating friction with partners abroad. The central policy challenge is balancing economic efficiency with national resilience.",
       ja:"多くの国（くに）は、大切な技術（ぎじゅつ）を国内（こくない）で作りたいと考えています。しかし、部品（ぶひん）は世界（せかい）の多くの国から来ます。安全（あんぜん）と効率（こうりつ）のバランスが必要です。",
@@ -63,7 +68,7 @@ export const draftReport: DailyReport = {
         {text:"하지만",romanization:"hajiman",zh:"但是"},{text:"공급망은",romanization:"gonggeummangeun",zh:"供应链（主题）"},{text:"여러",romanization:"yeoreo",zh:"多个"},{text:"나라와",romanization:"narawa",zh:"与国家"},{text:"연결되어",romanization:"yeongyeoldoeeo",zh:"连接着"},{text:"있습니다.",romanization:"itsseumnida",zh:"存在。"},
         {text:"안전과",romanization:"anjeongwa",zh:"安全与"},{text:"효율",romanization:"hyoyul",zh:"效率"},{text:"사이의",romanization:"saiui",zh:"之间的"},{text:"균형이",romanization:"gyunhyeongi",zh:"平衡（主语）"},{text:"중요합니다.",romanization:"jungyohamnida",zh:"很重要。"}
       ] },
-    { id:3, category:"Economy / Finance", title_zh:"资本支出热潮改变了投资者观察指标", title_en:"The capital-spending boom changes what investors watch", source:"小橘日报第 0 期", minutes:3,
+    { id:3, category:"Economy / Finance", title_zh:"资本支出热潮改变了投资者观察指标", title_en:"The capital-spending boom changes what investors watch", source:"Alphabet / SEC", source_url:"https://www.sec.gov/Archives/edgar/data/1652044/000165204426000071/goog-20260630.htm", minutes:3,
       zh:"AI 相关支出从软件研发延伸至长期基础设施。投资者开始更关注资本开支、折旧、能源合同与设备利用率，而不只是用户增长。庞大投入能否转化为稳定收入，仍是核心问题。",
       en:"AI-related spending has moved beyond software research into long-lived infrastructure. Investors are paying closer attention to capital expenditure, depreciation, energy contracts and equipment utilization—not only user growth. The key question is whether heavy investment can produce durable revenue and acceptable returns.",
       ja:"AI への投資（とうし）は、ソフトウェアだけではありません。会社（かいしゃ）は建物（たてもの）や機械（きかい）、電気にもお金を使います。投資家（とうしか）は、そのお金が将来（しょうらい）の利益（りえき）になるかを見ています。",
@@ -78,7 +83,7 @@ export const draftReport: DailyReport = {
         {text:"기업은",romanization:"gieobeun",zh:"企业（主题）"},{text:"건물,",romanization:"geonmul",zh:"建筑，"},{text:"장비,",romanization:"jangbi",zh:"设备，"},{text:"전기에도",romanization:"jeongiedo",zh:"在电力上也"},{text:"큰돈을",romanization:"keundoneul",zh:"大笔资金"},{text:"씁니다.",romanization:"sseumnida",zh:"花费。"},
         {text:"투자자는",romanization:"tujajaneun",zh:"投资者（主题）"},{text:"이",romanization:"i",zh:"这"},{text:"지출이",romanization:"jichuri",zh:"支出（主语）"},{text:"앞으로",romanization:"apeuro",zh:"今后"},{text:"안정적인",romanization:"anjeongjeogin",zh:"稳定的"},{text:"수익을",romanization:"suigeul",zh:"收益（宾语）"},{text:"만들",romanization:"mandeul",zh:"创造"},{text:"수",romanization:"su",zh:"可能性"},{text:"있는지",romanization:"inneunji",zh:"是否能"},{text:"봅니다.",romanization:"bomnida",zh:"观察。"}
       ] },
-    { id:4, category:"Science / Policy", title_zh:"高效冷却成为计算科学的新前沿", source:"小橘日报第 0 期", title_en:"Efficient cooling becomes a new frontier in computing", minutes:3,
+    { id:4, category:"Science / Policy", title_zh:"高效冷却成为计算科学的新前沿", source:"美国能源部", source_url:"https://www.energy.gov/cmei/femp/articles/best-practices-guide-energy-efficient-data-center-design", title_en:"Efficient cooling becomes a new frontier in computing", minutes:3,
       zh:"高性能芯片会产生大量热量。工程师正在改进液冷、热量回收和机房布局，以降低能耗并延长设备寿命。冷却技术看似低调，却直接影响计算成本和环境足迹。",
       en:"High-performance chips generate substantial heat. Engineers are improving liquid cooling, heat reuse and data-center layouts to reduce energy consumption and extend equipment life. Cooling may appear less glamorous than model design, but it directly affects computing costs and environmental impact.",
       ja:"高性能（こうせいのう）の半導体は、たくさんの熱（ねつ）を出します。技術者（ぎじゅつしゃ）は、水を使う冷却（れいきゃく）などを研究しています。冷却はコストと環境（かんきょう）に関係します。",
