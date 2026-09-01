@@ -34,8 +34,8 @@ test("server-renders the Ru1Times homepage", async () => {
   assert.match(html, /href="\/weekly"/);
   assert.match(html, /Ru1Commentary/);
   assert.match(html, /Ru1Finance/);
-  assert.match(html, /太平洋不是棋盘：小国试图把自己的议程放回中心/);
-  assert.match(html, /增长、通胀与就业：宏观经济为什么不能只看一个数字/);
+  assert.match(html, /洪水之后，搜救与重建都在检验公共系统/);
+  assert.match(html, /供给冲击：为什么能源上涨会同时推高物价、压低增长/);
   assert.match(html, /最新一期由内容索引自动更新/);
   assert.doesNotMatch(html, /进入 Ru1Daily|浏览全部刊物/);
 });
@@ -45,8 +45,8 @@ test("server-renders Ru1Daily at its own route", async () => {
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /publication-masthead/);
-  assert.match(html, /第 010 期/);
-  assert.match(html, /太平洋不是棋盘：小国试图把自己的议程放回中心/);
+  assert.match(html, /第 011 期/);
+  assert.match(html, /洪水之后，搜救与重建都在检验公共系统/);
   assert.match(html, /<h1>Ru1Daily<\/h1>/);
   assert.match(html, /以不同语言转述今日新闻，在阅读与鉴赏中提升多语言能力。/);
   assert.ok(html.indexOf("<h1>Ru1Daily</h1>") < html.indexOf('class="big-story"'));
@@ -68,6 +68,8 @@ test("server-renders the editorial archive", async () => {
   assert.match(html, /当银行开始学着持有股权/);
   assert.match(html, /channel-filter/);
   assert.match(html, /daily-2026-08-26/);
+  assert.match(html, /daily-2026-09-01/);
+  assert.match(html, /finance-2026-09-01/);
 });
 
 test("server-renders the Ru1Weekly issue without editorial prompts", async () => {
@@ -121,23 +123,23 @@ test("server-renders the Ru1Finance edition", async () => {
   const response = await render("/finance");
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /Growth, inflation and jobs: reading the macroeconomy as a system/);
+  assert.match(html, /Supply shocks: when higher energy costs lift inflation and weaken growth/);
   assert.match(html, /publication-masthead/);
-  assert.match(html, /第 007 期/);
+  assert.match(html, /第 008 期/);
   assert.match(html, /<h1>Ru1Finance<\/h1>/);
   assert.match(html, /为金融学生准备的快速日报：学习一个概念，读懂今日市场。/);
   assert.match(html, /issue-lead/);
   assert.ok(html.indexOf("<h1>Ru1Finance</h1>") < html.indexOf('class="issue-lead"'));
-  assert.match(html, /增长、通胀与就业：宏观经济为什么不能只看一个数字/);
+  assert.match(html, /供给冲击：为什么能源上涨会同时推高物价、压低增长/);
   assert.match(html, /今日总览/);
-  assert.match(html, /3,986\.30/);
-  assert.match(html, /66,311\.93/);
-  assert.match(html, /6,820\.02/);
-  assert.match(html, /53,559\.99/);
-  assert.match(html, /26,402\.42/);
+  assert.match(html, /3,981\.74/);
+  assert.match(html, /66,215\.34/);
+  assert.match(html, /6,835\.80/);
+  assert.match(html, /53,185\.90/);
+  assert.match(html, /26,370\.89/);
   assert.match(html, /quote-change (up|down)/);
+  assert.match(html, /2026-09-01 收盘/);
   assert.match(html, /2026-08-31 收盘/);
-  assert.match(html, /2026-08-28 收盘/);
-  assert.match(html, /制造业 PMI 回升至 49\.8/);
+  assert.match(html, /布伦特原油站上 91 美元/);
   assert.doesNotMatch(html, /即将上线/);
 });
