@@ -4,9 +4,9 @@ export const financeReport20260901: FinanceReport = {
   id: "2026-09-01",
   date: "2026-09-01",
   published_at: "2026-09-01T15:43:45+08:00",
-  updated_at: "2026-09-01T15:43:45+08:00",
+  updated_at: "2026-09-01T16:19:32+08:00",
   edition_number: 8,
-  draft: true,
+  draft: false,
   estimated_minutes: 20,
   ai_credit: {
     provider: "OpenAI",

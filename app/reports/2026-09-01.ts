@@ -7,9 +7,9 @@ export const realReport20260901: DailyReport = {
   id: "2026-09-01",
   date: "2026-09-01",
   published_at: "2026-09-01T15:43:45+08:00",
-  updated_at: "2026-09-01T15:43:45+08:00",
+  updated_at: "2026-09-01T16:19:32+08:00",
   edition_number: 11,
-  draft: true,
+  draft: false,
   estimated_minutes: 36,
   ai_credit: {
     provider: "OpenAI",
